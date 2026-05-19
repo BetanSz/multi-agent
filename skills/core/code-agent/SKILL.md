@@ -80,6 +80,16 @@ Write to `_army/outputs/code-<task-id>.md`:
 - Use `str.join()` for string assembly in loops, not concatenation.
 - Apply `functools.lru_cache` for expensive pure functions.
 - Avoid mutable default arguments. Do not catch broad exceptions (`except Exception` or bare `except`) unless you re-raise or have a documented reason.
+- Add type hints to all function signatures (parameters and return type); no untyped public functions.
+- Use `from __future__ import annotations` at the top of files with forward references.
+- Catch specific exception types; use custom domain exception classes for domain errors (e.g. `class UserNotFoundError(Exception): ...`).
+
+**FastAPI (when using FastAPI):**
+- Use Pydantic v2 `BaseModel` for all request/response schemas; use `Annotated[type, Field(...)]` for field validation.
+- Use `Depends()` for dependency injection (DB sessions, auth, config).
+- All route handlers must be `async def` with typed return annotations.
+- No blocking I/O inside `async def` — use `asyncio.to_thread()` or `httpx.AsyncClient` instead of `requests`.
+- Use `HTTPException` with specific status codes and meaningful detail messages.
 
 ### Quality gate
 - Run tests before marking the task done. Do not ship failing tests.

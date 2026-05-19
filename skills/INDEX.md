@@ -69,6 +69,35 @@ Single source of truth for all skills available in this project.
 
 ---
 
+## Agile
+
+| Skill | Path | Description |
+|-------|------|-------------|
+| backlog-management | `skills/agile/backlog-management/` | GitHub backlog end-to-end: create issues, triage, sprint plan, release notes — enforces label taxonomy and DoR |
+
+---
+
+## Architecture & Design
+
+| Skill | Path | Description |
+|-------|------|-------------|
+| architecture-decision-records | `skills/architecture-decision-records/` | Write and maintain ADRs — 5 templates (MADR, lightweight, Y-statement, deprecation, RFC), lifecycle management |
+| architecture-patterns | `skills/architecture-patterns/` | Clean Architecture, Hexagonal, DDD — Python-first code examples, directory structures, in-memory adapter testing |
+| improve-codebase-architecture | `skills/improve-codebase-architecture/` | Surface architectural friction using depth/seam/leverage language; deepening opportunities with deletion test |
+
+---
+
+## Code Quality
+
+| Skill | Path | Description |
+|-------|------|-------------|
+| code-review-excellence | `skills/code-review-excellence/` | Code review methodology — feedback techniques, severity labels, handling disagreements, language-specific patterns |
+| receiving-code-review | `skills/receiving-code-review/` | How to receive review feedback — verify before implementing, technical pushback, no performative agreement |
+| refactor | `skills/refactor/` | Surgical refactoring — 10 code smells with before/after, extract method, type safety, design patterns |
+| python-performance-optimization | `skills/python-performance-optimization/` | Profile and optimize Python — cProfile, memory_profiler, py-spy, list comprehensions, dict lookups, generators |
+
+---
+
 ## Research
 
 | Skill | Path | Description |
@@ -107,58 +136,8 @@ Single source of truth for all skills available in this project.
 | file-organizer | `skills/utility/file-organizer/` | Intelligent folder cleanup, duplicate detection, suggests structure |
 | agent-browser | `skills/utility/agent-browser/` | Browser automation agent |
 | process-interviewer | `skills/utility/process-interviewer/` | Relentless interviewer: extracts complete process before building anything |
-
----
-
-## Other — OpenClaw cherry-picks
-
-### openclaw-dev
-| Skill | Path | Description |
-|-------|------|-------------|
-| coding-agent | `skills/other/openclaw-dev/coding-agent/` | General coding agent skill |
-| skill-creator | `skills/other/openclaw-dev/skill-creator/` | Meta-skill: creates new skills |
-| github | `skills/other/openclaw-dev/github/` | GitHub operations |
-| gh-issues | `skills/other/openclaw-dev/gh-issues/` | GitHub issue management |
-| summarize | `skills/other/openclaw-dev/summarize/` | Content summarization |
-| nano-pdf | `skills/other/openclaw-dev/nano-pdf/` | PDF reading and processing |
-| session-logs | `skills/other/openclaw-dev/session-logs/` | Agent session logging |
-| model-usage | `skills/other/openclaw-dev/model-usage/` | AI model usage tracking |
-| gemini | `skills/other/openclaw-dev/gemini/` | Google Gemini integration |
-
-### openclaw-productivity
-| Skill | Path | Description |
-|-------|------|-------------|
-| notion | `skills/other/openclaw-productivity/notion/` | Notion workspace operations |
-| obsidian | `skills/other/openclaw-productivity/obsidian/` | Obsidian vault operations |
-| taskflow | `skills/other/openclaw-productivity/taskflow/` | Task management workflow |
-| taskflow-inbox-triage | `skills/other/openclaw-productivity/taskflow-inbox-triage/` | Inbox triage automation |
-| trello | `skills/other/openclaw-productivity/trello/` | Trello board operations |
-| canvas | `skills/other/openclaw-productivity/canvas/` | Canvas/diagram creation |
-| tmux | `skills/other/openclaw-productivity/tmux/` | Terminal multiplexer control |
-
-### openclaw-communication
-| Skill | Path | Description |
-|-------|------|-------------|
-| slack | `skills/other/openclaw-communication/slack/` | Slack messaging and channels |
-| discord | `skills/other/openclaw-communication/discord/` | Discord bot interactions |
-
-### openclaw-maintenance
-| Skill | Path | Description |
-|-------|------|-------------|
-| openclaw-pr-maintainer | `skills/other/openclaw-maintenance/openclaw-pr-maintainer/` | PR and issue triage |
-| openclaw-testing | `skills/other/openclaw-maintenance/openclaw-testing/` | Test selection and CI debugging |
-| openclaw-docs | `skills/other/openclaw-maintenance/openclaw-docs/` | Documentation writing |
-| openclaw-debugging | `skills/other/openclaw-maintenance/openclaw-debugging/` | Model/provider behavior debugging |
-| codex-review | `skills/other/openclaw-maintenance/codex-review/` | Code review closeout |
-| security-triage | `skills/other/openclaw-maintenance/security-triage/` | Security vulnerability triage |
-
-### openclaw-extensions
-| Skill | Path | Description |
-|-------|------|-------------|
-| browser-automation | `skills/other/openclaw-extensions/browser-automation/` | Browser control and web automation |
-| wiki-maintainer | `skills/other/openclaw-extensions/wiki-maintainer/` | Wiki/knowledge base maintenance |
-| tavily | `skills/other/openclaw-extensions/tavily/` | Tavily web search integration |
-| prose | `skills/other/openclaw-extensions/prose/` | Open-prose language for agent workflows |
+| api-documentation | `skills/utility/api-documentation/` | Document REST APIs in OpenAPI 3.0 — schemas, examples, auth, response codes |
+| webapp-testing | `skills/webapp-testing/` | Playwright Python testing for web apps — decision tree, server lifecycle, selector patterns |
 
 ---
 

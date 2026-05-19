@@ -28,9 +28,25 @@ L3 quality sprints only, after `code-agent` has completed its task.
 ## Language detection
 
 Infer the test framework from the codebase:
-- Python → `pytest` (files named `test_*.py` in `tests/` or alongside source)
-- TypeScript / JavaScript → `jest` (files named `*.test.ts` / `*.spec.ts`)
-- Other → match existing test conventions; if none exist, state your choice
+
+| Stack | Unit framework | Integration | Mocking |
+|-------|---------------|-------------|---------|
+| Python | `pytest` | `pytest` + `httpx` | `pytest-mock` |
+| TypeScript / Node | `jest` / `vitest` | `supertest` | Jest mocks |
+| C# / .NET | `xUnit` | `WebApplicationFactory` | `Moq` / `NSubstitute` |
+
+File signals: `pytest.ini` / `pyproject.toml [tool.pytest]` / `test_*.py` → pytest; `package.json` with jest → jest.
+If ambiguous, default to `pytest` and state the inference in the output file.
+
+## Test structure — Arrange / Act / Assert
+
+Every test follows AAA:
+```python
+# Arrange — set up inputs and dependencies
+# Act — call the function under test
+# Assert — verify the expected outcome
+```
+One `assert` per logical claim; multiple asserts are allowed when they verify one behavior together.
 
 ## Process
 

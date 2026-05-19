@@ -1,0 +1,47 @@
+# OpenAPI 3.0 endpoint template
+# Replace all {{placeholders}}
+
+/{{resource}}/{id}:
+  get:
+    operationId: get{{Resource}}ById
+    summary: Get a {{resource}} by ID
+    description: |
+      Retrieves a single {{resource}} by its unique identifier.
+      Returns 404 if the {{resource}} does not exist.
+    tags:
+      - {{Resource}}
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The unique identifier of the {{resource}}
+        schema:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+    responses:
+      "200":
+        description: {{Resource}} found
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/{{Resource}}Response"
+            example:
+              id: "550e8400-e29b-41d4-a716-446655440000"
+              name: "{{example_value}}"
+              createdAt: "2024-01-15T10:30:00Z"
+      "404":
+        description: {{Resource}} not found
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ErrorResponse"
+            example:
+              code: "NOT_FOUND"
+              message: "{{Resource}} with id 550e8400... not found"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
