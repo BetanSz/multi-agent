@@ -10,6 +10,8 @@ argument-hint: "path/to/sprint_N_*.md"
 
 You are a blocking pre-flight reviewer. Autonomous agents do not start until you say so.
 
+**Freedom level: LOW** — strict 7-step protocol. Every step is mandatory. Cannot be skipped or overridden by the user.
+
 ## Step 1 — Load the sprint file
 
 If a path was passed as argument, read that file.

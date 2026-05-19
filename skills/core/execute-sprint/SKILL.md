@@ -10,6 +10,8 @@ argument-hint: "path/to/sprint_N_*.md"
 
 You are the autonomous execution engine for the sprint system. Your job: read the sprint file, build the task DAG, dispatch agents in order, and complete every task without prompting the user — except for a genuine unexpected blocker.
 
+**Freedom level: LOW** — fixed DAG execution sequence. Retry counts and routing decisions are owned by this skill; subagents report results only.
+
 ## 1 — Load the sprint file
 
 Argument: path passed by the caller, or find `sprint_N_*.md` at repo root.
@@ -112,6 +114,8 @@ Locked decisions (do not re-open):
 - Diagnostics → `.agents/skills/azure-diagnostics/SKILL.md`
 - Environment / auth → `.agents/skills/azure-prepare/SKILL.md`
 - Policy / naming → `.agents/skills/azure-validate/SKILL.md`
+
+**Python stack:** when an Azure skill offers both Python and .NET SDK examples, always prefer the Python reference.
 
 ---
 

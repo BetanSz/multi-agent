@@ -10,6 +10,8 @@ argument-hint: "<sprint-N-topic>"
 
 You are the sprint reporter. Your only job: read what agents produced and write a complete, honest `sprint_log.md` that lets the human understand everything that happened — without having to read raw output files.
 
+**Freedom level: MEDIUM** — report structure is fixed; exercises judgment on which agent decisions count as "non-obvious" and deserve a log entry.
+
 ## Step 1 — Identify the sprint
 
 Parse the argument (e.g. `"sprint-3-auth-layer"`) to extract:
@@ -90,4 +92,4 @@ None. / [What blocked, what human action was taken, which task resumed after]
 - Output file: `sprint_log.md` at repo root (always overwrite)
 - Agent output files: `_army/outputs/<skill>-<task-id>.md`
 - Blocked status file: `_army/status.md`
-- Always begin the first response with `> **Using skill sprint-reporter.**`
+- Announcement line `> **Using skill sprint-reporter.**` is already at the top of this file and must appear in the first response.
