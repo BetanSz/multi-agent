@@ -13,6 +13,42 @@
       "skillPath": "plugins/backend-development/skills/architecture-patterns/SKILL.md",
       "computedHash": "8cc99372e77a37fa40096bf8ae0895f2a8355916fad8b8cc34f74bb68c40b76b"
     },
+    "azure-ai": {
+      "source": "microsoft/azure-skills",
+      "sourceType": "github",
+      "skillPath": "skills/azure-ai/SKILL.md",
+      "computedHash": "09d7b1f982b731532ffaef107f3cd9a922464ca8812093f454852a7668cfcfd6"
+    },
+    "azure-deploy": {
+      "source": "microsoft/azure-skills",
+      "sourceType": "github",
+      "skillPath": "skills/azure-deploy/SKILL.md",
+      "computedHash": "d9030d755b4294c945123a099c5492abdf260e868f0e9aa0e0ec0e5b0ebe23f9"
+    },
+    "azure-diagnostics": {
+      "source": "microsoft/azure-skills",
+      "sourceType": "github",
+      "skillPath": "skills/azure-diagnostics/SKILL.md",
+      "computedHash": "78b364be4ef1809a69b7a0668c448cf33b6c00afdc82a0c6674b7d88f20a0482"
+    },
+    "azure-prepare": {
+      "source": "microsoft/azure-skills",
+      "sourceType": "github",
+      "skillPath": "skills/azure-prepare/SKILL.md",
+      "computedHash": "4268320de916f2a66a51255dff45dc553772d2065a9197b683c464dac716f8cc"
+    },
+    "azure-storage": {
+      "source": "microsoft/azure-skills",
+      "sourceType": "github",
+      "skillPath": "skills/azure-storage/SKILL.md",
+      "computedHash": "5e93ffc5ee21f947edf2cf39a187a7ce465b84dcea01c195cb23bb29be29b6b7"
+    },
+    "azure-validate": {
+      "source": "microsoft/azure-skills",
+      "sourceType": "github",
+      "skillPath": "skills/azure-validate/SKILL.md",
+      "computedHash": "32dbf12501454e92d7e07d665f4e9df576465f27b5e9e9ca68b8fa63f1ea5e63"
+    },
     "brainstorming": {
       "source": "obra/superpowers",
       "sourceType": "github",

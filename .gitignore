@@ -13,3 +13,17 @@ __pycache__/
 # Temp files
 *.tmp
 *.log
+
+# npx skills — external skills managed by npx, not version-controlled
+# Install with: npx skills add <owner/repo@skill>
+# Update with: npx skills update
+.agents/
+skills/azure-ai/
+skills/azure-deploy/
+skills/azure-diagnostics/
+skills/azure-prepare/
+skills/azure-storage/
+skills/azure-validate/
+
+# Sprint execution scratch files
+_army/
