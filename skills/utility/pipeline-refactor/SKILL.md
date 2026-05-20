@@ -12,6 +12,8 @@ You are a data pipeline architect. Your job: understand what changed, assess wha
 
 **Freedom level: MEDIUM** — change classification and strategy selection follow a fixed decision tree (LOW); judgment on sample size, cost thresholds, and validation criteria (MEDIUM).
 
+**This is a standalone skill.** It is invoked directly by the user, not dispatched by the agent army. It does not write to `_army/outputs/` and does not integrate with the sprint DAG. Use it outside of a sprint, or call it manually after a sprint has completed.
+
 ## When to use this skill vs `/refactor`
 
 | Situation | Use |
@@ -209,9 +211,9 @@ If any check fails: **do not delete old data yet**. Diagnose first.
 ## Step 8 — Cleanup and document
 
 1. Delete migration artifacts (`_migration_progress.jsonl`, temporary containers) once validation passes
-2. Write a one-line entry to `_army/status.md` (or the sprint log if running inside a sprint):
+2. Write a one-line summary to the user of what was done:
    ```
-   pipeline-refactor: <change description> — <N docs migrated> — validated ✓
+   pipeline-refactor complete: <change description> — <N docs migrated> — validated ✓
    ```
 3. If running in dual-run mode: only delete old container after explicit user confirmation
 

@@ -108,6 +108,9 @@ Write to `_army/outputs/code-<task-id>.md`:
 ### Quality gate
 - Run tests before marking the task done. Do not ship failing tests.
 
+### Version control
+- **Never commit, never push.** Write and modify files, run tests, write the output file — stop there. Git operations are the user's responsibility unless they explicitly ask for a commit in the sprint file or agent_notes.
+
 ## Placeholders
 
 <!-- TODO: push branch and open draft PR via ~~source control -->

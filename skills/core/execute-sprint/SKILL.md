@@ -222,9 +222,21 @@ Confirm `sprint_N_premortem.md` was written.
 
 ---
 
-Only after both files exist, print the sprint completion summary:
+Only after both files exist, run `git status` and print the sprint completion summary:
+
 ```
 Sprint complete.
   <sprint-docs-folder>/sprint_N_log.md       — full execution log
   <sprint-docs-folder>/sprint_N_premortem.md — risk analysis (Tigers / Paper Tigers / Elephants)
+
+Uncommitted changes:
+  M  src/ner_schemas.py
+  M  pipeline/step_04_ner_extract.py
+  A  tests/test_ner_schemas.py
+  [... actual git status output ...]
+
+These changes were NOT committed. Review and commit when ready:
+  git add <files> && git commit -m "..."
 ```
+
+If the working tree is clean, print: `Working tree clean — nothing to commit.`

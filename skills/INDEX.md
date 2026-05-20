@@ -8,7 +8,7 @@ Single source of truth for all skills available in this project.
 
 ---
 
-## Core — Multi-agent orchestration
+## Agent Army — Sprint Execution
 
 | Skill | Path | Description |
 |-------|------|-------------|

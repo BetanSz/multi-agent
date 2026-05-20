@@ -106,6 +106,16 @@ None. / [What blocked, what human action was taken, which task resumed after]
 ## Proposed next sprint
 `/launch_sprint "<description>"` — <one-line rationale based on patterns from this sprint>
 / [Omit section if no clear next sprint emerges]
+
+## Git state
+<!-- Run git status and git diff --stat at the time of writing this log. -->
+**Uncommitted changes:**
+```
+[paste git status --short output here]
+```
+These changes were produced by this sprint and have NOT been committed.
+Review, then: `git add <files> && git commit -m "feat: <sprint topic>"`
+/ Working tree clean.
 ```
 
 ## Rules
