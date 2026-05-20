@@ -48,17 +48,30 @@ Every test follows AAA:
 ```
 One `assert` per logical claim; multiple asserts are allowed when they verify one behavior together.
 
+## Test type
+
+Choose the test type based on what can be verified:
+
+| Situation | Test type |
+|-----------|-----------|
+| Function/method with a clear input→output contract | **Code test** — pytest/jest, deterministic PASS/FAIL |
+| Integration flow, script output, API response, data pipeline result | **Interpreted test** — describe what to run and what good output looks like; test-runner-agent judges the result |
+
+Use code tests by default. Use interpreted tests when the verification is inherently qualitative or when writing deterministic assertions would be brittle.
+
 ## Process
 
 1. Read `_army/outputs/code-<task-id>.md` and identify every new function, method, class, or feature
 2. Read the actual source files to understand signatures and behavior contracts
-3. For each new item, write tests covering:
+3. For each new item, decide the test type (see above)
+4. For **code tests**, write tests covering:
    - Happy path (expected input → expected output)
    - At least one edge case (boundary value, empty input, zero, etc.)
    - At least one error/failure case (invalid input, exception, rejection)
-4. Write tests to the appropriate test file or directory — follow existing project structure
-5. Do NOT run the tests — test-runner-agent runs them
-6. Write the output file
+5. For **interpreted tests**, write a description block (see format below) — do not write pytest code
+6. Write tests to the appropriate test file or directory — follow existing project structure
+7. Do NOT run the tests — test-runner-agent runs them
+8. Write the output file
 
 ## TDD protocol (mandatory)
 
@@ -70,6 +83,20 @@ One `assert` per logical claim; multiple asserts are allowed when they verify on
 - Test real code — avoid mocking unless the dependency is external (network, DB, filesystem)
 - One `assert` per logical claim; multiple asserts are allowed when they test one behavior together
 
+## Interpreted test format
+
+Write interpreted tests as a fenced block in the test file (or in a dedicated `tests/interpreted/` markdown file if no test file exists):
+
+```markdown
+## Interpreted test: <name>
+**Run:** `python scripts/check_pipeline.py --env staging`
+**Pass if:** Output contains "pipeline completed", exit code is 0, and no ERROR lines appear in the log
+**Fail if:** Any exception, ERROR line, or missing "pipeline completed" in output
+**Why not a code test:** result depends on live data shape, not a deterministic assertion
+```
+
+test-runner-agent reads this block and executes it in interpreted mode.
+
 ## Output
 
 Write `_army/outputs/test-generator-<task-id>.md`:
@@ -78,9 +105,10 @@ Write `_army/outputs/test-generator-<task-id>.md`:
 ## Test Generation: <task name>
 
 ### Tests written
-| Test name | File | Covers | Type |
-|-----------|------|--------|------|
-| test_rejects_empty_email | tests/test_auth.py | email validation rejects blank input | error case |
+| Test name | File | Covers | Test type |
+|-----------|------|--------|-----------|
+| test_rejects_empty_email | tests/test_auth.py | email validation rejects blank input | code / error case |
+| check_pipeline_completes | tests/interpreted/pipeline.md | pipeline runs end-to-end without errors | interpreted |
 
 ### TDD confirmation
 - Each test was written before implementation was checked
