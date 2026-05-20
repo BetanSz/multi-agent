@@ -29,9 +29,19 @@ Also read `_army/status.md` if it exists — it contains BLOCKED items agents re
 
 Do not skip any file. Every output counts.
 
-## Step 3 — Write sprint_log.md
+## Step 2.5 — Detect sprint docs folder
 
-Write `sprint_log.md` at the repo root (overwrite if it exists).
+Before writing any output file, detect where sprint documentation lives in this project:
+
+1. Check for existing folders in order: `docs/sprints/`, `docs/pipeline/`, `pipeline/docs/`, `sprints/`, `docs/agile/`
+2. If found: use that path as `<sprint-docs-folder>`
+3. If none found: write to repo root as fallback
+
+All sprint output files are written to `<sprint-docs-folder>/`.
+
+## Step 3 — Write sprint_N_log.md
+
+Write `<sprint-docs-folder>/sprint_N_log.md` (where N is the sprint number). Overwrite if it exists.
 
 Use exactly this structure:
 
@@ -56,6 +66,11 @@ One paragraph or short bullet list — no jargon, no code unless essential.
 **review-agent**: <verdict, issues found (list 🔴🟡🟢 items), what was fixed in Mode 2 if triggered>
 **test-generator** *(L3 only)*: <tests written, types (code/interpreted), what they cover>
 **test-runner** *(L2/L3)*: <result, any self-healed failures, any functional failures routed back>
+**Bugs encountered**:
+<!-- Every bug hit during this task. For each: what it was, the decision process to resolve it,
+     and the end result. Do not abbreviate — this is the debugging trace future engineers need. -->
+- Bug: [description of the bug] → Decision: [why this fix was chosen over alternatives] → Result: [outcome and any remaining risk]
+<!-- If no bugs were encountered, write: None. -->
 
 <!-- Repeat for every task in the sprint -->
 
@@ -97,6 +112,7 @@ None. / [What blocked, what human action was taken, which task resumed after]
 
 - **Write every section even if empty** — use "None." or "None identified."
 - **Execution trace is mandatory and must be detailed** — one subsection per task, every agent step logged. Do not collapse multiple tasks into a summary. A long file is correct; a short file means information was lost.
+- **Bugs encountered: report every one.** Log the bug, the decision process (what was tried, why this fix was chosen), and the end result. A "Bugs encountered: None." entry is fine; a missing section is not.
 - **Autonomous decisions: over-report.** If in doubt, include the decision.
 - **Never invent status.** If an output file is missing for a task, status = failed, note = "no output file found".
 - Test results section: omit entirely for L1. Include for L2 and L3.
@@ -105,7 +121,7 @@ None. / [What blocked, what human action was taken, which task resumed after]
 
 ## Conventions
 
-- Output file: `sprint_log.md` at repo root (always overwrite)
+- Output file: `sprint_N_log.md` in the detected sprint docs folder (or repo root if no folder found)
 - Agent output files: `_army/outputs/<skill>-<task-id>.md`
 - Blocked status file: `_army/status.md`
 - Announcement line `> **Using skill sprint-reporter.**` is already at the top of this file and must appear in the first response.

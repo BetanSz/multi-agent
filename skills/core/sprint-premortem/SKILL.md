@@ -1,6 +1,6 @@
 ---
 name: sprint-premortem
-description: Runs after sprint-reporter. Reads all agent outputs and applies prospective hindsight — imagining the sprint's deliverables have caused a production incident 14 days later, then working backward to classify risks as Tigers, Paper Tigers, or Elephants. Produces sprint_X_premortem.md with a prioritized risk registry and mitigation plan.
+description: Runs after sprint-reporter. Does a static analysis of the codebase produced this sprint against the project's stated objectives — not a sprint log summary. Reads key source files, data schemas, and 1-2 output samples. Applies prospective hindsight (Tiger / Paper Tiger / Elephant) to surface risks before they hit production. Produces sprint_N_premortem.md. Never runs code or tests.
 argument-hint: "<sprint-N-topic>"
 ---
 
@@ -8,54 +8,68 @@ argument-hint: "<sprint-N-topic>"
 
 # Sprint Pre-Mortem
 
-You are a senior engineer and risk analyst. Your job: read everything the agents produced this sprint and imagine it is 14 days after deployment. Something went wrong. Work backward and surface every risk — real, overstated, or unspoken.
+You are a senior engineer doing a pre-mortem. Your primary job is a **static analysis of the current codebase against the project's stated objectives** — not a summary of what happened during the sprint. Read the code that was written, understand what it actually does, and ask: *"Will this achieve the goal? What is most likely to fail in the next 14 days of real use?"*
 
 **Freedom level: MEDIUM** — classification rules are strict (LOW); judgment on what counts as evidence and which risks are real requires experience (MEDIUM).
 
+**Never run code. Never run tests. Never read entire datasets.** This is a reading exercise, not an execution exercise.
+
 ## The thought experiment
 
-> *"It is 14 days after this sprint's code went to production. An incident has occurred. What caused it?"*
+> *"It is 14 days after this sprint's output is being used in production. Something has gone wrong — a value is wrong, a query fails, a report is inaccurate, an import is rejected. What in the code caused it?"*
 
-This framing surfaces more honest risks than asking "what could go wrong?" — people explain past events more specifically than they predict future ones.
+This framing forces you to read the implementation honestly, not charitably.
 
-## Input
+## Input — what to read
 
-Read all of the following before writing a single classification:
+### Primary (always read)
+- **The sprint file** (`sprint_N_<topic>.md`) — the goal, locked decisions, and scope
+- **Every source file produced or modified this sprint** — read the actual code and schemas
+- **Data model / schema files** referenced in agent_notes — understand the shape of data being produced
 
-- `sprint_log.md` — what was built, autonomous decisions, blocked items, skill friction
-- `_army/outputs/review-<task-id>.md` — all review verdicts, issues flagged (🔴🟡🟢)
-- `_army/outputs/test-runner-<task-id>.md` — test results, failures, self-healed items
-- `_army/outputs/code-<task-id>.md` — implementation notes, "notes for reviewer" sections
-- `_army/status.md` — any BLOCKED entries and how they were resolved
+### Secondary (bounded — read the minimum that gives concrete evidence)
+- **1–2 sample output files or records** (e.g. 1 Cosmos document, 1 generated JSON) — enough to see what the code actually produces, not enough to read the whole dataset
+- **sprint_N_log.md** — autonomous decisions, bugs encountered, blocked items
+- **`_army/outputs/review-<task-id>.md`** — review verdicts, 🔴🟡🟢 flags
+- **`_army/status.md`** — BLOCKED entries and workaround resolutions
+
+### Never read
+- Entire collections, databases, or directories of output files
+- All test results (scan the summary line only)
+- Duplicate content — if you've already read the source, don't re-read a generated copy of it
+
+**Token discipline**: if you find yourself reading more than 3-4 data sample files, stop — you are not doing static analysis, you are doing a data audit. The pre-mortem answers "is the code correct?" not "is every record correct?"
 
 ## Risk classification
 
 ### Tigers — Real risks
-Evidence-backed. A concrete failure scenario exists. Ignoring them would be negligent.
+Evidence-backed. A concrete failure scenario exists in the code or data. Ignoring them would be negligent.
 
-Signals from sprint outputs:
-- 🔴 blocking issues in review output (fixed or not)
-- Tests that were self-healed (structural fix concealed a deeper issue?)
-- Autonomous decisions made under time pressure or ambiguity
-- BLOCKED entries that were resolved with a workaround rather than a proper fix
-- Schema or API changes with no migration path documented
-- External dependencies (Azure services, APIs) confirmed working but not resilience-tested
+Signals from the codebase:
+- A function that does not validate its inputs at a system boundary (user input, API response, DB read)
+- Business logic that handles only the happy path — no fallback, no error case
+- A schema field typed loosely (`str`) where the downstream consumer needs a specific format (number, date, code pattern)
+- Two code paths that should produce consistent results but could diverge (e.g. two models extracting the same field differently, no reconciliation logic)
+- An external dependency (API, service, container) assumed always available with no degradation path
+- A cost or scale assumption that was never calculated (e.g. per-document token consumption × corpus size)
+
+Also check sprint log signals: 🔴 blocking issues (fixed or not), BLOCKED entries resolved via workaround, autonomous decisions made under ambiguity.
 
 ### Paper Tigers — Look scary, aren't
 Sound alarming on first read but are low-probability or low-impact on inspection.
 
-Signals: 🟡 important issues that were cleanly fixed; risks that were explicitly mitigated in agent notes; concerns raised then validated by a test pass.
+Signals: 🟡 important issues that were cleanly fixed; risks that were explicitly mitigated in the code or prompts; concerns raised then validated by a test or sample output.
 
 ### Elephants — Unspoken concerns
-Everyone knows but nobody named. Often lurk in what the sprint *avoided* rather than what it addressed.
+The code works for what was tested. Something adjacent was never addressed and nobody named it.
 
-Signals from sprint outputs:
-- Scope quietly reduced mid-sprint without explanation
-- Tasks marked done with no test coverage (L1 sprint)
-- `# TODO`, `# FIXME`, or `# HACK` comments added during implementation
-- review-agent flagged architectural concern but verdict was APPROVE anyway
-- Skill friction entries that hint at confusion about the system design
-- A task that took 3x retries — what does that say about the plan?
+Signals from the codebase and sprint log:
+- The test corpus covers only one contract type / one scenario / one model
+- `# TODO`, `# FIXME`, or `# HACK` comments left in production code
+- A field or output goes from LLM → storage with no normalization or validation (raw string that downstream systems need to parse)
+- The goal says "for downstream system X" but no check was made that the output format matches what X actually accepts
+- Scope quietly reduced mid-sprint (a whole contract type, a model variant, a validation step dropped)
+- A task that required 3x retries — what does that say about the underlying design?
 
 ## Tiger urgency (for software sprints)
 
@@ -67,17 +81,21 @@ Signals from sprint outputs:
 
 ## Process
 
-1. Read all input files listed above.
-2. List every candidate risk that comes to mind — do not classify yet.
-3. Apply the thought experiment: which of these would actually cause the incident?
-4. Classify each as Tiger, Paper Tiger, or Elephant.
-5. For each Tiger, assign urgency and write a mitigation.
-6. For each Elephant, name it explicitly — the point is to say the unsaid.
-7. Write `sprint_X_premortem.md`.
+1. Read the sprint file — internalize the goal and locked decisions.
+2. Read every source file and schema produced this sprint — understand what the code actually does, not what it was supposed to do.
+3. Read 1-2 sample outputs or records — does the code produce what the goal requires?
+4. Read the sprint log (secondary) — note bugs, autonomous decisions, and workarounds.
+5. List every candidate risk — do not classify yet. Ground each one in something you actually read.
+6. Apply the thought experiment: which of these would actually cause the incident?
+7. Classify each as Tiger, Paper Tiger, or Elephant.
+8. For each Tiger, assign urgency and write a concrete mitigation.
+9. For each Elephant, name it explicitly — the point is to say the unsaid.
+10. Detect sprint docs folder (same logic as sprint-reporter: `docs/sprints/`, `docs/pipeline/`, etc.; fall back to repo root).
+11. Write `sprint_N_premortem.md` to that folder.
 
 ## Output format
 
-Write `sprint_<N>_premortem.md` at the repo root:
+Write `sprint_N_premortem.md` to the detected sprint docs folder (or repo root if none found):
 
 ```markdown
 # Pre-Mortem — Sprint N — <topic>

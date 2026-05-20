@@ -89,6 +89,19 @@ For architectural items (category F): challenge the answer. Ask "Are you sure th
 
 Do not move to the next item until the current one is confirmed with evidence.
 
+### G — Sprint documentation folder
+
+Check whether a sprint documentation folder exists in this project. Look for (in order):
+`docs/sprints/`, `docs/pipeline/`, `pipeline/docs/`, `sprints/`, `docs/agile/`
+
+- **Found**: note the path — all sprint output files (sprint log, pre-mortem) will go there.
+- **Not found**: propose `docs/sprints/` to the user and confirm before proceeding.
+
+Once confirmed: create the folder if it does not exist. Record the agreed path in the sprint file:
+```
+- [x] Sprint docs folder: <path> — created / already exists
+```
+
 ## Step 5 — Write confirmed items into the sprint file
 
 After each item is confirmed, append or update the `## HITL approvals` section of the sprint file:

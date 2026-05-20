@@ -210,21 +210,21 @@ Pass:
 - Any mid-sprint HITL pauses
 - Any autonomous decisions made by agents
 
-Confirm `sprint_log.md` was written before proceeding to 9.2.
+Confirm `sprint_N_log.md` was written (in the sprint docs folder confirmed during HITL, or repo root) before proceeding to 9.2.
 
 ### 9.2 — Pre-mortem (mandatory)
 
 Read and execute `skills/core/sprint-premortem/SKILL.md` now.
 
-Pass the same sprint topic/number. sprint-premortem reads `sprint_log.md` and all `_army/outputs/` files and writes `sprint_<N>_premortem.md`.
+Pass the same sprint topic/number. sprint-premortem reads the codebase and sprint log, writes `sprint_N_premortem.md` to the sprint docs folder.
 
-Confirm `sprint_<N>_premortem.md` was written.
+Confirm `sprint_N_premortem.md` was written.
 
 ---
 
 Only after both files exist, print the sprint completion summary:
 ```
 Sprint complete.
-  sprint_log.md          — full execution log
-  sprint_<N>_premortem.md — risk analysis (Tigers / Paper Tigers / Elephants)
+  <sprint-docs-folder>/sprint_N_log.md       — full execution log
+  <sprint-docs-folder>/sprint_N_premortem.md — risk analysis (Tigers / Paper Tigers / Elephants)
 ```
