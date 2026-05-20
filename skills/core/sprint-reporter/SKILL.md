@@ -43,10 +43,21 @@ Use exactly this structure:
 Plain-English summary of all features, files, and changes produced during the sprint.
 One paragraph or short bullet list — no jargon, no code unless essential.
 
-## Task status
-| Task | Status | Agent | Notes |
-|------|--------|-------|-------|
-| task-id | done / blocked / failed | agent-name | brief note |
+## Execution trace
+
+<!-- One subsection per task. Do not summarise — log what actually happened at each agent step. -->
+
+### Phase N — <task-id>: <task name>
+**Status:** done / blocked / failed
+**Retries:** N (if any — what triggered each retry)
+
+**plan-agent** *(if ran)*: <key design decisions made, scope defined, risks flagged>
+**code-agent**: <files changed, key implementation choices, anything unusual>
+**review-agent**: <verdict, issues found (list 🔴🟡🟢 items), what was fixed in Mode 2 if triggered>
+**test-generator** *(L3 only)*: <tests written, types (code/interpreted), what they cover>
+**test-runner** *(L2/L3)*: <result, any self-healed failures, any functional failures routed back>
+
+<!-- Repeat for every task in the sprint -->
 
 ## Autonomous decisions
 | Task | Decision | Rationale |
@@ -71,6 +82,7 @@ None. / [What blocked, what human action was taken, which task resumed after]
 - Test suite: <name>
 - Passed: N | Failed: N | Skipped: N
 - Failures: [list any failing tests with one-line reason]
+- Self-healed: [list any structural fixes test-runner-agent made autonomously]
 
 ## Deferred / blocked
 [Tasks not completed, with reason]
@@ -83,11 +95,12 @@ None. / [What blocked, what human action was taken, which task resumed after]
 
 ## Rules
 
-- Write every section even if empty — use "None." or "None identified."
-- Autonomous decisions: prefer over-reporting. If in doubt, include the decision.
-- Never invent status. If an output file is missing for a task, status = failed, note = "no output file found".
+- **Write every section even if empty** — use "None." or "None identified."
+- **Execution trace is mandatory and must be detailed** — one subsection per task, every agent step logged. Do not collapse multiple tasks into a summary. A long file is correct; a short file means information was lost.
+- **Autonomous decisions: over-report.** If in doubt, include the decision.
+- **Never invent status.** If an output file is missing for a task, status = failed, note = "no output file found".
 - Test results section: omit entirely for L1. Include for L2 and L3.
-- Proposed next sprint: only add if a clear pattern or natural continuation emerges from the outputs. Do not force it.
+- Proposed next sprint: only add if a clear pattern or natural continuation emerges. Do not force it.
 - Do not ask for confirmation. Write the file and report the path.
 
 ## Conventions

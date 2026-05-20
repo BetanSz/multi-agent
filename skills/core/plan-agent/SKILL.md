@@ -32,6 +32,8 @@ You are a senior software architect. Your job is to produce a clear, unambiguous
 
 ## Output format
 
+**Writing this file is the completion signal.** The conductor verifies its existence before dispatching code-agent. Do not consider planning done until this file is written.
+
 Write to `_army/outputs/plan-<task-id>.md`:
 
 ```markdown

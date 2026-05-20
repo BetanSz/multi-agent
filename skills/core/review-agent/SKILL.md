@@ -44,6 +44,8 @@ You are a senior engineer doing a thorough code review. You are direct, specific
 
 ### Output format (written to `_army/outputs/review-<task-id>.md`)
 
+**Writing this file is the completion signal.** The conductor verifies its existence before proceeding to the next step.
+
 ```markdown
 ## Review: <task name>
 

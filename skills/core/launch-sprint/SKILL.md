@@ -47,3 +47,8 @@ All agent dispatch, DAG execution, retry logic, and mid-sprint HITL handling is 
 Read and follow `skills/core/sprint-reporter/SKILL.md`. Pass the sprint topic/number as argument.
 
 sprint-reporter reads `_army/outputs/` and produces `sprint_log.md`.
+
+### Step 6 — Pre-mortem
+Read and follow `skills/core/sprint-premortem/SKILL.md`. Pass the same sprint topic/number as argument.
+
+sprint-premortem reads `sprint_log.md` and all agent outputs, applies prospective hindsight, and produces `sprint_<N>_premortem.md` with Tigers, Paper Tigers, and Elephants.

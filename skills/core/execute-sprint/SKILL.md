@@ -21,6 +21,14 @@ Parse:
 - **Task list**: every `id`, `description`, `depends_on`, `agent_notes`, and `agent_type` field
 - **Prise de décision** section — these decisions are locked; agents must not re-open them
 
+**Before doing anything else, create the output directory:**
+```
+_army/
+  outputs/
+  status.md   ← create empty if it does not exist
+```
+If the directory already exists, leave it. This directory must exist before any agent runs.
+
 ## 2 — Build the task DAG
 
 Scan all `depends_on` lists. Group tasks into execution waves:
@@ -37,6 +45,19 @@ When a wave contains more than one task, dispatch all tasks in that wave as simu
 
 ### Sequential gating (across waves)
 Do not start wave N+1 until every task in wave N has a confirmed output file at `_army/outputs/`.
+
+### Output file verification (after every agent step)
+After each agent step (plan, code, review, test-generator, test-runner), **verify the expected output file exists** before proceeding:
+
+```
+_army/outputs/plan-<task-id>.md      ← after plan-agent
+_army/outputs/code-<task-id>.md      ← after code-agent
+_army/outputs/review-<task-id>.md    ← after review-agent
+_army/outputs/test-generator-<task-id>.md  ← after test-generator
+_army/outputs/test-runner-<task-id>.md     ← after test-runner
+```
+
+If the file does not exist after the agent step: **the step did not complete**. Do not proceed. Either re-run the step or trigger a mid-sprint HITL pause. A missing output file is never acceptable — it means the audit trail has a gap.
 
 ---
 
@@ -133,12 +154,77 @@ Never say "want to continue?" Never ask about duration or token usage.
 
 ---
 
-## 7 — After all tasks complete
+## 7 — Progress reporting in chat
 
-Instruct the conductor to call `skills/core/sprint-reporter/SKILL.md` to produce the sprint log.
+Format all progress output in the chat clearly so the human can follow without reading raw files.
 
-Pass it:
+**On DAG build**, print a numbered phase map — one line per task:
+```
+Sprint: <topic> | Quality: L1/L2/L3 | Tasks: N
+
+Phase 1 — <task name>: <one-line description>
+Phase 2 — <task name>: <one-line description>
+  Phase 2.1 — <subtask if parallel>
+  Phase 2.2 — <subtask if parallel>
+```
+
+**On each phase start**, print a header:
+```
+─────────────────────────────────────────
+Phase N — <task name>
+<2-line description of what this phase builds and why it matters for the sprint>
+─────────────────────────────────────────
+```
+
+**On each agent handoff within a phase** (plan → code → review → test), print a one-liner:
+```
+  → plan-agent: designing <scope>
+  → code-agent: implementing <what>
+  → review-agent: reviewing <what>
+  → test-runner: running <suite>
+```
+
+**On phase completion**, print:
+```
+  ✓ Phase N complete — <one-line summary of what was produced>
+```
+
+**On BLOCK or mid-sprint pause**, print clearly:
+```
+  ✗ Phase N blocked — <reason> — waiting for human input
+```
+
+Keep descriptions concrete (name the files, functions, or schemas involved), not generic ("implementing features").
+
+## 9 — Mandatory closing steps
+
+**The sprint is not complete until both closing files exist. Do not report the sprint as done, do not output a completion message, do not stop — until steps 9.1 and 9.2 are finished.**
+
+### 9.1 — Sprint log (mandatory)
+
+Read and execute `skills/core/sprint-reporter/SKILL.md` now. Do not skip this step even if the sprint ran smoothly and the result feels obvious.
+
+Pass:
 - The sprint file path
-- The list of completed task IDs and their output file paths
-- Any mid-sprint HITL pauses that occurred
-- Any autonomous decisions made by agents during execution
+- All completed task IDs and their output file paths
+- Any mid-sprint HITL pauses
+- Any autonomous decisions made by agents
+
+Confirm `sprint_log.md` was written before proceeding to 9.2.
+
+### 9.2 — Pre-mortem (mandatory)
+
+Read and execute `skills/core/sprint-premortem/SKILL.md` now.
+
+Pass the same sprint topic/number. sprint-premortem reads `sprint_log.md` and all `_army/outputs/` files and writes `sprint_<N>_premortem.md`.
+
+Confirm `sprint_<N>_premortem.md` was written.
+
+---
+
+Only after both files exist, print the sprint completion summary:
+```
+Sprint complete.
+  sprint_log.md          — full execution log
+  sprint_<N>_premortem.md — risk analysis (Tigers / Paper Tigers / Elephants)
+```

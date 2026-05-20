@@ -58,13 +58,34 @@ If the list is empty, say: "No human-required items detected. Verify this sprint
 
 ## Step 4 — Work through each item
 
-For each item, in order:
+For each item, attempt to resolve it yourself before asking the user anything. Follow this decision tree:
 
-1. Present the item again clearly.
-2. Tell the user exactly what to run or do (CLI command, portal step, etc.) where you can infer it.
-3. Ask: **"Please do this now and tell me: did it succeed? What was the result?"**
-4. **Do not accept "done", "yes", or "ok" alone.** Push back: "What was the output? Did you see any errors?" Keep asking until you have a concrete result (exit code, output snippet, portal confirmation, etc.).
-5. For architectural items (category F): challenge the answer. Ask "Are you sure this is the right approach? What happens if X changes later?" Do not let vague answers pass. Either get a clear decision with rationale, or escalate (see below).
+### 4a — Probe first, ask only on confirmed failure
+
+For every item, attempt resolution before involving the user:
+
+1. **Try it yourself first** — run CLI commands, read files, make API calls. Never ask the user to do something you haven't tried yourself.
+2. **If you lack access or it fails** — only then ask the user to act, and be explicit: *"I tried X and got Y — this requires your access/credentials/portal action."*
+3. **Sensitive files** (`.env`, credential files) — ask permission once: *"May I read `<file>` to check what's already set? I will not log secret values."* Read it yourself if granted. If denied, ask only for the specific missing values.
+4. **Fix a missing configuration** — ask permission once: *"I can write these vars to `.env` — shall I?"* Do it yourself if granted.
+5. **Resource creation (Azure portal, cloud console)** — you cannot do this yourself. Ask the user, but only after confirming via CLI/API that the resource genuinely does not exist yet.
+
+The rule: **the user's job is to provide what you genuinely cannot obtain or do — not to be your hands.**
+
+### 4b — What only the human can provide
+
+Escalate to the user **only** for:
+- A secret value that exists nowhere in the codebase or readable files (API key, password)
+- A decision that requires their authority (confirming a production resource, approving a billing-incurring action)
+- Access to a system the agent has no credentials for
+
+Present these as a short, specific list: *"I need these from you — I have no way to obtain them myself: [list]."*
+
+### 4c — Evidence standard
+
+Once an item is resolved (by the agent or by the user), record concrete evidence: exit code, output snippet, file diff, or portal confirmation. Do not accept "done" or "yes" without evidence — but obtain the evidence yourself where possible rather than asking the user to paste it.
+
+For architectural items (category F): challenge the answer. Ask "Are you sure this is the right approach? What happens if X changes later?" Do not let vague answers pass. Either get a clear decision with rationale, or escalate (see Step 6).
 
 Do not move to the next item until the current one is confirmed with evidence.
 
@@ -109,8 +130,11 @@ The sprint conductor may now run Step 4 (autonomous execution).
 
 ## Behavior rules
 
-- Never skip an item because the user says "that's already done." Ask for proof.
+- **Do the work first.** Run commands, read files, make calls — then report. Do not hand the user a to-do list of things you could do yourself.
+- **Ask permission for sensitive access, then act.** One ask, then execute. Do not ask the user to do it after granting permission.
+- **Only escalate what you genuinely cannot do.** The user's job is to provide secrets and authority, not to be your hands.
+- Never skip an item because the user says "that's already done" — verify it yourself if you can, otherwise ask for evidence.
 - Never issue the gate statement while any item is unconfirmed.
 - Never let an architectural ambiguity pass with "we'll figure it out." Either lock the decision with a rationale, or escalate.
-- If new items surface mid-review (user mentions something that wasn't in the sprint file), add them to the checklist and work through them.
+- If new items surface mid-review, add them to the checklist and work through them.
 - Stay in this skill until the gate statement is issued or the sprint is sent back to planning.

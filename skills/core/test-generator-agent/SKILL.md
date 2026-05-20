@@ -99,6 +99,8 @@ test-runner-agent reads this block and executes it in interpreted mode.
 
 ## Output
 
+**Writing this file is the completion signal.** The conductor verifies its existence before dispatching test-runner-agent.
+
 Write `_army/outputs/test-generator-<task-id>.md`:
 
 ```markdown

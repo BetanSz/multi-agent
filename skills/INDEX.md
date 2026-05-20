@@ -21,6 +21,7 @@ Single source of truth for all skills available in this project.
 | test-generator-agent | `skills/core/test-generator-agent/` | L3 sprints: writes failing tests for new features before implementation is verified (TDD protocol) |
 | test-runner-agent | `skills/core/test-runner-agent/` | L2/L3 sprints: runs existing + new tests, signals pass/fail to conductor, triggers code-agent retry on failure |
 | **sprint-reporter** | `skills/core/sprint-reporter/` | **Post-sprint reporter** — reads all `_army/outputs/` files after execute-sprint completes and writes `sprint_log.md` with full visibility into agent decisions |
+| **sprint-premortem** | `skills/core/sprint-premortem/` | **Final step** — prospective hindsight on the sprint's deliverables; classifies risks as Tigers, Paper Tigers, and Elephants; produces `sprint_N_premortem.md` |
 
 ---
 

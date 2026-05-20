@@ -40,6 +40,8 @@ Minor operational gaps are not blockers — resolve them directly: install a mis
 
 ## Output format
 
+**Writing this file is the completion signal.** The conductor verifies its existence before proceeding to review-agent. Do not consider the task done until this file is written.
+
 Write to `_army/outputs/code-<task-id>.md`:
 
 ```markdown
