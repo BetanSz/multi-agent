@@ -131,6 +131,7 @@ Single source of truth for all skills available in this project.
 
 | Skill | Path | Description |
 |-------|------|-------------|
+| **repo-init** | `skills/utility/repo-init/` | **Project bootstrapper** — folder structure, conda env, .gitignore, .env.example, CLAUDE.md, pyproject.toml; stack-aware (Python/Azure, FastAPI, TS); never overwrites existing files |
 | file-organizer | `skills/utility/file-organizer/` | Intelligent folder cleanup, duplicate detection, suggests structure |
 | agent-browser | `skills/utility/agent-browser/` | Browser automation agent |
 | process-interviewer | `skills/utility/process-interviewer/` | Relentless interviewer: extracts complete process before building anything |
