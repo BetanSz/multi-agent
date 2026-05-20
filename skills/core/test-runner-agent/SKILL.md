@@ -47,13 +47,13 @@ Check `agent_notes` to determine the test mode:
 
 ## Process
 
-1. Read `_army/outputs/code-<task-id>.md` to confirm implementation is complete.
-2. For L3: read `_army/outputs/test-generator-<task-id>.md` to confirm new tests exist.
+1. Read `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_code.md` to confirm implementation is complete (conductor provides the exact path).
+2. For L3: read `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_gen.md` to confirm new tests exist.
 3. Detect the mode and runner.
 4. Run the tests. Capture full output — do not truncate.
 5. **Classify any failures** (see below).
 6. **Self-heal structural failures** if present (see below).
-7. Write `_army/outputs/test-runner-<task-id>.md`.
+7. Write `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_run.md` (conductor provides the exact path).
 8. Signal the conductor.
 
 ## Failure classification
@@ -129,4 +129,4 @@ FAIL after 2 retries → BLOCK, human review required
 - NEVER modify production source files.
 - MAY edit test files ONLY to fix structural failures — never change assertion logic.
 - In interpreted mode, always quote the output that drove the verdict.
-- If `_army/outputs/code-<task-id>.md` is missing, write `BLOCKED: code-<task-id>.md not found` to `_army/status.md` and stop.
+- If the code output file is missing, write `BLOCKED: task_{id} code output not found` to `sprints/sprint_N_<slug>/status.md` and stop.

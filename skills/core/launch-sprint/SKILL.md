@@ -31,7 +31,7 @@ Goal: sharpen the approved design into a concrete sprint file. By the end of thi
 - Quality level locked (L1 / L2 / L3)
 - All known external dependencies surfaced
 
-Write the sprint file (`sprint_N_<topic>.md`) at repo root using the template in `references/sprint-file-template.md`.
+Write the sprint file (`sprint_N_<topic>.md`) to `sprints/sprint_N_<topic>/` — create the folder if it does not exist. Use the template in `references/sprint-file-template.md`.
 
 ### Step 3 — HITL upfront review
 Read and follow `skills/core/hitl-analyzer/SKILL.md`. Pass the sprint file path as argument.

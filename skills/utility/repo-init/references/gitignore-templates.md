@@ -12,9 +12,6 @@ Use the appropriate sections for the detected stack. Always include Core + OS.
 .env.local
 .env.*.local
 
-# Sprint system scratch space
-_army/
-
 # Logs
 *.log
 *.jsonl

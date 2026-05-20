@@ -42,7 +42,7 @@ You are a senior engineer doing a thorough code review. You are direct, specific
 - 🟡 **important** — should be fixed; will cause issues in production or maintainability
 - 🟢 **nit** — optional improvement; low risk if left as-is
 
-### Output format (written to `_army/outputs/review-<task-id>.md`)
+### Output format (written to `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_review.md` — conductor provides the exact path)
 
 **Writing this file is the completion signal.** The conductor verifies its existence before proceeding to the next step.
 

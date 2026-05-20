@@ -14,20 +14,29 @@ You are the autonomous execution engine for the sprint system. Your job: read th
 
 ## 1 — Load the sprint file
 
-Argument: path passed by the caller, or find `sprint_N_*.md` at repo root.
+Argument: path passed by the caller, or find `sprint_N_*.md` in `sprints/` or at repo root.
 
 Parse:
+- **Sprint number N** and **topic slug** from the filename (e.g. `sprint_4_ner_extraction.md` → N=4, slug=`ner_extraction`)
 - **Quality level** (`L1` / `L2` / `L3`) from the header
 - **Task list**: every `id`, `description`, `depends_on`, `agent_notes`, and `agent_type` field
 - **Prise de décision** section — these decisions are locked; agents must not re-open them
 
-**Before doing anything else, create the output directory:**
-```
-_army/
-  outputs/
-  status.md   ← create empty if it does not exist
-```
-If the directory already exists, leave it. This directory must exist before any agent runs.
+**Before doing anything else:**
+
+1. Create `sprints/sprint_N_<slug>/` if it does not exist (this is the sprint folder for all outputs)
+2. Create `sprints/sprint_N_<slug>/status.md` (empty) if it does not exist
+3. If the sprint file is at repo root, move it into `sprints/sprint_N_<slug>/`
+
+**Generate a description slug for every task** — used in all output filenames:
+- Take the task `description`, extract the first 3–4 meaningful words (skip articles, prepositions, conjunctions)
+- Lowercase, underscores, max 30 characters
+- Examples:
+  - "Extend Settings and azure_clients with multi-model support" → `extend_settings_clients`
+  - "Define Pydantic schemas for all three passes" → `pydantic_schemas`
+  - "Write pipeline/step_04_ner_extract.py" → `pipeline_step_04`
+  - "Create tests/ folder and write initial test suite" → `create_test_suite`
+  - "Run test suite and fix until green" → `run_tests`
 
 ## 2 — Build the task DAG
 
@@ -44,17 +53,25 @@ Within a wave, all tasks are independent of each other. Across waves, tasks must
 When a wave contains more than one task, dispatch all tasks in that wave as simultaneous `Agent()` calls in a **single response**. Do not wait for one to finish before starting another.
 
 ### Sequential gating (across waves)
-Do not start wave N+1 until every task in wave N has a confirmed output file at `_army/outputs/`.
+Do not start wave N+1 until every task in wave N has a confirmed output file in `sprints/sprint_N_<slug>/`.
 
 ### Output file verification (after every agent step)
-After each agent step (plan, code, review, test-generator, test-runner), **verify the expected output file exists** before proceeding:
+After each agent step, **verify the expected output file exists** before proceeding.
+
+All files live in `sprints/sprint_N_<slug>/`. Naming pattern: `task_{id}_{desc-slug}_{agent}.md`
 
 ```
-_army/outputs/plan-<task-id>.md      ← after plan-agent
-_army/outputs/code-<task-id>.md      ← after code-agent
-_army/outputs/review-<task-id>.md    ← after review-agent
-_army/outputs/test-generator-<task-id>.md  ← after test-generator
-_army/outputs/test-runner-<task-id>.md     ← after test-runner
+task_{id}_{desc-slug}_plan.md      ← after plan-agent
+task_{id}_{desc-slug}_code.md      ← after code-agent
+task_{id}_{desc-slug}_review.md    ← after review-agent
+task_{id}_{desc-slug}_test_gen.md  ← after test-generator-agent
+task_{id}_{desc-slug}_test_run.md  ← after test-runner-agent
+```
+
+Example for task-2 "Define Pydantic schemas":
+```
+sprints/sprint_4_ner_extraction/task_2_pydantic_schemas_code.md
+sprints/sprint_4_ner_extraction/task_2_pydantic_schemas_review.md
 ```
 
 If the file does not exist after the agent step: **the step did not complete**. Do not proceed. Either re-run the step or trigger a mid-sprint HITL pause. A missing output file is never acceptable — it means the audit trail has a gap.
@@ -68,19 +85,19 @@ Run the following agents in order for each task. Each agent is a separate `Agent
 ### 4.1 plan-agent — only if `agent_type: plan+code`
 
 Read `skills/core/plan-agent/SKILL.md`.
-Output: `_army/outputs/plan-<task-id>.md`
+Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_plan.md`
 
 ### 4.2 code-agent — always
 
 Read `skills/core/code-agent/SKILL.md`.
 If step 4.1 ran, pass the plan output as context.
-Output: `_army/outputs/code-<task-id>.md`
+Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_code.md`
 
 ### 4.3 review-agent — always
 
 Read `skills/core/review-agent/SKILL.md`.
 Pass the code output as context.
-Output: `_army/outputs/review-<task-id>.md`
+Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_review.md`
 
 Verdicts:
 - **APPROVE** — proceed to 4.4
@@ -90,15 +107,15 @@ Verdicts:
 ### 4.4 test-generator-agent — only if quality level is L3
 
 Read `skills/core/test-generator-agent/SKILL.md`.
-Output: `_army/outputs/test-generator-<task-id>.md`
+Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_gen.md`
 
 ### 4.5 test-runner-agent — only if quality level is L2 or L3
 
 Read `skills/core/test-runner-agent/SKILL.md`.
-Output: `_army/outputs/test-runner-<task-id>.md`
+Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_run.md`
 
 Verdicts:
-- **PASS** — task complete. Write a one-line summary to `_army/status.md`.
+- **PASS** — task complete. Write a one-line summary to `sprints/sprint_N_<slug>/status.md`.
 - **FAIL** — return to code-agent with full failure context. Maximum 2 retries, then run test-runner-agent again. If still FAIL after 2 retries → trigger mid-sprint HITL pause.
 
 ---
@@ -121,8 +138,10 @@ Skills to read (in order):
 1. <skill path(s) — see sequence in section 4>
 
 Output convention:
-- Write your output to _army/outputs/<skill>-<task-id>.md
-- If blocked, append a BLOCKED entry to _army/status.md with exact reason
+- Sprint folder: sprints/sprint_N_<slug>/  (conductor will tell you the exact path)
+- Write your output to: sprints/sprint_N_<slug>/task_{id}_{desc-slug}_{agent}.md
+  where {agent} is one of: plan, code, review, test_gen, test_run
+- If blocked, append a BLOCKED entry to sprints/sprint_N_<slug>/status.md with exact reason
 
 Locked decisions (do not re-open):
 <paste the Prise de décision section from the sprint file>
@@ -210,33 +229,32 @@ Pass:
 - Any mid-sprint HITL pauses
 - Any autonomous decisions made by agents
 
-Confirm `sprint_N_log.md` was written (in the sprint docs folder confirmed during HITL, or repo root) before proceeding to 9.2.
+Confirm `sprints/sprint_N_<slug>/sprint_N_log.md` was written before proceeding to 9.2.
 
 ### 9.2 — Pre-mortem (mandatory)
 
 Read and execute `skills/core/sprint-premortem/SKILL.md` now.
 
-Pass the same sprint topic/number. sprint-premortem reads the codebase and sprint log, writes `sprint_N_premortem.md` to the sprint docs folder.
+Pass the sprint folder path. sprint-premortem reads the codebase and sprint log, writes `sprint_N_premortem.md` to `sprints/sprint_N_<slug>/`.
 
-Confirm `sprint_N_premortem.md` was written.
+Confirm `sprints/sprint_N_<slug>/sprint_N_premortem.md` was written.
 
 ---
 
 Only after both files exist, run `git status` and print the sprint completion summary:
 
 ```
-Sprint complete.
-  <sprint-docs-folder>/sprint_N_log.md       — full execution log
-  <sprint-docs-folder>/sprint_N_premortem.md — risk analysis (Tigers / Paper Tigers / Elephants)
+Sprint complete — sprints/sprint_N_<slug>/
+  sprint_N_log.md        — full execution log
+  sprint_N_premortem.md  — risk analysis (Tigers / Paper Tigers / Elephants)
+  task_*_code.md         — N implementation records
+  task_*_review.md       — N review records
 
 Uncommitted changes:
-  M  src/ner_schemas.py
-  M  pipeline/step_04_ner_extract.py
-  A  tests/test_ner_schemas.py
-  [... actual git status output ...]
+  [actual git status --short output]
 
 These changes were NOT committed. Review and commit when ready:
-  git add <files> && git commit -m "..."
+  git add <files> && git commit -m "feat: <sprint topic>"
 ```
 
 If the working tree is clean, print: `Working tree clean — nothing to commit.`

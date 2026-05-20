@@ -36,9 +36,9 @@ This framing forces you to read the implementation against what actually matters
 
 ### Secondary (bounded — read the minimum that gives concrete evidence)
 - **1–2 sample output files or records** (e.g. 1 Cosmos document, 1 generated JSON) — enough to see what the code actually produces, not enough to read the whole dataset
-- **sprint_N_log.md** — autonomous decisions, bugs encountered, blocked items
-- **`_army/outputs/review-<task-id>.md`** — review verdicts, 🔴🟡🟢 flags
-- **`_army/status.md`** — BLOCKED entries and workaround resolutions
+- **`sprints/sprint_N_<slug>/sprint_N_log.md`** — autonomous decisions, bugs encountered, blocked items
+- **`sprints/sprint_N_<slug>/task_*_review.md`** — review verdicts, 🔴🟡🟢 flags
+- **`sprints/sprint_N_<slug>/status.md`** — BLOCKED entries and workaround resolutions
 
 ### Never read
 - Entire collections, databases, or directories of output files
@@ -97,12 +97,11 @@ Signals from the codebase and sprint log:
 7. Classify each as Tiger, Paper Tiger, or Elephant.
 8. For each Tiger, assign urgency and write a concrete mitigation.
 9. For each Elephant, name it explicitly — the point is to say the unsaid.
-10. Detect sprint docs folder (same logic as sprint-reporter: `docs/sprints/`, `docs/pipeline/`, etc.; fall back to repo root).
-11. Write `sprint_N_premortem.md` to that folder.
+10. Write `sprints/sprint_N_<slug>/sprint_N_premortem.md`.
 
 ## Output format
 
-Write `sprint_N_premortem.md` to the detected sprint docs folder (or repo root if none found):
+Write `sprints/sprint_N_<slug>/sprint_N_premortem.md`:
 
 ```markdown
 # Pre-Mortem — Sprint N — <topic>

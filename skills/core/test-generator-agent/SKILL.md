@@ -101,7 +101,7 @@ test-runner-agent reads this block and executes it in interpreted mode.
 
 **Writing this file is the completion signal.** The conductor verifies its existence before dispatching test-runner-agent.
 
-Write `_army/outputs/test-generator-<task-id>.md`:
+Write `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_gen.md` (conductor provides the exact path):
 
 ```markdown
 ## Test Generation: <task name>

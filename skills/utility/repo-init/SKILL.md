@@ -55,8 +55,7 @@ Print the proposed structure before creating anything. For `python-azure-pipelin
 │   ├── __init__.py
 │   ├── conftest.py
 │   └── results/                # gitignored — human-review outputs
-├── docs/
-│   └── sprints/                # sprint log + pre-mortem files
+├── sprints/                    # one sub-folder per sprint: sprint_N_<topic>/
 ├── scripts/                    # one-off utility scripts
 ├── data/                       # gitignored — local raw data
 ├── .env                        # gitignored — secrets
@@ -287,7 +286,7 @@ Created:
   ✓ CLAUDE.md           → project context for Claude Code
   ✓ README.md           → skeleton
   ✓ tests/conftest.py   → sys.path setup
-  ✓ docs/sprints/       → sprint log destination
+  ✓ sprints/            → sprint folders go here (sprint_N_<topic>/)
   [✓ git init + initial commit]
 
 Skipped (already existed):

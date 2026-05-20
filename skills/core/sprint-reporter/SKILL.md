@@ -29,19 +29,17 @@ Also read `_army/status.md` if it exists — it contains BLOCKED items agents re
 
 Do not skip any file. Every output counts.
 
-## Step 2.5 — Detect sprint docs folder
+## Step 2.5 — Locate the sprint folder
 
-Before writing any output file, detect where sprint documentation lives in this project:
+The sprint folder is `sprints/sprint_N_<slug>/` where N and slug come from the sprint filename (e.g. `sprint_4_ner_extraction.md` → `sprints/sprint_4_ner_extraction/`).
 
-1. Check for existing folders in order: `docs/sprints/`, `docs/pipeline/`, `pipeline/docs/`, `sprints/`, `docs/agile/`
-2. If found: use that path as `<sprint-docs-folder>`
-3. If none found: write to repo root as fallback
+Read all files in that folder: `task_*_code.md`, `task_*_review.md`, `task_*_test_gen.md`, `task_*_test_run.md`, and `status.md`.
 
-All sprint output files are written to `<sprint-docs-folder>/`.
+Also read the sprint file itself (in the same folder).
 
 ## Step 3 — Write sprint_N_log.md
 
-Write `<sprint-docs-folder>/sprint_N_log.md` (where N is the sprint number). Overwrite if it exists.
+Write `sprints/sprint_N_<slug>/sprint_N_log.md`. Overwrite if it exists.
 
 Use exactly this structure:
 
@@ -131,7 +129,7 @@ Review, then: `git add <files> && git commit -m "feat: <sprint topic>"`
 
 ## Conventions
 
-- Output file: `sprint_N_log.md` in the detected sprint docs folder (or repo root if no folder found)
-- Agent output files: `_army/outputs/<skill>-<task-id>.md`
-- Blocked status file: `_army/status.md`
+- Output file: `sprints/sprint_N_<slug>/sprint_N_log.md`
+- Agent output files: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_{agent}.md`
+- Blocked status file: `sprints/sprint_N_<slug>/status.md`
 - Announcement line `> **Using skill sprint-reporter.**` is already at the top of this file and must appear in the first response.

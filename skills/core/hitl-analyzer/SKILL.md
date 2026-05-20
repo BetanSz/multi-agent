@@ -89,17 +89,13 @@ For architectural items (category F): challenge the answer. Ask "Are you sure th
 
 Do not move to the next item until the current one is confirmed with evidence.
 
-### G — Sprint documentation folder
+### G — Sprint folder
 
-Check whether a sprint documentation folder exists in this project. Look for (in order):
-`docs/sprints/`, `docs/pipeline/`, `pipeline/docs/`, `sprints/`, `docs/agile/`
+Confirm that `sprints/sprint_N_<slug>/` exists (where N and slug come from the sprint filename). If it does not exist, create it now — this is not a user decision, it is a convention.
 
-- **Found**: note the path — all sprint output files (sprint log, pre-mortem) will go there.
-- **Not found**: propose `docs/sprints/` to the user and confirm before proceeding.
-
-Once confirmed: create the folder if it does not exist. Record the agreed path in the sprint file:
+Record in the sprint file:
 ```
-- [x] Sprint docs folder: <path> — created / already exists
+- [x] Sprint folder: sprints/sprint_N_<slug>/ — created / already exists
 ```
 
 ## Step 5 — Write confirmed items into the sprint file

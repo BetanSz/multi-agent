@@ -34,7 +34,7 @@ You are a senior software architect. Your job is to produce a clear, unambiguous
 
 **Writing this file is the completion signal.** The conductor verifies its existence before dispatching code-agent. Do not consider planning done until this file is written.
 
-Write to `_army/outputs/plan-<task-id>.md`:
+Write to `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_plan.md` (conductor provides the exact path):
 
 ```markdown
 ## Plan: <task name>
