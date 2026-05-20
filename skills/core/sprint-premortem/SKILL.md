@@ -16,14 +16,21 @@ You are a senior engineer doing a pre-mortem. Your primary job is a **static ana
 
 ## The thought experiment
 
-> *"It is 14 days after this sprint's output is being used in production. Something has gone wrong — a value is wrong, a query fails, a report is inaccurate, an import is rejected. What in the code caused it?"*
+**First, read the project documentation** to establish what success looks like. Look for `README.md`, `CLAUDE.md`, `docs/objectives.md`, or equivalent. Identify the project's primary objective in one sentence — what is the system ultimately supposed to produce, for whom, and at what quality bar?
 
-This framing forces you to read the implementation honestly, not charitably.
+Then construct the scenario from that objective:
+
+> *"It is 14 days after this sprint's output is being used. The project's stated objective — [X] — has failed. [Describe the most probable failure mode: the downstream system rejected the output, the data was wrong in a way that caused a business error, the quality bar was not met, the pipeline silently produced incorrect results.] What in this sprint's code caused it?"*
+
+The scenario must be specific to this project's goal, not a generic production incident. "Something went wrong" is not a scenario — "the Dynamics import rejected 20% of records because project codes were hallucinated" is.
+
+This framing forces you to read the implementation against what actually matters, not what the sprint tried to do.
 
 ## Input — what to read
 
 ### Primary (always read)
-- **The sprint file** (`sprint_N_<topic>.md`) — the goal, locked decisions, and scope
+- **Project documentation** (`README.md`, `CLAUDE.md`, `docs/objectives.md`, or equivalent) — the overarching project goal; derive the pre-mortem scenario from this
+- **The sprint file** (`sprint_N_<topic>.md`) — this sprint's scope, locked decisions, and constraints
 - **Every source file produced or modified this sprint** — read the actual code and schemas
 - **Data model / schema files** referenced in agent_notes — understand the shape of data being produced
 
@@ -99,10 +106,13 @@ Write `sprint_N_premortem.md` to the detected sprint docs folder (or repo root i
 
 ```markdown
 # Pre-Mortem — Sprint N — <topic>
-**Date:** YYYY-MM-DD | **Based on:** sprint_log.md + N agent output files
+**Date:** YYYY-MM-DD | **Based on:** codebase + sprint_N_log.md + N agent output files
+
+## Project objective
+> "[One sentence from the project documentation describing what this system is ultimately supposed to produce and for whom.]"
 
 ## The scenario
-> "It is 14 days after deployment. [One sentence describing the concrete incident that occurred.]"
+> "It is 14 days after deployment. The objective above has failed: [one sentence describing the most probable concrete failure — specific to this project's goal, not a generic incident]."
 
 ## Risk registry
 
