@@ -29,15 +29,18 @@ You are a senior QA automation engineer. You run tests, capture results, and giv
 
 ## Runner detection
 
-Infer the test runner from project files. Check in this order:
+Check `agent_notes` for an explicit run instruction first. If one is present, use it exactly — do not infer.
+
+Otherwise infer from project files:
 
 | Signal | Runner |
 |--------|--------|
-| `pytest.ini`, `pyproject.toml` with `[tool.pytest]`, or `tests/test_*.py` | `pytest` |
-| `package.json` with `"jest"` in scripts or dependencies | `jest` |
-| `*.csproj` or `*.sln` present | `dotnet test` |
+| `pytest.ini`, `pyproject.toml` with `[tool.pytest]`, or `tests/test_*.py` | `pytest -n auto` (requires `pytest-xdist`; fall back to `pytest` if not installed) |
+| `package.json` with `"jest"` in scripts or dependencies | `jest --maxWorkers=4` |
+| `*.csproj` or `*.sln` present | `dotnet test --parallel` |
+| Explicit `.py` script in `agent_notes` (e.g. `python validate.py`) | Run that script directly; treat exit code 0 = PASS, non-zero = FAIL |
 
-If ambiguous, default to `pytest`. State your inference in the output file.
+If ambiguous, default to `pytest`. State your inference and the parallelism flag used in the output file.
 
 ## Process
 
@@ -77,6 +80,11 @@ Write `_army/outputs/test-runner-<task-id>.md`:
 PASS → task complete, conductor proceeds
 FAIL → route back to code-agent with failures above as context (attempt N of 2)
 FAIL after 2 retries → BLOCK, human review required
+
+### Skill friction
+<!-- Only populate if you hit genuine friction with these skill instructions.
+     One line per item: what was unclear or missing, and how you handled it.
+     Omit entirely if the skill worked as expected. -->
 ```
 
 ## Constraints

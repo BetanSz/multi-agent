@@ -34,7 +34,9 @@ You are a senior software engineer. Your job is to implement what the plan speci
 
 ### Ambiguity handling
 
-If you encounter something the plan didn't resolve — a missing design decision, a conflicting constraint, an unclear interface — write `BLOCKED: <question>` to `_army/status.md` and stop. Do not improvise architectural decisions.
+If you encounter a genuine architectural gap — a missing design decision, a conflicting constraint, an unclear interface contract — write `BLOCKED: <question>` to `_army/status.md` and stop. Do not improvise architectural decisions.
+
+Minor operational gaps are not blockers — resolve them directly: install a missing package, pick a sensible default for an unspecified config value, infer a naming convention from the existing codebase.
 
 ## Output format
 
@@ -54,6 +56,12 @@ Write to `_army/outputs/code-<task-id>.md`:
 
 ### Notes for reviewer
 <!-- anything unusual the review-agent should know -->
+
+### Skill friction
+<!-- Only populate if you hit genuine friction with these skill instructions:
+     something was unclear, a case wasn't covered, an assumption was wrong.
+     Write one line per item: what the gap was and how you resolved it.
+     Omit this section entirely if the skill worked as expected. -->
 ```
 
 ## Constraints
@@ -69,6 +77,10 @@ Write to `_army/outputs/code-<task-id>.md`:
 - Use guard clauses and early returns instead of nested conditionals.
 - No magic numbers or strings — use named constants.
 - Remove dead code; do not leave commented-out blocks.
+- Write functions that return a value without also mutating their inputs or global state — if a function needs to do both, split it.
+- Prefer expressions that produce a value over statements that change state.
+- Avoid global variables and mutable class-level attributes; pass state explicitly as arguments or return values.
+- Prefer `tuple` over `list` when the collection won't be modified; only use `list` when mutability is actually needed.
 
 ### Python (when the stack is Python — preferred for Azure tasks)
 

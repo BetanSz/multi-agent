@@ -21,7 +21,7 @@ Invoke the `brainstorming` skill by reading `.agents/skills/brainstorming/SKILL.
 
 Apply it to: **"[the sprint argument the user passed]"**
 
-Do not proceed to Step 2 until the user has approved one architectural direction.
+Do not proceed to Step 2 until the user has confirmed a direction (or multiple directions) to pursue. If the sprint is already well-defined, a quick confirmation is sufficient — brainstorming is not mandatory if scope is clear.
 
 ### Step 2 — Process interview
 Invoke the `process-interviewer` skill by reading `skills/utility/process-interviewer/SKILL.md`.

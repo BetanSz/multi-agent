@@ -60,8 +60,11 @@ If agents made no decisions beyond following the spec literally, write "None bey
 None. / [What blocked, what human action was taken, which task resumed after]
 
 ## Skill improvements
-[Specific friction points or gaps agents hit with existing skills — actionable enough to fix]
-/ None identified.
+<!-- Collect every `### Skill friction` entry from all agent output files.
+     Group by skill. Keep only items actionable enough to turn into a real fix.
+     If no agent reported friction, write "None identified." -->
+| Skill | Friction observed | Suggested fix |
+|-------|------------------|---------------|
 
 ## Test results
 [Only include this section for L2 or L3 quality sprints]

@@ -85,6 +85,11 @@ Write `_army/outputs/test-generator-<task-id>.md`:
 ### TDD confirmation
 - Each test was written before implementation was checked
 - Each test is expected to fail until test-runner-agent runs
+
+### Skill friction
+<!-- Only populate if you hit genuine friction with these skill instructions.
+     One line per item: what was unclear or missing, and how you handled it.
+     Omit entirely if the skill worked as expected. -->
 ```
 
 ## Constraints

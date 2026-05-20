@@ -61,6 +61,11 @@ You are a senior engineer doing a thorough code review. You are direct, specific
 
 **Major architectural change advised?** YES / NO — <one-line rationale>
 
+### Skill friction
+<!-- Only populate if you hit genuine friction with these skill instructions.
+     One line per item: what was unclear or missing, and how you handled it.
+     Omit entirely if the skill worked as expected. -->
+
 ### Next step
 <!-- APPROVE → synthesize can proceed -->
 <!-- REQUEST CHANGES → Mode 2 activates (non-architectural fixes) -->

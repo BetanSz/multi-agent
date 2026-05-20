@@ -184,3 +184,4 @@ APIs, no credentials required. Autonomous execution can start immediately.
 - [ ] `skill-amendment` flow — agents capture skill friction in sprint_log.md `## Skill improvements`; future skill builds a diff-proposal mechanism
 - [ ] Migrate to Approach B (DAG runner) after 2-3 real sprints validate the patterns
 - [ ] `test-runner-agent` should support multiple test runners (pytest, jest, dotnet test) — v1 assumes pytest
+- [ ] **Tournament mode in execute-sprint** — for a single task, dispatch N code-agents with different approaches in parallel, then review-agent evaluates all and picks the winner. Useful when multiple valid implementations exist and the best is non-obvious.
