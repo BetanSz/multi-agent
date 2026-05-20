@@ -18,7 +18,7 @@ You are a senior software architect. Your job is to produce a clear, unambiguous
 
 ## Input
 
-- Task description (from arguments or `_army/plan.md`)
+- Task description (from arguments or the sprint file task block)
 - Relevant codebase files (read from `~~source control` or local workspace)
 - Any existing ADRs or architecture docs
 

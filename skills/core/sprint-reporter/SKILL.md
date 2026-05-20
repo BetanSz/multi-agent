@@ -1,6 +1,6 @@
 ---
 name: sprint-reporter
-description: Runs after execute-sprint completes. Reads every agent output file in _army/outputs/ and synthesizes a complete sprint_log.md at the repo root — giving the human full visibility into what autonomous agents did while they were away. Trigger with /sprint-reporter "sprint-N-topic" once all agents have finished.
+description: Runs after execute-sprint completes. Reads every agent output file in sprints/sprint_N_<slug>/ and synthesizes sprint_N_log.md in that same folder — giving the human full visibility into what autonomous agents did while they were away. Invoked automatically by execute-sprint as step 9.1; can also be called directly with a sprint folder path.
 argument-hint: "<sprint-N-topic>"
 ---
 
@@ -23,9 +23,7 @@ Read the sprint file at repo root (`sprint_N_<topic>.md`) to get the quality lev
 
 ## Step 2 — Read all agent output files
 
-Read every file matching `_army/outputs/*.md` for this sprint.
-
-Also read `_army/status.md` if it exists — it contains BLOCKED items agents recorded mid-sprint.
+Read every file matching `task_*_{agent}.md` in the sprint folder identified in step 2.5.
 
 Do not skip any file. Every output counts.
 

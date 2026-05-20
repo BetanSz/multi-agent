@@ -20,7 +20,7 @@ Single source of truth for all skills available in this project.
 | review-agent | `skills/core/review-agent/` | 3-mode reviewer: review / fix / architectural-fix-with-test-gate — includes performance + best-practice analysis |
 | test-generator-agent | `skills/core/test-generator-agent/` | L3 sprints: writes failing tests for new features before implementation is verified (TDD protocol) |
 | test-runner-agent | `skills/core/test-runner-agent/` | L2/L3 sprints: runs existing + new tests, signals pass/fail to conductor, triggers code-agent retry on failure |
-| **sprint-reporter** | `skills/core/sprint-reporter/` | **Post-sprint reporter** — reads all `_army/outputs/` files after execute-sprint completes and writes `sprint_log.md` with full visibility into agent decisions |
+| **sprint-reporter** | `skills/core/sprint-reporter/` | **Post-sprint reporter** — reads all task output files in `sprints/sprint_N_<slug>/` after execute-sprint completes and writes `sprint_N_log.md` with full visibility into agent decisions |
 | **sprint-premortem** | `skills/core/sprint-premortem/` | **Final step** — prospective hindsight on the sprint's deliverables; classifies risks as Tigers, Paper Tigers, and Elephants; produces `sprint_N_premortem.md` |
 
 ---
@@ -91,7 +91,7 @@ Single source of truth for all skills available in this project.
 |-------|------|-------------|
 | code-review-excellence | `skills/code-review-excellence/` | Code review methodology — feedback techniques, severity labels, handling disagreements, language-specific patterns |
 | receiving-code-review | `skills/receiving-code-review/` | How to receive review feedback — verify before implementing, technical pushback, no performative agreement |
-| refactor | `skills/refactor/` | Surgical refactoring — 10 code smells with before/after, extract method, type safety, design patterns |
+| refactor | `.agents/skills/refactor/` | Surgical refactoring — 10 code smells with before/after, extract method, type safety, design patterns (external, installed via npx) |
 | python-performance-optimization | `skills/python-performance-optimization/` | Profile and optimize Python — cProfile, memory_profiler, py-spy, list comprehensions, dict lookups, generators |
 
 ---
@@ -132,7 +132,7 @@ Single source of truth for all skills available in this project.
 | Skill | Path | Description |
 |-------|------|-------------|
 | **repo-init** | `skills/utility/repo-init/` | **Project bootstrapper** — folder structure, conda env, .gitignore, .env.example, CLAUDE.md, pyproject.toml; stack-aware (Python/Azure, FastAPI, TS); never overwrites existing files |
-| **pipeline-refactor** | `skills/utility/pipeline-refactor/` | **Architectural changes + data reprocessing** — classifies change (schema / logic / structural), cost gate before LLM reprocessing, three migration strategies (delete+reprocess / patch-in-place / dual-run+compare), validation gate before cutover; Python/Azure/Cosmos focused |
+| **pipeline-refactor** | `skills/utility/pipeline-refactor/` | **Agentic antipattern audit + architectural refactor + data reprocessing** — Phase 1: systematic audit for 10 agentic coding antipatterns (dead code, client over-instantiation, spaghetti flow, silent failures, prompt drift, missing idempotency, abstraction inconsistency, N+1 calls, type hint theater, boilerplate overkill); Phase 2: structural changes, authorized for large-scale redesign; Phase 3 (conditional): cost gate + migration strategy when stored data is affected |
 | file-organizer | `skills/utility/file-organizer/` | Intelligent folder cleanup, duplicate detection, suggests structure |
 | agent-browser | `skills/utility/agent-browser/` | Browser automation agent |
 | process-interviewer | `skills/utility/process-interviewer/` | Relentless interviewer: extracts complete process before building anything |

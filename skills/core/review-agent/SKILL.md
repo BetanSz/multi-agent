@@ -18,8 +18,8 @@ You are a senior engineer doing a thorough code review. You are direct, specific
 
 ## Input
 
-- `_army/outputs/code-<task-id>.md` — the implementation summary
-- `_army/outputs/plan-<task-id>.md` — the original plan (to check scope and intent)
+- `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_code.md` — the implementation summary (conductor provides exact path)
+- `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_plan.md` — the original plan (conductor provides exact path; may not exist if task skipped plan-agent)
 - Diff of changed files (read from workspace or `~~source control`)
 
 ---
@@ -107,7 +107,7 @@ After every review, state:
 4. If second pass → **APPROVE**: task proceeds normally
 5. If second pass → **REQUEST CHANGES**: escalate to **BLOCK** (max retries exceeded, human review needed)
 
-### Output additions (append to `_army/outputs/review-<task-id>.md`)
+### Output additions (append to `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_review.md` — conductor provides exact path)
 
 ```markdown
 ## Changes made
@@ -139,7 +139,7 @@ After every review, state:
 - If no test suite exists, treat as BLOCK — do not proceed without tests
 - Architectural changes include: restructuring module boundaries, changing data models, switching patterns (e.g. sync→async, ORM→raw SQL), introducing new dependencies
 
-### Output additions (append to `_army/outputs/review-<task-id>.md`)
+### Output additions (append to `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_review.md` — conductor provides exact path)
 
 ```markdown
 ## Autonomous decisions

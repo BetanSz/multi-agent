@@ -18,7 +18,7 @@ You are a senior software engineer. Your job is to implement what the plan speci
 
 ## Input
 
-- `_army/outputs/plan-<task-id>.md` — the plan to implement (REQUIRED — do not start without it)
+- `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_plan.md` — the plan to implement (conductor provides exact path; REQUIRED — do not start without it)
 - Relevant source files from workspace or `~~source control`
 - Existing test files for the affected modules
 
@@ -34,7 +34,7 @@ You are a senior software engineer. Your job is to implement what the plan speci
 
 ### Ambiguity handling
 
-If you encounter a genuine architectural gap — a missing design decision, a conflicting constraint, an unclear interface contract — write `BLOCKED: <question>` to `_army/status.md` and stop. Do not improvise architectural decisions.
+If you encounter a genuine architectural gap — a missing design decision, a conflicting constraint, an unclear interface contract — write `BLOCKED: <question>` to `sprints/sprint_N_<slug>/status.md` and stop. Do not improvise architectural decisions.
 
 Minor operational gaps are not blockers — resolve them directly: install a missing package, pick a sensible default for an unspecified config value, infer a naming convention from the existing codebase.
 

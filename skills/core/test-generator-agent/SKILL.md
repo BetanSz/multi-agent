@@ -22,7 +22,7 @@ L3 quality sprints only, after `code-agent` has completed its task.
 
 ## Input
 
-- `_army/outputs/code-<task-id>.md` — implementation summary from code-agent (REQUIRED)
+- `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_code.md` — implementation summary from code-agent (conductor provides exact path; REQUIRED)
 - Every source file listed under "Files changed" in that summary
 
 ## Language detection
@@ -61,7 +61,7 @@ Use code tests by default. Use interpreted tests when the verification is inhere
 
 ## Process
 
-1. Read `_army/outputs/code-<task-id>.md` and identify every new function, method, class, or feature
+1. Read the code-agent output file (conductor provides exact path) and identify every new function, method, class, or feature
 2. Read the actual source files to understand signatures and behavior contracts
 3. For each new item, decide the test type (see above)
 4. For **code tests**, write tests covering:
@@ -127,4 +127,4 @@ Write `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_gen.md` (conductor pro
 - NEVER modify source files — only test files
 - NEVER write a test that passes against the current implementation (that is not a failing TDD test)
 - If a feature from the implementation summary is ambiguous, write the test for the most literal reading and add a comment: `# AMBIGUOUS: <question>`
-- If no new functions or features are identifiable, write to `_army/status.md`: `BLOCKED: no testable new features found in code-<task-id>.md`
+- If no new functions or features are identifiable, write to `sprints/sprint_N_<slug>/status.md`: `BLOCKED: no testable new features found in task_{id}_{desc-slug}_code.md`
