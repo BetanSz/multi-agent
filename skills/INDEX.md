@@ -15,14 +15,11 @@ Single source of truth for all skills available in this project.
 | **launch-sprint** | `skills/core/launch-sprint/` | **Main entry point** — `/launch_sprint "description"` runs the full pipeline: brainstorm → interview → HITL → agents → sprint_log |
 | **hitl-analyzer** | `skills/core/hitl-analyzer/` | **Pre-flight gate** — reads sprint file, verifies every human-required action works before agents start; blocks until 100% confirmed |
 | **execute-sprint** | `skills/core/execute-sprint/` | **Autonomous execution engine** — reads a confirmed sprint file, builds task DAG, dispatches agents (plan → code → review → test) in order, no human interaction except genuine blockers |
-| orchestrate | `skills/core/orchestrate/` | Decompose task → assign agents → coordinate pipeline |
 | plan-agent | `skills/core/plan-agent/` | Architect specialist: scoping, API design, implementation sequence |
 | code-agent | `skills/core/code-agent/` | Implementation specialist: Pythonic, efficient, minimal footprint, stays with existing stack |
 | review-agent | `skills/core/review-agent/` | 3-mode reviewer: review / fix / architectural-fix-with-test-gate — includes performance + best-practice analysis |
 | test-generator-agent | `skills/core/test-generator-agent/` | L3 sprints: writes failing tests for new features before implementation is verified (TDD protocol) |
 | test-runner-agent | `skills/core/test-runner-agent/` | L2/L3 sprints: runs existing + new tests, signals pass/fail to conductor, triggers code-agent retry on failure |
-| spawn-agent | `skills/core/spawn-agent/` | Activates a focused agent with role + task + isolated context |
-| synthesize | `skills/core/synthesize/` | Merges all agent outputs into the final deliverable |
 | **sprint-reporter** | `skills/core/sprint-reporter/` | **Post-sprint reporter** — reads all `_army/outputs/` files after execute-sprint completes and writes `sprint_log.md` with full visibility into agent decisions |
 
 ---
