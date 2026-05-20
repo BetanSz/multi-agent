@@ -123,6 +123,35 @@ Type annotations that do not match actual usage: a parameter annotated `str` but
 
 ---
 
+#### AP-11 Operation granularity mismatch
+The loop iterates at the wrong level of abstraction, causing the same large or expensive input to be passed redundantly N times when one call at a higher granularity would produce all N results at once.
+
+This is the most costly agentic antipattern for LLM and API-heavy pipelines. Agents decompose problems naturally ("for each entity, ask the model about that entity") without considering whether the decomposition is necessary. The result: N API calls, each carrying the full context, when one structured call would do.
+
+**Manifestations:**
+
+*LLM over-decomposition* — the most expensive form. A structured extraction that retrieves N fields from a document is split into N separate API calls, each passing the full document. The document (often thousands of tokens) is sent N times. Each call pays the full input cost. Additionally, the model loses inter-field context: when extracting all fields in one structured call, the model can use one field to inform another; when extracting field-by-field, it cannot.
+
+*Scalar loop where vectorized operation was possible* — a Python `for` loop computes a transformation element-by-element when a `numpy`, `pandas`, or list-comprehension expression would compute the whole array at once. Not just slower — often less readable and harder to reason about.
+
+*Per-item embedding or scoring API call* — an embedding API, a scoring service, or a similarity function is called once per document when the API accepts a batch. The network overhead alone is multiplied N-fold.
+
+*Per-item query where set operation was possible* — a database or Cosmos read is issued per record inside a loop when a single query with `WHERE id IN (...)` or a JOIN would return all records at once.
+
+**How to find:** look for `for item in items:` loops that contain an LLM call, an API call, an embedding call, or a database read. For each, ask: does this operation depend on `item` in a way that makes it impossible to compute for all items at once? If the answer is no — if the same large context is passed every time and only a small parameter changes — the loop is at the wrong granularity.
+
+Also look at prompt structure: if a prompt template contains `FIELD: {field_name}` and the same template is called N times with different field names while the document stays constant, that is the LLM over-decomposition pattern.
+
+**Fix:**
+- *LLM calls*: use a single structured output call (Pydantic model or JSON schema with all N fields). The model returns all fields in one response. Input tokens paid once; output tokens roughly equivalent to N calls combined; inter-field context preserved.
+- *Vectorized operations*: replace scalar loops with `numpy` array operations, `pandas` `.apply()` with vectorized equivalents, or list comprehensions over pure functions.
+- *Batch APIs*: use the batch endpoint (embeddings, scoring, classification APIs all support batch input). Send all items in one request.
+- *Database*: use `WHERE id IN (...)`, `JOIN`, or aggregation queries instead of per-record reads.
+
+**Cost implication (always calculate):** if the loop runs N times on an input of size K tokens, the refactored call costs approximately K input tokens once instead of N×K. For a 50-page contract (≈8,000 tokens) and 35 fields, the before/after is 280,000 vs 8,000 input tokens — a 35× cost reduction.
+
+---
+
 #### AP-10 Boilerplate overkill
 Formality disproportionate to the complexity of the task: multi-line docstrings on 3-line functions, logging at every entry and exit of trivial helpers, `argparse` setup for scripts that take no arguments, dataclasses or Pydantic models for one-shot config dicts, custom exception hierarchies for errors that only occur in one place.
 
