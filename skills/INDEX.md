@@ -13,6 +13,7 @@ Single source of truth for all skills available in this project.
 | Skill | Path | Description |
 |-------|------|-------------|
 | **launch-sprint** | `skills/core/launch-sprint/` | **Main entry point** — `/agentic-army "description"` runs the full pipeline: brainstorm → interview → HITL → agents → sprint_log |
+| **launch-refactor** | `skills/core/launch-refactor/` | **Refactor entry point** — `/agentic-refactor-army "path [— concern]"` runs: science audit (interactive) → antipattern fixes (autonomous) → diff review checkpoint → deep architectural refactor (autonomous); artifacts in `refactors/refactor_N_<slug>/` |
 | **hitl-analyzer** | `skills/core/hitl-analyzer/` | **Pre-flight gate** — reads sprint file, verifies every human-required action works before agents start; blocks until 100% confirmed |
 | **execute-sprint** | `skills/core/execute-sprint/` | **Autonomous execution engine** — reads a confirmed sprint file, builds task DAG, dispatches agents (plan → code → review → test) in order, no human interaction except genuine blockers |
 | plan-agent | `skills/core/plan-agent/` | Architect specialist: scoping, API design, implementation sequence |

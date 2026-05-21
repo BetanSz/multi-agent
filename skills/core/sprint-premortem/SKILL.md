@@ -50,7 +50,7 @@ This framing forces you to read the implementation against what actually matters
 ## Risk classification
 
 ### Tigers — Real risks
-Evidence-backed. A concrete failure scenario exists in the code or data. Ignoring them would be negligent.
+**These make the failure scenario likely.** Evidence-backed — a concrete failure path exists in the code or data. If you found this in a post-mortem, you would point to it and say "this is why it broke." Ignoring them would be negligent.
 
 Signals from the codebase:
 - A function that does not validate its inputs at a system boundary (user input, API response, DB read)
@@ -63,12 +63,12 @@ Signals from the codebase:
 Also check sprint log signals: 🔴 blocking issues (fixed or not), BLOCKED entries resolved via workaround, autonomous decisions made under ambiguity.
 
 ### Paper Tigers — Look scary, aren't
-Sound alarming on first read but are low-probability or low-impact on inspection.
+**These look like they could cause the scenario but won't on inspection.** Sound alarming on first read but are low-probability or low-impact once you dig in. Naming them explicitly saves future reviewers from re-raising the same concern.
 
 Signals: 🟡 important issues that were cleanly fixed; risks that were explicitly mitigated in the code or prompts; concerns raised then validated by a test or sample output.
 
 ### Elephants — Unspoken concerns
-The code works for what was tested. Something adjacent was never addressed and nobody named it.
+**These are adjacent to the scenario and nobody named them.** The code works for what was tested, but something nearby was never addressed and is being silently assumed away. The point of this category is to say out loud what everyone vaguely sensed but didn't write down. Vague acknowledgment defeats the purpose — each Elephant must be named explicitly with an owner or a conscious decision to accept it.
 
 Signals from the codebase and sprint log:
 - The test corpus covers only one contract type / one scenario / one model
