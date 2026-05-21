@@ -151,7 +151,6 @@ Before I hand off to the agents — here is everything they will do autonomously
 | 3 | Install packages: <list> | Low |
 | 4 | Call <external API / service> | Low — <brief qualifier> |
 | 5 | Write to <storage / DB> | None |
-| 6 | Make git commits | None |
 
 <one line summary of what is NOT included: e.g. "No Azure resources. No credentials needed. Everything is local.">
 

@@ -179,6 +179,35 @@ Formality disproportionate to the complexity of the task: multi-line docstrings 
 
 ---
 
+#### AP-12 Unreviewed exception suppression
+
+Every `try/except` block in the codebase is a deliberate choice to suppress or transform an error. Agentic code often accumulates these without ever verifying they are correct — errors that should crash the process are silently absorbed, leaving the pipeline in a degraded state that is invisible to the caller.
+
+**How to find:** grep for every `except` block (bare `except:`, `except Exception`, `except (TypeError, ValueError)`, etc.). For each one, classify the intent:
+
+| Class | Pattern | Verdict |
+|-------|---------|---------|
+| **Silent drop** | `except: pass` or `except Exception: return {}` with no logging | Always wrong — fix |
+| **Silent default** | returns a default value with no way to distinguish failure from an empty-but-valid result | Wrong unless the caller explicitly handles it — flag |
+| **Logged but swallowed** | `logger.warning(e); continue` — caller never knows | Acceptable only if the item is genuinely optional and the log is at ERROR level with full context |
+| **Re-raised or typed** | raises a domain exception or returns `Result(success=False, error=...)` | Correct |
+| **Intentional suppression** | documented with a comment explaining why suppression is safe here | Acceptable if the comment is honest |
+
+**The dev/prod question — ask this for every suppressed block:**
+> "If this exception fires in development, would we want to know immediately?"
+
+If yes and the block suppresses it → it is wrong. In development you want loud failures. Silent defaults hide bugs for hours. The correct default is to raise, log at ERROR, or return a typed failure — not to return an empty dict and move on.
+
+**Fix:**
+- Replace `except: pass` with `except SpecificError: raise` or a typed result.
+- Replace `except Exception as e: return {}` with `except Exception as e: logger.error(...)` + re-raise or typed result.
+- Where suppression is genuinely intentional (e.g. a best-effort enrichment step that must not kill the batch), add: `# suppression intentional: <reason>` and ensure the log is at ERROR level with the document ID, the exception text, and enough context to reconstruct the failure from logs alone.
+- Never suppress `KeyboardInterrupt`, `SystemExit`, or `MemoryError` — these must always propagate.
+
+**Severity:** High if any silent drop or silent default exists. Medium if logged-but-swallowed blocks exist without ERROR-level context. Low if only intentional-suppression blocks need a comment.
+
+---
+
 ### 1.3 — Test gap audit
 
 Read every file in `tests/`. For each test file, classify what it covers. Then check coverage against the six agentic failure categories. **Do this before touching any source code** — test gaps discovered here become Phase 2 tasks alongside the antipattern fixes.

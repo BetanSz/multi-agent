@@ -12,6 +12,28 @@ Three-phase pipeline. One human checkpoint. No skipping phases.
 
 **Freedom level: LOW for sequencing** — the three phases are mandatory and must run in order. **MEDIUM within each phase** — judgment is required on what counts as an antipattern, what warrants deep restructuring, and what is worth flagging vs. fixing silently.
 
+## Default communication mode
+
+Use this framing whenever you surface a problem, a decision, or a blocker to the user. Keep it short — target 6–10 lines. Any sub-skill (data-science-audit, pipeline-refactor…) may override this with its own communication style when active.
+
+**When the situation requires it** (ambiguity, risk, back-and-forth, or a non-trivial choice):
+
+```
+Problem: <one concrete sentence — what is wrong or unclear>
+Impact: <what breaks or is wasted if left unresolved>
+
+Options:
+  A. <option> — <trade-off>
+  B. <option> — <trade-off>
+
+Recommendation: <which option and the one-line reason>
+
+Needed from you: <the exact input or decision required>
+If you confirm option X, I will: <the next action that fires>
+```
+
+If the path is unambiguous and low-risk, skip the block and just act.
+
 ## Setup — before anything
 
 ### 1. Parse the argument
