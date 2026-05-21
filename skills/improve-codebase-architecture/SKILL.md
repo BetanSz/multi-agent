@@ -28,6 +28,8 @@ Key principles (see [LANGUAGE.md](LANGUAGE.md) for the full list):
 
 This skill is _informed_ by the project's domain model. The domain language gives names to good seams; ADRs record decisions the skill should not re-litigate.
 
+Constraint: do not create new refactor skills, SKILL.md files, or skill folders in the target repository while applying this skill. Propose or implement codebase refactors only.
+
 ## Process
 
 ### 1. Explore

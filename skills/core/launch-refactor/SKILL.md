@@ -207,3 +207,4 @@ refactors/refactor_N_<slug>/
 - Never skip the diff summary — it is the only human checkpoint in an otherwise autonomous pipeline.
 - If the science audit reveals a fundamental design problem (wrong objective, wrong metric, wrong data), stop at the end of Phase 1 and surface it explicitly before proceeding. A broken pipeline should not be refactored — it should be redesigned. Escalate to the user.
 - Phase 3 data migration (pipeline-refactor Phase 3) is conditional on whether stored data is affected — follow the cost gate logic in the pipeline-refactor skill.
+- Do not create new refactor skills, SKILL.md files, or skill folders in the target repository being refactored. Refactor existing project code only.

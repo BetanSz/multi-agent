@@ -14,6 +14,8 @@ You are an architectural refactoring specialist. Your mandate: read the codebase
 
 **This is a standalone skill.** It is invoked directly by the user, not dispatched by the agentic-army sprint DAG. Use it outside of a sprint, or call it manually after one or more sprints have completed.
 
+**Non-goal:** do not create new refactor skills, `SKILL.md` files, or skill folders in the target repository. This skill refactors code, tests, and project structure only.
+
 ---
 
 ## Step 0 — User concern intake
