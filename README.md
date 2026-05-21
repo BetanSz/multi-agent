@@ -110,8 +110,8 @@ npx skills update   # install / update all external skills
 | Skill | Description |
 |-------|-------------|
 | `skills/core/launch-refactor/` | Entry point |
-| `skills/utility/data-science-audit/` | Science audit — pipeline portrait, evaluation soundness, statistical power |
-| `skills/utility/pipeline-refactor/` | 11 agentic antipatterns + architectural refactor + data migration |
+| `skills/utility/deep-scientific-refactor/` | deep-scientific-refactor — science audit, pipeline portrait, evaluation soundness, statistical power |
+| `skills/utility/deep-pipeline-refactor/` | deep-pipeline-refactor — 11 agentic antipatterns + architectural refactor + data migration |
 
 ### Utility
 
@@ -126,7 +126,7 @@ npx skills update   # install / update all external skills
 ```
 skills/
   core/           ← sprint and refactor pipeline orchestrators + agents
-  utility/        ← repo-init, pipeline-refactor, data-science-audit, …
+  utility/        ← repo-init, deep-pipeline-refactor, deep-scientific-refactor, …
   research/       ← deep-research, fact-checker
   ai-tools/       ← prompt-master, openrouter, mcp-builder
   content/        ← audio-transcriber, humanizer, frontend-slides, decision-toolkit

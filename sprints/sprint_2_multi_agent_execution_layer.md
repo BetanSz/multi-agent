@@ -77,7 +77,7 @@
     Update with these characteristics (reference skills for content to pull in):
     - Follow good practices: guard clauses, no duplication, no magic numbers
       (pull patterns from skills/other/openclaw-maintenance/codex-review/SKILL.md
-      and .agents/skills/refactor/SKILL.md)
+      and .agents/skills/superficial-file-refactor/SKILL.md)
     - Stay with current stack — all major architectural/stack decisions locked in plan
     - Write efficient code: use native object methods, prefer built-ins
     - Be Pythonic: list comprehensions, generators, dict lookups, lru_cache

@@ -14,7 +14,7 @@ Three-phase pipeline. One human checkpoint. No skipping phases.
 
 ## Default communication mode
 
-Use this framing whenever you surface a problem, a decision, or a blocker to the user. Keep it short — target 6–10 lines. Any sub-skill (data-science-audit, pipeline-refactor…) may override this with its own communication style when active.
+Use this framing whenever you surface a problem, a decision, or a blocker to the user. Keep it short — target 6–10 lines. Any sub-skill (deep-scientific-refactor, deep-pipeline-refactor…) may override this with its own communication style when active.
 
 **When the situation requires it** (ambiguity, risk, back-and-forth, or a non-trivial choice):
 
@@ -60,7 +60,7 @@ Confirm: `"Refactor folder: refactors/refactor_N_<slug>/. Starting Phase 1 — S
 
 ## Phase 1 — Science Audit (interactive)
 
-**Invoke skill:** `skills/utility/data-science-audit/SKILL.md`
+**Invoke skill:** `skills/utility/deep-scientific-refactor/SKILL.md` (`deep-scientific-refactor`)
 
 Pass:
 - The codebase path
@@ -79,7 +79,7 @@ When the science audit is complete, write its output to:
 refactors/refactor_N_<slug>/phase1_science_audit.md
 ```
 
-If the data-science-audit skill writes its own output file, copy or symlink it here. Then print:
+If the deep-scientific-refactor skill writes its own output file, copy or symlink it here. Then print:
 
 ```
 Phase 1 complete. Audit written to refactors/refactor_N_<slug>/phase1_science_audit.md.
@@ -94,19 +94,19 @@ Starting Phase 2 — Superficial Refactor (autonomous).
 
 ## Phase 2 — Superficial Refactor (autonomous)
 
-**Invoke skill:** `skills/utility/pipeline-refactor/SKILL.md` — **Phase 1 only** (antipattern audit + fixes).
+**Invoke skill:** `skills/utility/deep-pipeline-refactor/SKILL.md` (`deep-pipeline-refactor`) — **Phase 1 only** (antipattern audit + fixes).
 
 Pass:
 - The codebase path
 - The science audit findings as pre-loaded context (so the antipattern pass is informed by the evaluation failures the audit found)
-- Instruction: **run Phase 1 of pipeline-refactor only** — do not proceed to Phase 2 (deep restructuring) yet
+- Instruction: **run Phase 1 of deep-pipeline-refactor only** — do not proceed to Phase 2 (deep restructuring) yet
 
-The pipeline-refactor skill will:
+The deep-pipeline-refactor skill will:
 - Audit all 11 agentic antipatterns
 - Check test gaps (AT-1 through AT-6 coverage)
 - Apply fixes that do not change the architecture — renaming, deduplication, client consolidation, prompt string extraction, silent failure wrapping, AP-11 call batching
 
-When Phase 1 of pipeline-refactor is complete, write a diff summary:
+When Phase 1 of deep-pipeline-refactor is complete, write a diff summary:
 
 ```
 refactors/refactor_N_<slug>/phase2_antipattern_fixes.md
@@ -162,7 +162,7 @@ When the user confirms, proceed.
 
 ## Phase 3 — Deep Architectural Refactor (autonomous)
 
-**Invoke skill:** `skills/utility/pipeline-refactor/SKILL.md` — **Phase 2 and Phase 3**.
+**Invoke skill:** `skills/utility/deep-pipeline-refactor/SKILL.md` (`deep-pipeline-refactor`) — **Phase 2 and Phase 3**.
 
 Pass:
 - The codebase path
@@ -170,9 +170,9 @@ Pass:
 - The antipattern fixes already applied (Phase 2 output) — so the deep refactor does not re-address what is already fixed
 - The user's confirmation and any revert instructions from the checkpoint
 
-The pipeline-refactor skill will:
+The deep-pipeline-refactor skill will:
 - Apply structural redesign (execution flow, abstraction levels, module boundaries)
-- If stored data is affected: evaluate migration cost and strategy (Phase 3 of pipeline-refactor)
+- If stored data is affected: evaluate migration cost and strategy (Phase 3 of deep-pipeline-refactor)
 
 When complete, write:
 ```
@@ -228,5 +228,5 @@ refactors/refactor_N_<slug>/
 - Never start Phase 3 before the checkpoint has explicit user confirmation.
 - Never skip the diff summary — it is the only human checkpoint in an otherwise autonomous pipeline.
 - If the science audit reveals a fundamental design problem (wrong objective, wrong metric, wrong data), stop at the end of Phase 1 and surface it explicitly before proceeding. A broken pipeline should not be refactored — it should be redesigned. Escalate to the user.
-- Phase 3 data migration (pipeline-refactor Phase 3) is conditional on whether stored data is affected — follow the cost gate logic in the pipeline-refactor skill.
+- Phase 3 data migration (deep-pipeline-refactor Phase 3) is conditional on whether stored data is affected — follow the cost gate logic in the deep-pipeline-refactor skill.
 - Do not create new refactor skills, SKILL.md files, or skill folders in the target repository being refactored. Refactor existing project code only.
