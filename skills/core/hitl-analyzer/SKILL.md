@@ -44,6 +44,21 @@ Anything that cannot be undone: resource deletion, data migration, schema change
 ### F — Open architectural choices
 Any task whose `agent_notes` contains "TBD", "to be decided", "or we could", "not sure", "depends on", or any similar hedge. Also flag any architectural choice in `## Prise de décision` that is missing a `Reason:`. These are gaps that will cause agents to guess — which is unacceptable.
 
+### H — Python environment
+**Always check this, even if the sprint file does not mention it.**
+
+Run `conda env list` and present the results. Then:
+
+1. If the sprint file specifies an environment name — confirm it exists in the list. If it does not exist, flag it.
+2. If no environment is specified — show the list and ask the user which one to use. Do not let agents decide this themselves; they will create a new environment unnecessarily when a suitable one already exists.
+3. Once confirmed, write the environment name into the sprint file under `## HITL approvals`:
+   ```
+   - [x] Python environment: <env-name> — confirmed exists, agents will activate this env
+   ```
+4. If a `requirements.txt` or `environment.yml` exists in the project — check whether the confirmed env already satisfies it (`pip list` or `conda list`). Report any missing packages but do not install them without asking.
+
+The rule: **one environment per project, decided here, not by the agents.**
+
 ## Step 3 — Present the checklist
 
 Print a numbered list of every flagged item, grouped by category. For each item:
