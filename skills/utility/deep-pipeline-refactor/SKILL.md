@@ -208,6 +208,28 @@ If yes and the block suppresses it → it is wrong. In development you want loud
 
 ---
 
+#### AP-13 Inline runtime keyword-argument configuration sprawl
+
+Pipelines often accumulate long lists of inline keyword arguments in Python entry scripts (`main.py`, CLI runner, notebook cells, ad-hoc launch scripts). This is brittle: humans and LLMs must remember dozens of flags, defaults drift across files, and behavior becomes hard to audit.
+
+**Rule:** configuration belongs in centralized, auditable config files grouped by domain (for example: pipeline, azure, extraction, evaluation). Runtime code should reference config objects, not redefine parameter values inline.
+
+**How to find:**
+- Look for function or constructor calls with excessive keyword arguments (rough heuristic: 5+ non-trivial kwargs).
+- Look for repeated keyword bundles across multiple scripts.
+- Look for defaults hardcoded in runtime entry points instead of config modules/files.
+- Look for mixed domains in one call (`azure_*`, `pipeline_*`, `threshold_*` together) — this signals missing config boundaries.
+
+**Fix:**
+- Move parameters to domain-specific config files (`pipeline.yaml`, `azure.yaml`, etc.) or equivalent typed config modules.
+- Create one source of truth per domain; runtime scripts load/compose config instead of re-specifying values.
+- Keep execution surfaces minimal: runtime calls should pass a small config object (or a few explicit overrides), not long inline kwargs.
+- Document override precedence clearly (base config -> env overrides -> explicit runtime override).
+
+**Severity:** High when runtime behavior depends on large inline kwarg lists in production paths. Medium when duplication exists but behavior is still deterministic. Low when only cosmetic consolidation remains.
+
+---
+
 ### 1.3 — Test gap audit
 
 Read every file in `tests/`. For each test file, classify what it covers. Then check coverage against the six agentic failure categories. **Do this before touching any source code** — test gaps discovered here become Phase 2 tasks alongside the antipattern fixes.
