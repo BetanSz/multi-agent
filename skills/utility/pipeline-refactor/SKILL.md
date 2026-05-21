@@ -16,6 +16,22 @@ You are an architectural refactoring specialist. Your mandate: read the codebase
 
 ---
 
+## Step 0 — User concern intake
+
+**Before reading any code, ask the user one question:**
+
+> "Do you have a specific concern, symptom, or area in mind — something that feels wrong, is unusually slow, costs more than expected, or produced a surprising result? Or should I run a full blind audit?"
+
+Wait for the answer. Then:
+
+- **If the user names a specific concern** (e.g. "evaluation costs seem too high", "the deduplication is dropping documents it shouldn't", "step_06 is slow"): treat it as a **priority thread**. During every phase of the audit, actively look for evidence that either confirms or rules out that concern. Report on it explicitly in the findings table, even if no other issue is found in that area.
+
+- **If the user says "full blind audit"** or has no specific concern: proceed with the standard checklist in priority order.
+
+The user's concern does not replace the full audit — it focuses attention and ensures the most relevant finding surfaces first, regardless of where it falls in the checklist order.
+
+---
+
 ## Phase 1 — Agentic Antipattern Audit
 
 Read every source file in scope. Map the full execution flow from each pipeline entry point to its outputs. Then apply the checklist below.
@@ -161,9 +177,49 @@ Formality disproportionate to the complexity of the task: multi-line docstrings 
 
 ---
 
-### 1.3 — Findings table
+### 1.3 — Test gap audit
 
-After completing the checklist, write:
+Read every file in `tests/`. For each test file, classify what it covers. Then check coverage against the six agentic failure categories. **Do this before touching any source code** — test gaps discovered here become Phase 2 tasks alongside the antipattern fixes.
+
+#### Coverage checklist
+
+For each category, mark **COVERED / PARTIAL / MISSING**:
+
+| Category | What to look for | If missing |
+|----------|-----------------|------------|
+| **AT-1 Silent failure visibility** | Tests that pass a broken/None argument to a function that has an `except` block, and assert the failure is distinguishable from a success | High — add before any other fix |
+| **AT-2 Idempotency** | Tests that call the same function or pipeline step twice and assert identical output | Medium |
+| **AT-3 Interface contract** | Tests that pass a dict with missing keys, wrong types, or extra keys | Medium |
+| **AT-4 Prompt regression** | Tests that assert the rendered prompt string contains expected content, without calling the LLM | Medium |
+| **AT-5 Threshold boundary** | Tests at exactly the boundary value of hardcoded thresholds (similarity cutoff, confidence bands, etc.) | Low–Medium |
+| **AT-6 Smoke test** | One end-to-end test per pipeline step with all external calls mocked and synthetic minimal input | High |
+
+#### API economy audit
+
+Scan every test file for real API calls:
+- Search for `AzureOpenAI(`, `CosmosClient(`, `BlobServiceClient(`, `openai.`, `container.read_all_items()` not wrapped in a `MagicMock` or `monkeypatch`
+- For each real call found: classify as **should be mocked** or **intentional integration test**
+- Intentional integration tests must be marked `@pytest.mark.integration` — if they are not, flag them
+- Estimate the cost of running `pytest tests/` naively: N real calls × avg tokens × price/token
+
+```
+Test API economy
+  Real LLM calls found: N (files: [list])
+  Properly marked @pytest.mark.integration: Y
+  Unmarked (will fire on every pytest run): Z  ← flag as High if Z > 0
+  Estimated cost of naive pytest run: $X
+```
+
+Add the test gap findings to the findings table in 1.4 with severity:
+- **High** if AT-1 (silent failure) or AT-6 (smoke) is MISSING, or if unmarked real API calls exist
+- **Medium** if AT-2, AT-3, or AT-4 is MISSING
+- **Low** if AT-5 is MISSING
+
+---
+
+### 1.5 — Findings table
+
+After completing both the antipattern checklist (1.2) and the test gap audit (1.3), write a single combined findings table:
 
 ```
 ## Antipattern Audit — <scope>
@@ -179,7 +235,7 @@ After completing the checklist, write:
 Severity: High = fix now / Medium = fix this session / Low = note and defer
 ```
 
-**Do not start fixing until the full findings table is written.** Present it to the user, then proceed.
+**Do not start fixing until the full findings table is written — antipatterns AND test gaps in one table.** Present it to the user, then proceed.
 
 ---
 

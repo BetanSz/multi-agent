@@ -20,6 +20,22 @@ You are a senior data scientist reviewing a pipeline or evaluation system. You r
 
 ---
 
+## Step 0 — User concern intake
+
+**Before reading any file, ask the user one question:**
+
+> "Do you have a specific concern in mind — a metric that looks suspicious, a result that surprised you, a method you're not sure is correct, or a part of the pipeline you'd like pressure-tested first? Or should I run a full blind audit?"
+
+Wait for the answer. Then:
+
+- **If the user names a specific concern** (e.g. "our F1 scores seem too high to be believable", "I'm not sure the deduplication is affecting the evaluation correctly", "I want to know if we have enough data to compare the two models"): treat it as a **priority thread**. In every audit step, actively look for evidence that confirms or rules out that concern. Report on it explicitly in the risk registry, even if the finding is "concern investigated — not confirmed."
+
+- **If the user says "full blind audit"** or has no specific concern: proceed with all steps in order.
+
+The user's concern does not replace the full audit — it anchors attention so the most relevant scientific question gets a dedicated answer, not just a passing mention in a long findings table.
+
+---
+
 ## Step 1 — Anchor to the objective
 
 **Read the project documentation first.** Look for `README.md`, `CLAUDE.md`, `docs/`, or equivalent. Extract the project's primary objective in one sentence:
@@ -117,6 +133,94 @@ If the system's score is not substantially better than the dumb baseline, the ev
 **Reproducibility**: If the evaluation involves any stochastic element (LLM calls, sampling), are results reproducible? Was the same run used to produce all reported numbers, or were numbers collected across multiple runs?
 
 **Distribution representativeness**: Is the evaluation set representative of the production distribution? If evaluation was run on 2 documents, are those documents typical? Easy cases, hard cases, or mixed?
+
+### 3.6 — Statistical power estimation
+
+This section answers two questions: **are we underpowered** (conclusions are not supported by the data) or **are we overpowered** (spending more than needed to reach a conclusion)? Produce a concrete number either way.
+
+**Step 1 — Define the minimum detectable effect (MDE)**
+
+The MDE is the smallest difference that would change a real decision. Ask: what difference in F1 (or whichever metric) between model A and model B would lead to choosing one over the other? Express this as δ (e.g., δ = 0.05 means "we care if one model is 5 F1 points better").
+
+If no explicit decision threshold exists, use δ = 0.10 as a practical default for POC evaluations — smaller differences are rarely actionable at this stage.
+
+**Step 2 — Estimate variance from available data**
+
+Compute σ = std(metric) across documents. If only 1-2 documents exist, σ cannot be estimated from data — use a conservative prior (σ ≈ 0.20 for F1-like metrics bounded in [0,1]) and flag this explicitly.
+
+**Step 3 — Compute minimum sample size for 80% power**
+
+For a two-sample comparison (model A vs model B) at α = 0.05, 80% power:
+
+```
+N_min = 2 × (1.96 + 0.84)² × σ² / δ²
+      = 2 × 7.84 × σ² / δ²
+```
+
+For a single-sample test against a fixed baseline at α = 0.05, 80% power:
+
+```
+N_min = (1.96 + 0.84)² × σ² / δ²
+      = 7.84 × σ² / δ²
+```
+
+N here is the number of **independent documents**, not field-level observations.
+
+**Step 4 — Compare to actual N and state the verdict**
+
+```
+Power analysis
+  Metric: mean F1 per document
+  Effect size (MDE): δ = 0.10 (10 F1 points — minimum actionable difference)
+  Estimated σ: 0.18 (from N=5 docs — low confidence estimate)
+  N_min for 80% power: 2 × 7.84 × 0.18² / 0.10² = 51 documents
+  Actual N: 5 documents
+  Verdict: UNDERPOWERED — current data supports ~12% power; 46 more documents needed
+```
+
+Or:
+```
+  Actual N: 80 documents
+  Verdict: ADEQUATELY POWERED — 80% power achieved; could reduce to 51 docs for same confidence
+```
+
+**Step 5 — Connect to cost (mandatory if underpowered)**
+
+If the system uses LLM calls, compute the token cost of reaching N_min:
+
+```
+  Tokens per doc (evaluation): ~35 fields × 500 tokens = 17,500 tokens
+  Cost per doc at gpt-4.1-mini ($0.40/M input): ~$0.007
+  Cost to reach N_min (51 docs): ~$0.36
+  Cost to reach N_min (51 docs) at gpt-4o ($2.50/M input): ~$2.22
+```
+
+This turns "we need more data" into a concrete decision: is $0.36 worth the statistical confidence for the business question being answered?
+
+**Step 6 — Effective sample size correction**
+
+If metrics are computed at field level (N docs × M fields) and then averaged, the effective N is not N×M. Fields within a document share the same document quality, language, and OCR output. A rough intraclass correlation correction:
+
+```
+N_eff = N × M / (1 + (M - 1) × ICC)
+```
+
+Where ICC (intraclass correlation) measures how correlated field-level scores are within a document. Without measurement, assume ICC ≈ 0.3–0.5 for typical structured extraction (fields partially share the same failure modes). At M=35 and ICC=0.4:
+
+```
+N_eff ≈ N × 35 / (1 + 34 × 0.4) = N × 35 / 14.6 ≈ N × 2.4
+```
+
+So 5 documents with 35 fields each gives N_eff ≈ 12, not 175. Report N_eff alongside N_min.
+
+**Interpretation guidance**
+
+| Situation | Verdict | Recommendation |
+|-----------|---------|----------------|
+| N < 0.3 × N_min | Severely underpowered | Results are exploratory only — do not use for model selection |
+| 0.3 × N_min ≤ N < N_min | Underpowered | State confidence gap; estimate cost to close it |
+| N_min ≤ N < 2 × N_min | Adequately powered | Results support stated conclusions |
+| N ≥ 2 × N_min | Overpowered | Evaluation cost could be halved without loss of confidence |
 
 ---
 
@@ -221,8 +325,8 @@ Write `data_science_audit_<date>.md` (or print inline if no persistent file is n
 ### Baseline
 [Compute or estimate dumb baseline scores. State whether the system beats them.]
 
-### Statistical validity
-[Effective sample size, variance, reproducibility, representativeness.]
+### Statistical validity & power
+[Effective sample size (document-level, not field-level). Variance estimate. Power analysis: N_actual vs N_min, verdict (underpowered / adequate / overpowered), cost to close the gap if underpowered. ICC correction for correlated field-level observations.]
 
 ---
 
