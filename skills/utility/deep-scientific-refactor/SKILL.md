@@ -112,6 +112,34 @@ For each step in the map:
 
 **Schema consistency**: Does the data shape that leaves step N match what step N+1 expects? Not in terms of code types — in terms of what the values represent. If step N produces a confidence score as a raw LLM logprob and step N+1 treats it as a calibrated probability, that is a flow error.
 
+### 2.3 — Runtime argument utility and scientific-risk audit
+
+Audit every Python runtime argument exposed by entry points (`argparse`, `typer`, CLI flags, environment-overridable kwargs, notebook parameters).
+
+This is not a style check. The question is scientific: does each argument preserve or weaken the validity of conclusions relative to the objective?
+
+For each argument, classify:
+- **Scientifically necessary** — required to define the experiment or dataset scope in a valid way.
+- **Operationally useful** — useful for debugging, path selection, or controlled overrides, with low risk to scientific validity.
+- **Scientifically dangerous** — allows configurations that can invalidate evaluation conclusions while still producing plausible outputs.
+- **Scientifically pointless** — adds complexity without improving measurement quality or decision value.
+
+Key checks:
+- Can this argument silently reduce coverage (for example `--field` on a 35-field NER evaluation) and defeat the evaluation objective?
+- Can this argument create partial runs that look successful but are not comparable to full-run metrics?
+- Can this argument produce missing-field artifacts that are hard to debug and easy to misinterpret as model quality issues?
+- Is the argument duplicated with config values, creating ambiguous source of truth?
+
+For every **scientifically dangerous** or **scientifically pointless** argument, report:
+1. Why it conflicts with the stated objective.
+2. The failure mode it can trigger.
+3. Whether it should be removed, constrained, or gated behind explicit debug mode.
+
+Guidance:
+- Keep arguments that support observability/debugging when they do not compromise scientific validity.
+- Remove or strictly gate arguments that enable unscientific configurations.
+- If an argument is retained for debug, require explicit labeling of outputs as non-comparable/debug-only.
+
 ---
 
 ## Step 3 — Evaluation methodology audit
