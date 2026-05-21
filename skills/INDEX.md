@@ -79,9 +79,9 @@ Single source of truth for all skills available in this project.
 
 | Skill | Path | Description |
 |-------|------|-------------|
-| architecture-decision-records | `skills/architecture-decision-records/` | Write and maintain ADRs — 5 templates (MADR, lightweight, Y-statement, deprecation, RFC), lifecycle management |
-| architecture-patterns | `skills/architecture-patterns/` | Clean Architecture, Hexagonal, DDD — Python-first code examples, directory structures, in-memory adapter testing |
-| improve-codebase-architecture | `skills/improve-codebase-architecture/` | Surface architectural friction using depth/seam/leverage language; deepening opportunities with deletion test |
+| architecture-decision-records | `.agents/skills/architecture-decision-records/` | Write and maintain ADRs — 5 templates (MADR, lightweight, Y-statement, deprecation, RFC), lifecycle management |
+| architecture-patterns | `.agents/skills/architecture-patterns/` | Clean Architecture, Hexagonal, DDD — Python-first code examples, directory structures, in-memory adapter testing |
+| improve-codebase-architecture | `.agents/skills/improve-codebase-architecture/` | Surface architectural friction using depth/seam/leverage language; deepening opportunities with deletion test |
 
 ---
 
@@ -89,10 +89,10 @@ Single source of truth for all skills available in this project.
 
 | Skill | Path | Description |
 |-------|------|-------------|
-| code-review-excellence | `skills/code-review-excellence/` | Code review methodology — feedback techniques, severity labels, handling disagreements, language-specific patterns |
-| receiving-code-review | `skills/receiving-code-review/` | How to receive review feedback — verify before implementing, technical pushback, no performative agreement |
+| code-review-excellence | `.agents/skills/code-review-excellence/` | Code review methodology — feedback techniques, severity labels, handling disagreements, language-specific patterns |
+| receiving-code-review | `.agents/skills/receiving-code-review/` | How to receive review feedback — verify before implementing, technical pushback, no performative agreement |
 | refactor | `.agents/skills/refactor/` | Surgical refactoring — 10 code smells with before/after, extract method, type safety, design patterns (external, installed via npx) |
-| python-performance-optimization | `skills/python-performance-optimization/` | Profile and optimize Python — cProfile, memory_profiler, py-spy, list comprehensions, dict lookups, generators |
+| python-performance-optimization | `.agents/skills/python-performance-optimization/` | Profile and optimize Python — cProfile, memory_profiler, py-spy, list comprehensions, dict lookups, generators |
 
 ---
 
@@ -138,7 +138,7 @@ Single source of truth for all skills available in this project.
 | agent-browser | `skills/utility/agent-browser/` | Browser automation agent |
 | process-interviewer | `skills/utility/process-interviewer/` | Relentless interviewer: extracts complete process before building anything |
 | api-documentation | `skills/utility/api-documentation/` | Document REST APIs in OpenAPI 3.0 — schemas, examples, auth, response codes |
-| webapp-testing | `skills/webapp-testing/` | Playwright Python testing for web apps — decision tree, server lifecycle, selector patterns |
+| webapp-testing | `.agents/skills/webapp-testing/` | Playwright Python testing for web apps — decision tree, server lifecycle, selector patterns |
 
 ---
 
