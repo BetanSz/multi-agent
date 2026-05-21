@@ -230,6 +230,35 @@ Pipelines often accumulate long lists of inline keyword arguments in Python entr
 
 ---
 
+#### AP-14 Excessive inter-file dependency and pipeline bounce
+
+Pipelines often degrade into "file ping-pong": each step reads from multiple local files and/or DB artifacts produced by earlier steps, bouncing across modules to reconstruct context that could have been passed forward in one sequential data object. This increases fragility, makes debugging harder, and creates hidden coupling.
+
+**Smell:** a step has more than one upstream input source (multiple local artifacts, or local + database) just to compute its primary output.
+
+**Primary solution rule:** each step should produce the data required by downstream steps at the moment that data is already in memory for that step, so later steps do not need to re-open multiple artifacts just to reconstruct context.
+
+**How to find:**
+- Build a step-level input map: for each step, list every local file, DB collection/table, and in-memory object it reads.
+- Flag steps that require 2+ upstream sources to produce one main result.
+- Flag repeated "reload then merge" patterns where data is written, re-read, and stitched in later files.
+- Flag long dependency chains where understanding one step requires opening many files only to recover previously-known context.
+
+**Fix:**
+- Prefer a streamlined sequential passage: pass a single evolving domain object (or typed payload) through steps, enriching it as features evolve.
+- Collapse unnecessary intermediate artifacts that exist only to be reloaded immediately downstream.
+- When practical, move feature data capture earlier in the pipeline so downstream steps read one canonical payload instead of bouncing across files.
+- Make step outputs forward-complete: every step emits the downstream-required fields available at that point, not a minimal partial payload that forces later rehydration.
+- Keep durable storage for checkpointing/recovery, not as the default mechanism for routine intra-pipeline communication.
+
+**Guidance:**
+- It is valid to restructure toward earlier-step enrichment, even if this resembles a partial return to pre-feature topology, as long as behavior is preserved.
+- This pattern appears in both agentic and human codebases; treat it as architecture drift, not individual fault.
+
+**Severity:** High when bounce complexity causes inconsistent outputs or hard-to-debug missing data. Medium when behavior is correct but coupling is high. Low when only minor consolidation remains.
+
+---
+
 ### 1.3 — Test gap audit
 
 Read every file in `tests/`. For each test file, classify what it covers. Then check coverage against the six agentic failure categories. **Do this before touching any source code** — test gaps discovered here become Phase 2 tasks alongside the antipattern fixes.
