@@ -224,7 +224,7 @@ All Azure credentials go in `.env` — never commit it.
 
 ## Sprint system
 Sprint files live in `docs/sprints/`.
-Run `/launch_sprint "description"` to start a new sprint.
+Run `/agentic-army "description"` to start a new sprint.
 ```
 
 ### 4.7 — README.md skeleton
@@ -292,7 +292,7 @@ Created:
 Skipped (already existed):
   [list]
 
-Next step: fill in .env, then run /launch_sprint "Sprint 1 — <first feature>"
+Next step: fill in .env, then run /agentic-army "Sprint 1 — <first feature>"
 ```
 
 ## Constraints

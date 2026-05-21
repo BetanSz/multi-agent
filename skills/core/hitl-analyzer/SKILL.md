@@ -120,9 +120,40 @@ Stop. Do not continue the checklist. Tell the user:
 
 Do not issue the gate statement. Do not let the user override this with "it's fine, just proceed."
 
-## Step 7 — Gate statement
+## Step 7 — Final consent table (mandatory before gate)
 
-Only issue this when every item on the checklist is confirmed with evidence and the sprint file is updated:
+Once all items are confirmed, produce a complete summary of every autonomous action the agents will take during this sprint — including the low-risk ones. This is the last moment of human control before the system runs without interruption.
+
+Format as a compact table:
+
+```
+Before I hand off to the agents — here is everything they will do autonomously:
+
+| # | Action | Risk |
+|---|--------|------|
+| 1 | git init in <folder> | None |
+| 2 | Create <file list> | None |
+| 3 | Install packages: <list> | Low |
+| 4 | Call <external API / service> | Low — <brief qualifier> |
+| 5 | Write to <storage / DB> | None |
+| 6 | Make git commits | None |
+
+<one line summary of what is NOT included: e.g. "No Azure resources. No credentials needed. Everything is local.">
+
+**This is your final word before autonomous execution begins.**
+Are you OK with all of the above? Anything to change or remove?
+```
+
+Rules for the table:
+- List every action, not just the risky ones — completeness matters more than brevity here
+- Risk column: **None** / **Low** / **Medium** / **High** — with a one-phrase qualifier for anything above None
+- The summary line calls out explicitly what the sprint does NOT touch (Azure, credentials, production, billing) — absence of risk is worth stating
+- Do not issue the gate statement until the user responds with an explicit confirmation ("yes", "OK", "go ahead", or equivalent). A non-answer or silence is not confirmation.
+- If the user requests a change: update the sprint file, re-run the affected HITL items, and re-present the consent table.
+
+## Step 8 — Gate statement
+
+Only issue this after the consent table has been confirmed by the user:
 
 ---
 
@@ -143,6 +174,7 @@ The sprint conductor may now run Step 4 (autonomous execution).
 - **Ask permission for sensitive access, then act.** One ask, then execute. Do not ask the user to do it after granting permission.
 - **Only escalate what you genuinely cannot do.** The user's job is to provide secrets and authority, not to be your hands.
 - Never skip an item because the user says "that's already done" — verify it yourself if you can, otherwise ask for evidence.
+- Never issue the gate statement without first presenting the Step 7 consent table and receiving explicit user confirmation.
 - Never issue the gate statement while any item is unconfirmed.
 - Never let an architectural ambiguity pass with "we'll figure it out." Either lock the decision with a rationale, or escalate.
 - If new items surface mid-review, add them to the checklist and work through them.

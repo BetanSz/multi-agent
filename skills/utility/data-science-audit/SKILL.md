@@ -46,6 +46,45 @@ Write it at the top of your audit report. Every finding in the audit is evaluate
 
 ---
 
+## Step 1.5 — Pipeline portrait
+
+Read every source file in scope. Then write a **pipeline portrait**: a precise, minimal description of what the system actually does, as it is implemented today — not what it was intended to do.
+
+### Writing rules
+
+**Length:** one short paragraph or 3–6 bullet points per pipeline stage. The whole portrait should be readable in under 3 minutes. A 6-stage pipeline should produce roughly 200–300 words total. If you find yourself writing more, cut.
+
+**Language calibration:** use exact technical terms when the term carries meaning that plain language cannot — *precision*, *recall*, *harmonic mean*, *calibration*, *intraclass correlation* are acceptable without definition. Avoid jargon that requires a sentence to explain. Every sentence should be readable by someone with a graduate-level statistics background who has not seen this codebase.
+
+**What to describe:** what goes in, what transformation happens, what comes out, and on what basis decisions are made (thresholds, scores, criteria). Do not describe how the code is structured — describe what it computes.
+
+**Dubious parts — inline flagging:** if something looks potentially wrong, incomplete, or surprising, flag it inline with `[?]` followed by one clause — the hypothesis in the plainest possible terms. Do not explain it, do not hedge it, do not qualify it with "might" or "perhaps." State it flatly as a question.
+
+Example portrait entry:
+```
+Step 3 — Extraction scoring: for each document, the same model that extracted the entities
+is asked to judge the quality of its own extraction, producing a precision score [0,1] and
+a recall score [0,1] per field. F1 is computed as the harmonic mean of these two scores.
+[?] The judge and extractor are the same model — scores may be biased upward.
+[?] Fields absent from the document receive precision=1, recall=1 by definition — these
+inflate the mean F1 without reflecting extraction quality.
+```
+
+### After writing the portrait
+
+Present it to the user. Ask:
+
+> "Does anything here look different from what you expected, or raise a concern?"
+
+Then handle the response:
+
+- **User flags something:** add it to the priority thread from Step 0. It gets explicit attention in every subsequent audit step, and a dedicated entry in the risk registry — even if the formal audit finds it harmless.
+- **User says "looks correct" or "looks good":** note it and proceed. A user endorsement of the portrait does not reduce scrutiny on any part of the formal audit. The user may not have spotted the issue, or may not have realized its implication. The audit is fully independent.
+
+The portrait is not a gate — the formal audit runs regardless of the user's response.
+
+---
+
 ## Step 2 — Data flow audit
 
 Trace the logical flow of data from source to output. You are not reading implementation — you are reading the sequence of transformations and asking whether the data that arrives at each step is the data that should arrive.
