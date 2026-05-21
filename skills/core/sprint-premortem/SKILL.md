@@ -44,6 +44,7 @@ This framing forces you to read the implementation against what actually matters
 - Entire collections, databases, or directories of output files
 - All test results (scan the summary line only)
 - Duplicate content — if you've already read the source, don't re-read a generated copy of it
+- **Previous sprint folders** — do not read `sprints/sprint_N-1_*/`, `sprint_N-2_*/`, or any sprint other than the current one. If you need historical context, read only the current sprint's log and the project documentation.
 
 **Token discipline**: if you find yourself reading more than 3-4 data sample files, stop — you are not doing static analysis, you are doing a data audit. The pre-mortem answers "is the code correct?" not "is every record correct?"
 

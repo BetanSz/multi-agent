@@ -116,6 +116,7 @@ Review, then: `git add <files> && git commit -m "feat: <sprint topic>"`
 
 ## Rules
 
+- **Read only the current sprint folder.** Do not read sprint files or folders from previous sprints. If context about prior work is needed, read only `sprints/sprint_N_<slug>/` for the current sprint — nothing else under `sprints/`.
 - **Write every section even if empty** — use "None." or "None identified."
 - **Execution trace is mandatory and must be detailed** — one subsection per task, every agent step logged. Do not collapse multiple tasks into a summary. A long file is correct; a short file means information was lost.
 - **Bugs encountered: report every one.** Log the bug, the decision process (what was tried, why this fix was chosen), and the end result. A "Bugs encountered: None." entry is fine; a missing section is not.
