@@ -13,7 +13,7 @@ Single source of truth for all skills available in this project.
 | Skill | Path | Description |
 |-------|------|-------------|
 | **launch-sprint** | `skills/core/launch-sprint/` | **Main entry point** — `/agentic-army "description"` runs the full pipeline: brainstorm → interview → HITL → agents → sprint_log |
-| **launch-refactor** | `skills/core/launch-refactor/` | **Refactor entry point** — `/agentic-refactor-army "path [— concern]"` runs: science audit (interactive) → antipattern fixes (autonomous) → diff review checkpoint → deep architectural refactor (autonomous); artifacts in `refactors/refactor_N_<slug>/` |
+| **launch-refactor** | `skills/core/launch-refactor/` | **Refactor entry point** — `/agentic-refactor-army "path [— concern]"` runs: science audit (interactive) → antipattern + depth refactor (autonomous) → diff review checkpoint → deep architectural refactor (autonomous) → performance optimization (conditional, Phase 4); artifacts in `refactors/refactor_N_<slug>/` |
 | **hitl-analyzer** | `skills/core/hitl-analyzer/` | **Pre-flight gate** — reads sprint file, verifies every human-required action works before agents start; blocks until 100% confirmed |
 | **execute-sprint** | `skills/core/execute-sprint/` | **Autonomous execution engine** — reads a confirmed sprint file, builds task DAG, dispatches agents (plan → code → review → test) in order, no human interaction except genuine blockers |
 | plan-agent | `skills/core/plan-agent/` | Architect specialist: scoping, API design, implementation sequence |
@@ -102,7 +102,6 @@ Single source of truth for all skills available in this project.
 | Skill | Path | Description |
 |-------|------|-------------|
 | deep-research | `skills/research/deep-research/` | OpenAI o4-mini-deep-research: 10-20 min web-enabled research with prompt enhancement |
-| fact-checker | `skills/research/fact-checker/` | Systematic claim verification with TRUE/MOSTLY TRUE/FALSE rating scale |
 | find-skills | `skills/research/find-skills/` | Discovers and installs skills from skills.sh via `npx skills find` |
 
 ---
@@ -117,25 +116,14 @@ Single source of truth for all skills available in this project.
 
 ---
 
-## Content
-
-| Skill | Path | Description |
-|-------|------|-------------|
-| audio-transcriber | `skills/content/audio-transcriber/` | Audio → Markdown via Faster-Whisper, generates meeting minutes |
-| humanizer | `skills/content/humanizer/` | Removes 24 AI writing patterns, adds voice and personality |
-| frontend-slides | `skills/content/frontend-slides/` | HTML presentations from scratch or PPTX conversion, zero dependencies |
-| decision-toolkit | `skills/content/decision-toolkit/` | 9-step decision framework with HTML/MD/PDF output |
-
----
-
 ## Utility
 
 | Skill | Path | Description |
 |-------|------|-------------|
 | **repo-init** | `skills/utility/repo-init/` | **Project bootstrapper** — folder structure, conda env, .gitignore, .env.example, CLAUDE.md, pyproject.toml; stack-aware (Python/Azure, FastAPI, TS); never overwrites existing files |
-| **deep-pipeline-refactor** | `skills/utility/deep-pipeline-refactor/` | **Agentic antipattern audit + architectural refactor + data reprocessing** — Phase 1: systematic audit for 11 agentic coding antipatterns (dead code, client over-instantiation, spaghetti flow, silent failures, prompt drift, missing idempotency, abstraction inconsistency, N+1 calls, type hint theater, boilerplate overkill, operation granularity mismatch); Phase 2: structural changes, authorized for large-scale redesign; Phase 3 (conditional): cost gate + migration strategy when stored data is affected |
+| **deep-pipeline-refactor** | `skills/utility/deep-pipeline-refactor/` | **Agentic antipattern audit + architectural refactor + data reprocessing** — Phase 1: systematic audit for 14 agentic coding antipatterns (dead code, client over-instantiation, spaghetti flow, silent failures, prompt drift, missing idempotency, abstraction inconsistency, N+1 calls, type hint theater, boilerplate overkill, operation granularity, exception suppression, config sprawl, inter-file bounce); Phase 2: module depth audit (depth/seam/leverage lens, deletion test) then structural changes, authorized for large-scale redesign; Phase 3 (conditional): cost gate + migration strategy when stored data is affected |
 | **deep-scientific-refactor** | `skills/utility/deep-scientific-refactor/` | **Scientific review of pipelines and evaluation systems** — senior data scientist persona. Opens with a pipeline portrait: minimal, precise prose description of what the system actually computes, with inline [?] flags on dubious parts; user response collected but audit proceeds fully independently. Then three formal lenses: (1) data flow correctness; (2) evaluation soundness (metric validity, null inflation, circular evaluation, score calibration, threshold justification, baseline, statistical power analysis with N_min formula and cost-to-close); (3) output completeness. Abstracts away from implementation — reads logic, math, and scientific validity only |
-| file-organizer | `skills/utility/file-organizer/` | Intelligent folder cleanup, duplicate detection, suggests structure |
+| **optimization-refactor** | `skills/utility/optimization-refactor/` | **Python runtime performance audit** — profiles CPU and memory (cProfile, memory_profiler), identifies hot spots, applies targeted optimizations (vectorization, generators, caching, async I/O, data structure substitution). Run after deep-pipeline-refactor when performance is a concern. Phase 4 of `launch-refactor`. |
 | agent-browser | `skills/utility/agent-browser/` | Browser automation agent |
 | process-interviewer | `skills/utility/process-interviewer/` | Relentless interviewer: extracts complete process before building anything |
 | api-documentation | `skills/utility/api-documentation/` | Document REST APIs in OpenAPI 3.0 — schemas, examples, auth, response codes |
@@ -164,7 +152,6 @@ skills/
   core/          — orchestration and multi-agent coordination
   research/      — information gathering
   ai-tools/      — AI APIs and model integration
-  content/       — writing, media, presentations
-  utility/       — file ops, process design, browser
-  other/         — domain-specific (openclaw-*)
+  utility/       — refactoring, optimization, process design, browser
+  other/         — domain-specific
 ```

@@ -87,27 +87,31 @@ Run the following agents in order for each task. Each agent is a separate `Agent
 Read `skills/core/plan-agent/SKILL.md`.
 Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_plan.md`
 
-### 4.2 code-agent — always
+### 4.2 test-generator-agent — only if quality level is L3
+
+**Runs before code-agent.** Tests are written against the plan spec, not the implementation. This is the TDD contract: failing tests exist before any production code is written.
+
+Read `skills/core/test-generator-agent/SKILL.md`.
+Pass the plan output as primary input (or the task description from the sprint file if no plan step ran).
+Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_gen.md`
+
+### 4.3 code-agent — always
 
 Read `skills/core/code-agent/SKILL.md`.
 If step 4.1 ran, pass the plan output as context.
+If quality level is L3, also pass the test_gen output — code-agent must write code that makes those failing tests pass.
 Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_code.md`
 
-### 4.3 review-agent — always
+### 4.4 review-agent — always
 
 Read `skills/core/review-agent/SKILL.md`.
 Pass the code output as context.
 Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_review.md`
 
 Verdicts:
-- **APPROVE** — proceed to 4.4
+- **APPROVE** — proceed to 4.5
 - **REQUEST CHANGES** — return to code-agent with review feedback. Maximum 2 retries; after the second retry, run review-agent once more. If still REQUEST CHANGES after 2 retries → treat as BLOCK.
 - **BLOCK** — trigger mid-sprint HITL pause (see section 5)
-
-### 4.4 test-generator-agent — only if quality level is L3
-
-Read `skills/core/test-generator-agent/SKILL.md`.
-Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_gen.md`
 
 ### 4.5 test-runner-agent — only if quality level is L2 or L3
 

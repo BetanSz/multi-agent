@@ -1,6 +1,6 @@
 ---
 name: launch-refactor
-description: Orchestrates the full agentic refactor army pipeline — science audit (interactive) → superficial antipattern refactor (autonomous) → diff review checkpoint → deep architectural refactor (autonomous). Produces a complete refactor log under refactors/refactor_N_<slug>/. Invoke via /agentic-refactor-army "path/to/codebase [optional concern]".
+description: Orchestrates the full agentic refactor army pipeline — science audit (interactive) → antipattern + depth refactor (autonomous) → diff review checkpoint → deep architectural refactor (autonomous) → performance optimization (conditional, Phase 4). Produces a complete refactor log under refactors/refactor_N_<slug>/. Invoke via /agentic-refactor-army "path/to/codebase [optional concern]".
 argument-hint: '"path/to/codebase" or "path/to/codebase — specific concern"'
 ---
 
@@ -181,6 +181,43 @@ refactors/refactor_N_<slug>/phase3_architecture.md
 
 ---
 
+## Phase 4 — Performance Optimization (conditional)
+
+**Run this phase only if any of the following are true:**
+- The science audit (Phase 1) flagged latency, cost, or throughput concerns
+- The user's original concern mentioned "slow", "expensive", "high token usage", or similar
+- Phase 2 antipattern fixes included AP-8 (N+1) or AP-11 (operation granularity) — profiling validates the fix
+- The user explicitly requests a performance pass
+
+**If none apply:** skip Phase 4 and proceed to the Final Report.
+
+**Invoke skill:** `skills/utility/optimization-refactor/SKILL.md` (`optimization-refactor`)
+
+Pass:
+- The codebase path
+- The refactor folder path — the skill reads `phase1_science_audit.md` and `phase3_architecture.md` automatically
+- Instruction: called as Phase 4 of `launch-refactor` — context from prior phases is pre-loaded
+
+The optimization-refactor skill will:
+- Profile CPU and memory on the primary entry point(s) with representative input
+- Apply targeted Python optimizations: vectorization, generators, caching, async I/O, data structure substitution, serialization reduction
+- Produce a before/after performance delta
+
+When complete, write:
+```
+refactors/refactor_N_<slug>/phase4_optimization.md
+```
+
+Then print:
+```
+Phase 4 complete. Optimization report: refactors/refactor_N_<slug>/phase4_optimization.md.
+Net change: [summary line from optimization-refactor output]
+
+Proceeding to Final Report.
+```
+
+---
+
 ## Final Report
 
 Write `refactors/refactor_N_<slug>/refactor_log.md`:
@@ -203,10 +240,15 @@ Full diff: phase2_antipattern_fixes.md
 [What was restructured and why]
 Full report: phase3_architecture.md
 
+## Phase 4 — Performance Optimization
+[if run: top bottlenecks addressed, before/after delta; if skipped: note reason]
+Full report: phase4_optimization.md (if run)
+
 ## Net impact
 - Code quality: [qualitative assessment]
 - API economy: [token/cost change if applicable]
 - Test coverage: [AT-1 through AT-6 gaps closed]
+- Runtime performance: [before/after delta if Phase 4 ran]
 - Outstanding risks: [anything not addressed]
 ```
 
@@ -219,6 +261,7 @@ refactors/refactor_N_<slug>/
   phase1_science_audit.md
   phase2_antipattern_fixes.md
   phase3_architecture.md
+  phase4_optimization.md   ← if Phase 4 ran
   refactor_log.md
 ```
 
@@ -229,4 +272,5 @@ refactors/refactor_N_<slug>/
 - Never skip the diff summary — it is the only human checkpoint in an otherwise autonomous pipeline.
 - If the science audit reveals a fundamental design problem (wrong objective, wrong metric, wrong data), stop at the end of Phase 1 and surface it explicitly before proceeding. A broken pipeline should not be refactored — it should be redesigned. Escalate to the user.
 - Phase 3 data migration (deep-pipeline-refactor Phase 3) is conditional on whether stored data is affected — follow the cost gate logic in the deep-pipeline-refactor skill.
+- Phase 4 performance optimization is conditional — only trigger it when one of its four conditions is met (cost/latency flagged, user mentions perf, AP-8/AP-11 were fixed, user requests it). Do not run by default.
 - Do not create new refactor skills, SKILL.md files, or skill folders in the target repository being refactored. Refactor existing project code only.
