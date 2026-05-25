@@ -112,6 +112,57 @@ Produce a **memory findings table**:
 
 ---
 
+### 1.4 — Line profile (optional, post cProfile)
+
+Once cProfile identifies a hot function, use `line_profiler` to pinpoint which specific line inside it consumes the time — useful when a hot function has complex branching or multiple operations.
+
+```bash
+# Install if needed (do not add to requirements.txt unless user confirms)
+pip install line-profiler
+
+# Add @profile to the target function, then run:
+kernprof -l -v <entry_point.py>
+```
+
+Or programmatically, without modifying the source:
+
+```python
+from line_profiler import LineProfiler
+lp = LineProfiler()
+lp.add_function(target_function)
+lp_wrapper = lp(target_function)
+lp_wrapper(*args)
+lp.print_stats()
+```
+
+Use this **only** when `tottime` for a single function is high and the fix is not obvious from reading the code.
+
+---
+
+### 1.5 — Production profiling with py-spy (no restart needed)
+
+When you cannot modify source or restart the process (e.g., a long-running pipeline mid-execution, a production API), attach `py-spy` to the live process:
+
+```bash
+# Install if needed
+pip install py-spy
+
+# Live top-like view of a running process
+py-spy top --pid <PID>
+
+# Generate a flamegraph SVG
+py-spy record -o profile.svg --pid <PID>
+
+# Profile a script from the start (no live process needed)
+py-spy record -o profile.svg -- python <entry_point.py>
+```
+
+Flamegraph reading: wide blocks = high CPU time; tall stacks = deep call chains. Focus optimization on the widest blocks nearest the bottom of the stack.
+
+Use this when: cProfile is impractical (production environment), the process is already running, or you want a visual flamegraph rather than a table.
+
+---
+
 ## Phase 2 — Optimize
 
 Work through findings in impact order (highest time/memory saving first). For each optimization:
@@ -274,6 +325,27 @@ def process_in_chunks(records, chunk_size=500):
         write_results(results)
         # memory freed at end of each iteration
 ```
+
+---
+
+### OPT-8 String concatenation in loops
+
+Building a string by `+=` inside a loop — each concatenation creates a new string object, making the operation O(n²) in total characters.
+
+**Signal:** a string-building loop appears in `tottime` top 10, or memory profile shows many short-lived string objects.
+
+```python
+# Before — O(n²) total
+output = ""
+for record in records:
+    output += format_line(record)   # new string object each iteration
+
+# After — O(n) total
+parts = [format_line(record) for record in records]
+output = "\n".join(parts)
+```
+
+Also applies to log-line assembly, CSV row building, and any output formatting inside a per-document loop. Only apply when the loop produces a string; for non-string accumulation use OPT-2 (generators).
 
 ---
 
