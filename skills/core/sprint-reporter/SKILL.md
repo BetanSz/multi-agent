@@ -100,7 +100,7 @@ None. / [What blocked, what human action was taken, which task resumed after]
 / None.
 
 ## Proposed next sprint
-`/agentic-army "<description>"` — <one-line rationale based on patterns from this sprint>
+`/agentic-sprint-army "<description>"` — <one-line rationale based on patterns from this sprint>
 / [Omit section if no clear next sprint emerges]
 
 ## Git state

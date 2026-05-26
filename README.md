@@ -58,10 +58,10 @@ Run the refactor army every few sprints, or whenever the codebase starts feeling
 
 ## Using in another project
 
-Create `.claude/commands/agentic-army.md` in your project:
+Create `.claude/commands/agentic-sprint-army.md` in your project:
 
 ```markdown
-Read and follow: `../mutlit-agent/skills/core/launch-sprint/SKILL.md`
+Read and follow: `../mutlit-agent/skills/core/agentic-sprint-army/SKILL.md`
 **Skill path resolution**: all skill paths are relative to `../mutlit-agent/`. Prepend `../mutlit-agent/` to any path that does not start with `/` or `../`.
 **Project context**: sprint files and artifacts live in THIS project under `sprints/sprint_N_<slug>/`.
 Apply to: $ARGUMENTS
@@ -70,7 +70,7 @@ Apply to: $ARGUMENTS
 And `.claude/commands/agentic-refactor-army.md`:
 
 ```markdown
-Read and follow: `../mutlit-agent/skills/core/launch-refactor/SKILL.md`
+Read and follow: `../mutlit-agent/skills/core/agentic-refactor-army/SKILL.md`
 Apply to: $ARGUMENTS
 ```
 
@@ -94,7 +94,7 @@ npx skills update   # install / update all external skills
 
 | Skill | Description |
 |-------|-------------|
-| `skills/core/launch-sprint/` | Entry point |
+| `skills/core/agentic-sprint-army/` | Entry point |
 | `skills/core/hitl-analyzer/` | Pre-flight gate — conda env, credentials, Azure resources, git state |
 | `skills/core/execute-sprint/` | Autonomous execution engine — DAG dispatch |
 | `skills/core/plan-agent/` | Architect: scoping, API design, implementation sequence |
@@ -109,7 +109,7 @@ npx skills update   # install / update all external skills
 
 | Skill | Description |
 |-------|-------------|
-| `skills/core/launch-refactor/` | Entry point |
+| `skills/core/agentic-refactor-army/` | Entry point |
 | `skills/utility/deep-scientific-refactor/` | deep-scientific-refactor — science audit, pipeline portrait, evaluation soundness, statistical power |
 | `skills/utility/deep-pipeline-refactor/` | deep-pipeline-refactor — 11 agentic antipatterns + architectural refactor + data migration |
 

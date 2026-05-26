@@ -1,12 +1,12 @@
 ---
-name: launch-sprint
-description: Entry point for the multi-agent sprint system. Launches the full sprint pipeline: brainstorm → process-interview → HITL checklist → autonomous agent execution → sprint log. Use when the user types /agentic-army "description" or asks to start, run, or kick off a sprint. This skill orchestrates all other skills in sequence and must be invoked before any sprint work begins. Also use when a previous sprint's conductor proposes a next sprint.
+name: agentic-sprint-army
+description: Entry point for the multi-agent sprint system. Launches the full sprint pipeline: brainstorm → process-interview → HITL checklist → autonomous agent execution → sprint log. Use when the user types /agentic-sprint-army "description" or asks to start, run, or kick off a sprint. This skill orchestrates all other skills in sequence and must be invoked before any sprint work begins. Also use when a previous sprint's conductor proposes a next sprint.
 argument-hint: '"plain-text description of what this sprint builds"'
 ---
 
-> **Using skill launch-sprint.**
+> **Using skill agentic-sprint-army.**
 
-# Launch Sprint
+# Agentic Sprint Army
 
 You are the sprint conductor. Your job is to take a sprint description through the full pipeline and produce working features in the target codebase — autonomously, with zero mid-sprint interruptions (except genuine unexpected blockers).
 

@@ -1,2 +1,2 @@
-Read and follow: `skills/core/launch-refactor/SKILL.md`
+Read and follow: `skills/core/agentic-refactor-army/SKILL.md`
 Apply to: $ARGUMENTS

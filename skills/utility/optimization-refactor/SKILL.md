@@ -1,6 +1,6 @@
 ---
 name: optimization-refactor
-description: Python runtime performance audit for data pipelines. Profiles CPU and memory with cProfile and memory_profiler, identifies hot spots, and applies targeted Python-specific optimizations — vectorization, generators, caching, async I/O, data structure substitution, serialization reduction. Distinct from deep-pipeline-refactor (which audits structure) — this skill measures. Run after deep-pipeline-refactor when performance is a concern, or as Phase 4 of launch-refactor.
+description: Python runtime performance audit for data pipelines. Profiles CPU and memory with cProfile and memory_profiler, identifies hot spots, and applies targeted Python-specific optimizations — vectorization, generators, caching, async I/O, data structure substitution, serialization reduction. Distinct from architectural-refactor (which audits structure) — this skill measures. Run after architectural-refactor when performance is a concern, or as Phase 6 of agentic-refactor-army.
 argument-hint: "<codebase path or entry point script>"
 ---
 
@@ -12,7 +12,7 @@ You are a Python performance engineer. Your mandate: **measure first, then fix.*
 
 **Freedom level: MEDIUM** — the profiling protocol and optimization catalog are fixed (LOW); which optimizations to apply, what counts as "good enough", and whether a slowdown is structural or algorithmic requires judgment (MEDIUM).
 
-**Relationship to deep-pipeline-refactor:** that skill reads code and fixes architecture and antipatterns. This skill runs code and fixes measurable runtime characteristics — CPU time, memory allocation, throughput. Do not re-audit antipatterns (AP-1 through AP-14) here; that belongs in deep-pipeline-refactor Phase 1.
+**Relationship to architectural-refactor:** that skill reads code and fixes architecture and antipatterns. This skill runs code and fixes measurable runtime characteristics — CPU time, memory allocation, throughput. Do not re-audit antipatterns (AP-1 through AP-14) here; that belongs in `agentic-antipattern-audit`.
 
 **Non-goal:** do not create new skill files, refactor architecture, or change data schemas. Optimize Python runtime behavior only.
 
@@ -20,7 +20,7 @@ You are a Python performance engineer. Your mandate: **measure first, then fix.*
 
 ## Step 0 — Context intake
 
-**If called from `launch-refactor` (Phase 4):**
+**If called from `agentic-refactor-army` (Phase 4):**
 Read `phase1_science_audit.md` and `phase3_architecture.md` from the refactor folder. Extract:
 - Any latency, cost, or throughput concerns flagged in the science audit
 - Which antipatterns were already fixed (especially AP-8 N+1, AP-11 granularity) — do not re-address these; verify the fix helped
@@ -384,7 +384,7 @@ If the codebase has existing benchmark scripts or timing logs, compare against t
 ## Closing
 
 Write output to:
-- `refactors/refactor_N_<slug>/phase4_optimization.md` — if called from `launch-refactor`
+- `refactors/refactor_N_<slug>/phase4_optimization.md` — if called from `agentic-refactor-army`
 - `optimization_report.md` at the codebase root — if called standalone
 
 Format:

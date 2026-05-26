@@ -1,5 +1,5 @@
 ---
-name: launch-refactor
+name: agentic-refactor-army
 description: Orchestrates the full agentic refactor army pipeline — science audit (interactive) → antipattern + depth refactor (autonomous) → diff review checkpoint → deep architectural refactor (autonomous) → performance optimization (conditional, Phase 4). Produces a complete refactor log under refactors/refactor_N_<slug>/. Invoke via /agentic-refactor-army "path/to/codebase [optional concern]".
 argument-hint: '"path/to/codebase" or "path/to/codebase — specific concern"'
 ---
@@ -14,7 +14,7 @@ Three-phase pipeline. One human checkpoint. No skipping phases.
 
 ## Default communication mode
 
-Use this framing whenever you surface a problem, a decision, or a blocker to the user. Keep it short — target 6–10 lines. Any sub-skill (deep-scientific-refactor, deep-pipeline-refactor…) may override this with its own communication style when active.
+Use this framing whenever you surface a problem, a decision, or a blocker to the user. Keep it short — target 6–10 lines. Any sub-skill (scientific-audit, agentic-antipattern-audit, architectural-refactor…) may override this with its own communication style when active.
 
 **When the situation requires it** (ambiguity, risk, back-and-forth, or a non-trivial choice):
 
@@ -92,87 +92,62 @@ Starting Phase 2 — Superficial Refactor (autonomous).
 
 ---
 
-## Phase 2 — Superficial Refactor (autonomous)
+## Phase 2 — Antipattern Audit (autonomous)
 
-**Invoke skill:** `skills/utility/deep-pipeline-refactor/SKILL.md` (`deep-pipeline-refactor`) — **Phase 1 only** (antipattern audit + fixes).
+**Invoke skill:** `skills/utility/agentic-antipattern-audit/SKILL.md` (`agentic-antipattern-audit`)
 
 Pass:
 - The codebase path
 - The science audit findings as pre-loaded context (so the antipattern pass is informed by the evaluation failures the audit found)
-- Instruction: **run Phase 1 of deep-pipeline-refactor only** — do not proceed to Phase 2 (deep restructuring) yet
 
-The deep-pipeline-refactor skill will:
-- Audit all 11 agentic antipatterns
+The skill will:
+- Audit all 14 agentic antipatterns (AP-1 through AP-14)
 - Check test gaps (AT-1 through AT-6 coverage)
-- Apply fixes that do not change the architecture — renaming, deduplication, client consolidation, prompt string extraction, silent failure wrapping, AP-11 call batching
+- Produce a combined findings table — no code changes yet
 
-When Phase 1 of deep-pipeline-refactor is complete, write a diff summary:
+When complete, write the findings table to:
 
 ```
-refactors/refactor_N_<slug>/phase2_antipattern_fixes.md
-```
-
-Format:
-```markdown
-# Phase 2 — Antipattern Fixes
-
-## Changes made
-| File | Change | Antipattern |
-|------|--------|-------------|
-| src/pipeline.py | Consolidated 3 OpenAI clients → 1 | AP-2 client over-instantiation |
-| pipeline/step_03.py | Batched 35 NER calls → 1 structured output call | AP-11 operation granularity |
-| ... | ... | ... |
-
-## Changes NOT made (deferred to Phase 3)
-- [list structural issues that require deep refactor]
-
-## API economy impact
-- Before: ~280,000 input tokens / run
-- After: ~8,000 input tokens / run
+refactors/refactor_N_<slug>/phase2_antipattern_findings.md
 ```
 
 ---
 
-## Checkpoint — Diff Review (mandatory human gate)
+## Checkpoint — Findings Review (mandatory human gate)
 
-Stop. Present the diff summary to the user:
+Stop. Present the findings table to the user:
 
 ```
-Phase 2 complete. Here is what changed:
+Phase 2 complete. Findings:
 
-[paste the phase2_antipattern_fixes.md changes table]
+[paste the phase2_antipattern_findings.md table]
 
-Deferred to Phase 3 (deep refactor):
-[list]
-
-Anything to revert before Phase 3 begins?
+Phase 3 will apply all fixes — antipatterns + architectural restructuring.
+Anything to exclude or deprioritise before Phase 3 begins?
 If not, say "go" and Phase 3 starts.
 ```
 
 **Do not proceed until the user responds.** Silence is not confirmation.
 
-If the user asks to revert something:
-1. Undo those specific changes
-2. Update `phase2_antipattern_fixes.md` to mark them reverted
-3. Re-present the table and ask again
-
 When the user confirms, proceed.
 
 ---
 
-## Phase 3 — Deep Architectural Refactor (autonomous)
+## Phase 3 — Architectural Refactor (autonomous)
 
-**Invoke skill:** `skills/utility/deep-pipeline-refactor/SKILL.md` (`deep-pipeline-refactor`) — **Phase 2 and Phase 3**.
+**Invoke skill:** `skills/utility/architectural-refactor/SKILL.md` (`architectural-refactor`)
 
 Pass:
 - The codebase path
 - The science audit findings (Phase 1 output)
-- The antipattern fixes already applied (Phase 2 output) — so the deep refactor does not re-address what is already fixed
-- The user's confirmation and any revert instructions from the checkpoint
+- The antipattern findings (Phase 2 output) — so the refactor works from the confirmed findings table
+- The user's confirmation and any exclusions from the checkpoint
 
-The deep-pipeline-refactor skill will:
-- Apply structural redesign (execution flow, abstraction levels, module boundaries)
-- If stored data is affected: evaluate migration cost and strategy (Phase 3 of deep-pipeline-refactor)
+The skill will:
+- Apply module depth/seam/deletion-test lens
+- Execute all fixes from the findings table (antipatterns + code smells)
+- Apply KISS/DRY structural redesign where warranted
+- Run `pytest tests/ -v` after each structural change
 
 When complete, write:
 ```
@@ -181,7 +156,46 @@ refactors/refactor_N_<slug>/phase3_architecture.md
 
 ---
 
-## Phase 4 — Performance Optimization (conditional)
+## Phase 4 — Data Migration (conditional)
+
+**Run this phase only if Phase 3 changed the schema or semantics of data already stored in Cosmos DB, Blob Storage, or any persistent store.** If no stored data is affected, skip to Phase 5.
+
+**Invoke skill:** `skills/utility/data-migration/SKILL.md` (`data-migration`)
+
+Pass:
+- The affected container(s) or `'assess from codebase'`
+- The Phase 3 architectural changes as context
+
+The skill will classify the change, assess impact, cost-gate any LLM reprocessing, and execute migration with a 3-document sample before full scale.
+
+When complete, write:
+```
+refactors/refactor_N_<slug>/phase4_data_migration.md
+```
+
+---
+
+## Phase 5 — Test Verification (autonomous)
+
+**Invoke skill:** `skills/core/test-runner-agent/SKILL.md` (`test-runner-agent`)
+
+Pass:
+- The project path
+- The Phase 2 findings (AT-1 through AT-6 gap list) — so the runner can report which gaps are now covered
+
+The skill will:
+- Run the full test suite (`pytest tests/ -v`)
+- Report how many AT-1→AT-6 gaps identified in Phase 2 are now covered
+- Confirm nothing regressed
+
+When complete, write:
+```
+refactors/refactor_N_<slug>/phase5_test_verification.md
+```
+
+---
+
+## Phase 6 — Performance Optimization (conditional)
 
 **Run this phase only if any of the following are true:**
 - The science audit (Phase 1) flagged latency, cost, or throughput concerns
@@ -196,7 +210,7 @@ refactors/refactor_N_<slug>/phase3_architecture.md
 Pass:
 - The codebase path
 - The refactor folder path — the skill reads `phase1_science_audit.md` and `phase3_architecture.md` automatically
-- Instruction: called as Phase 4 of `launch-refactor` — context from prior phases is pre-loaded
+- Instruction: called as Phase 6 of `agentic-refactor-army` — context from prior phases is pre-loaded
 
 The optimization-refactor skill will:
 - Profile CPU and memory on the primary entry point(s) with representative input
@@ -205,12 +219,12 @@ The optimization-refactor skill will:
 
 When complete, write:
 ```
-refactors/refactor_N_<slug>/phase4_optimization.md
+refactors/refactor_N_<slug>/phase6_optimization.md
 ```
 
 Then print:
 ```
-Phase 4 complete. Optimization report: refactors/refactor_N_<slug>/phase4_optimization.md.
+Phase 6 complete. Optimization report: refactors/refactor_N_<slug>/phase6_optimization.md.
 Net change: [summary line from optimization-refactor output]
 
 Proceeding to Final Report.
@@ -232,17 +246,25 @@ Write `refactors/refactor_N_<slug>/refactor_log.md`:
 [3-5 sentence summary of key findings]
 Full report: phase1_science_audit.md
 
-## Phase 2 — Antipattern Fixes
-[N antipatterns fixed, top 3 by impact]
-Full diff: phase2_antipattern_fixes.md
+## Phase 2 — Antipattern Audit
+[N antipatterns found, top 3 by severity]
+Full findings: phase2_antipattern_findings.md
 
 ## Phase 3 — Architectural Refactor
 [What was restructured and why]
 Full report: phase3_architecture.md
 
-## Phase 4 — Performance Optimization
+## Phase 4 — Data Migration
+[if run: strategy, N docs migrated; if skipped: note reason]
+Full report: phase4_data_migration.md (if run)
+
+## Phase 5 — Test Verification
+[N tests passed, AT gaps closed]
+Full report: phase5_test_verification.md
+
+## Phase 6 — Performance Optimization
 [if run: top bottlenecks addressed, before/after delta; if skipped: note reason]
-Full report: phase4_optimization.md (if run)
+Full report: phase6_optimization.md (if run)
 
 ## Net impact
 - Code quality: [qualitative assessment]
@@ -259,9 +281,11 @@ Agentic Refactor Army complete.
 
 refactors/refactor_N_<slug>/
   phase1_science_audit.md
-  phase2_antipattern_fixes.md
+  phase2_antipattern_findings.md
   phase3_architecture.md
-  phase4_optimization.md   ← if Phase 4 ran
+  phase4_data_migration.md  ← if Phase 4 ran
+  phase5_test_verification.md
+  phase6_optimization.md    ← if Phase 6 ran
   refactor_log.md
 ```
 
@@ -271,6 +295,6 @@ refactors/refactor_N_<slug>/
 - Never start Phase 3 before the checkpoint has explicit user confirmation.
 - Never skip the diff summary — it is the only human checkpoint in an otherwise autonomous pipeline.
 - If the science audit reveals a fundamental design problem (wrong objective, wrong metric, wrong data), stop at the end of Phase 1 and surface it explicitly before proceeding. A broken pipeline should not be refactored — it should be redesigned. Escalate to the user.
-- Phase 3 data migration (deep-pipeline-refactor Phase 3) is conditional on whether stored data is affected — follow the cost gate logic in the deep-pipeline-refactor skill.
-- Phase 4 performance optimization is conditional — only trigger it when one of its four conditions is met (cost/latency flagged, user mentions perf, AP-8/AP-11 were fixed, user requests it). Do not run by default.
+- Phase 4 data migration (`data-migration`) is conditional on whether stored data is affected — the skill handles the cost gate internally.
+- Phase 6 performance optimization is conditional — only trigger it when one of its four conditions is met (cost/latency flagged, user mentions perf, AP-8/AP-11 were fixed, user requests it). Do not run by default.
 - Do not create new refactor skills, SKILL.md files, or skill folders in the target repository being refactored. Refactor existing project code only.
