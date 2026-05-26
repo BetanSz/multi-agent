@@ -8,12 +8,12 @@ A skills library for Claude Code built around two autonomous pipelines: the **Ag
 
 ## The two pipelines
 
-### `/agentic-army` — Sprint Army
+### `/agentic-sprint-army` — Sprint Army
 
 Use this to build things. Each invocation runs one full sprint: design → code → review → test → risk analysis, with a human-in-the-loop gate before agents touch any code.
 
 ```
-/agentic-army "build an API endpoint that does X"
+/agentic-sprint-army "build an API endpoint that does X"
 ```
 
 Pipeline:
@@ -37,10 +37,13 @@ Use this after several sprints have accumulated. Autonomous agents are good at p
 ```
 
 Pipeline:
-1. **Science audit** (interactive) — reads the codebase and describes precisely what it computes; flags mathematical/logical issues, evaluation gaps, and data flow problems; the user can flag concerns that become priority threads
-2. **Superficial refactor** (autonomous) — audits 11 agentic antipatterns and applies fixes that don't change the architecture: client consolidation, prompt string extraction, batching redundant LLM calls, silent failure wrapping
-3. **Diff review checkpoint** — one human gate: review what changed, revert anything, confirm before proceeding
-4. **Deep architectural refactor** (autonomous) — structural redesign, module boundaries, execution flow; conditional data migration if stored data is affected
+1. **Science audit** (interactive) — reads the codebase and describes precisely what it computes; flags mathematical/logical issues, evaluation gaps, and data flow problems
+2. **Antipattern audit** (autonomous) — audits 14 agentic antipatterns and produces a findings table; no code changes yet
+3. **Findings review checkpoint** — one human gate: review findings, exclude anything, then confirm before fixes begin
+4. **Architectural refactor** (autonomous) — structural redesign, module boundaries, execution flow
+5. **Data migration** (conditional) — if stored data schemas were affected
+6. **Test verification** (autonomous) — full suite green, AT-1→AT-6 gaps closed
+7. **Performance optimization** (conditional) — profiling + targeted fixes when cost/latency was flagged
 
 Refactor artifacts land in `refactors/refactor_N_<slug>/`.
 
@@ -110,8 +113,11 @@ npx skills update   # install / update all external skills
 | Skill | Description |
 |-------|-------------|
 | `skills/core/agentic-refactor-army/` | Entry point |
-| `skills/utility/deep-scientific-refactor/` | deep-scientific-refactor — science audit, pipeline portrait, evaluation soundness, statistical power |
-| `skills/utility/deep-pipeline-refactor/` | deep-pipeline-refactor — 11 agentic antipatterns + architectural refactor + data migration |
+| `skills/utility/deep-scientific-refactor/` | Science audit — pipeline portrait, evaluation soundness, statistical power |
+| `skills/utility/agentic-antipattern-audit/` | 14 agentic antipatterns + test gap audit (AT-1→AT-6) — findings table only |
+| `skills/utility/architectural-refactor/` | Depth/seam lens, KISS/DRY, code smells — applies all fixes |
+| `skills/utility/data-migration/` | Cost gate + 3 migration strategies for schema/logic changes |
+| `skills/utility/optimization-refactor/` | CPU/memory profiling + targeted Python optimizations |
 
 ### Utility
 
@@ -133,7 +139,7 @@ skills/
   agile/          ← backlog-management
   INDEX.md        ← full skill catalog
 .agents/skills/   ← external skills (gitignored — install with npx skills update)
-sprints/          ← sprint artifacts from /agentic-army
+sprints/          ← sprint artifacts from /agentic-sprint-army
 refactors/        ← refactor artifacts from /agentic-refactor-army
 .claude/commands/ ← Claude Code slash command definitions
 ```
