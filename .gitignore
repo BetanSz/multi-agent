@@ -13,6 +13,7 @@ __pycache__/
 # Temp files
 *.tmp
 *.log
+.skillfish.json
 
 # npx skills — external skills managed by npx, not version-controlled
 # Install with: npx skills add <owner/repo@skill>

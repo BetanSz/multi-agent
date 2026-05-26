@@ -111,7 +111,6 @@ Single source of truth for all skills available in this project.
 | Skill | Path | Description |
 |-------|------|-------------|
 | prompt-master | `skills/ai-tools/prompt-master/` | Generates optimized prompts for 30+ tools (Claude, GPT, Cursor, Midjourney, etc.) |
-| openrouter | `skills/ai-tools/openrouter/` | Unified API for 400+ models with fallbacks, auto-routing, and streaming |
 | mcp-builder | `skills/ai-tools/mcp-builder/` | Full guide for building MCP servers (TypeScript preferred, 4-phase process) |
 
 ---
