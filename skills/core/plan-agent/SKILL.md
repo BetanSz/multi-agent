@@ -61,6 +61,19 @@ Write to `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_plan.md` (conductor prov
 - <!-- item -->
 ```
 
+## Step granularity rule
+
+Every implementation step must be **one action** (target: 2–5 minutes of work). If a step contains the word "and" connecting two distinct actions, split it. Examples of correctly sized steps:
+- "Write the failing test for `extract_entities`"
+- "Run it and confirm it fails"
+- "Implement `extract_entities` to make the test pass"
+- "Run the test suite and confirm green"
+- "Commit"
+
+## File structure before task decomposition
+
+Before writing the implementation sequence, map out which files will be **created or modified** and what each one is responsible for. This is where decomposition decisions get locked in — task boundaries follow file boundaries, not the other way around.
+
 ## Constraints
 
 - Do NOT write any implementation code

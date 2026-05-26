@@ -49,6 +49,10 @@ Within a wave, all tasks are independent of each other. Across waves, tasks must
 
 ## 3 — Execute the DAG
 
+### Agent context isolation
+
+Each dispatched agent receives **only the context it needs** — the relevant skill file, the sprint task block, and any upstream output files it depends on. Agents must never inherit the orchestrator's full session context or history. Construct each agent's prompt explicitly. This keeps agents focused and prevents context pollution between parallel tasks.
+
 ### Parallel dispatch (within a wave)
 When a wave contains more than one task, dispatch all tasks in that wave as simultaneous `Agent()` calls in a **single response**. Do not wait for one to finish before starting another.
 
