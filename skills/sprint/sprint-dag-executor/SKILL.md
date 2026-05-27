@@ -156,12 +156,12 @@ Locked decisions (do not re-open):
 ```
 
 **Azure tasks**: if `agent_notes` mentions any Azure resource (storage, deployment, AI, diagnostics, validation, environment setup), append the relevant skill path(s):
-- Storage → `.agents/skills/azure-storage/SKILL.md`
-- Deployment → `.agents/skills/azure-deploy/SKILL.md`
-- AI services → `.agents/skills/azure-ai/SKILL.md`
-- Diagnostics → `.agents/skills/azure-diagnostics/SKILL.md`
-- Environment / auth → `.agents/skills/azure-prepare/SKILL.md`
-- Policy / naming → `.agents/skills/azure-validate/SKILL.md`
+- Storage → `skills/azure-storage/SKILL.md`
+- Deployment → `skills/azure-deploy/SKILL.md`
+- AI services → `skills/azure-ai/SKILL.md`
+- Diagnostics → `skills/azure-diagnostics/SKILL.md`
+- Environment / auth → `skills/azure-prepare/SKILL.md`
+- Policy / naming → `skills/azure-validate/SKILL.md`
 
 **Python stack:** when an Azure skill offers both Python and .NET SDK examples, always prefer the Python reference.
 

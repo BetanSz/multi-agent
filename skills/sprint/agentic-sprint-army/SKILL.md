@@ -14,7 +14,7 @@ You are the sprint conductor. Your job is to take a sprint description through t
 
 ## Default communication mode
 
-Use this framing whenever you surface a problem, a decision, or a blocker to the user. Keep it short — target 6–10 lines. Any sub-skill (brainstorming, process-interviewer, hitl-analyzer…) may override this with its own communication style when active.
+Use this framing whenever you surface a problem, a decision, or a blocker to the user. Keep it short — target 6–10 lines. Any sub-skill (sprint-brainstorm, sprint-design, sprint-hitl-gate…) may override this with its own communication style when active.
 
 **When the situation requires it** (ambiguity, risk, back-and-forth, or a non-trivial choice):
 
@@ -39,7 +39,7 @@ Read `references/sprint-file-template.md` now — it is the contract between thi
 ## Pipeline
 
 ### Step 1 — Brainstorm
-Invoke the `brainstorming` skill by reading `.agents/skills/brainstorming/SKILL.md`.
+Invoke the `sprint-brainstorm` skill by reading `skills/sprint/sprint-brainstorm/SKILL.md`.
 
 Apply it to: **"[the sprint argument the user passed]"**
 
