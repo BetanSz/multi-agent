@@ -1,6 +1,6 @@
 ---
 name: agentic-refactor-army
-description: Orchestrates the full agentic refactor army pipeline — science audit (interactive) → antipattern + depth refactor (autonomous) → diff review checkpoint → deep architectural refactor (autonomous) → performance optimization (conditional, Phase 4). Produces a complete refactor log under refactors/refactor_N_<slug>/. Invoke via /agentic-refactor-army "path/to/codebase [optional concern]".
+description: Orchestrates the full agentic refactor army pipeline. Two execution modes — Sequential (interactive, one phase at a time) or Parallel (science audit + antipattern audit + perf baseline dispatched simultaneously, then unified synthesis before any code is touched). Both modes converge at the architectural refactor and produce a complete refactor log under refactors/refactor_N_<slug>/. Invoke via /agentic-refactor-army "path/to/codebase [optional concern]".
 argument-hint: '"path/to/codebase" or "path/to/codebase — specific concern"'
 ---
 
@@ -8,7 +8,7 @@ argument-hint: '"path/to/codebase" or "path/to/codebase — specific concern"'
 
 # Agentic Refactor Army
 
-Three-phase pipeline. One human checkpoint. No skipping phases.
+Two execution modes, one human checkpoint (placed differently per mode), phases 3–6 shared. No skipping phases within a mode.
 
 **Freedom level: LOW for sequencing** — the three phases are mandatory and must run in order. **MEDIUM within each phase** — judgment is required on what counts as an antipattern, what warrants deep restructuring, and what is worth flagging vs. fixing silently.
 
@@ -52,9 +52,27 @@ Determine the run number N (count existing `refactors/refactor_*/` folders + 1) 
 refactors/refactor_N_<slug>/
 ```
 
-Create it now. All artifacts from all three phases land here.
+Create it now. All artifacts from all phases land here.
 
-Confirm: `"Refactor folder: refactors/refactor_N_<slug>/. Starting Phase 1 — Science Audit."`
+Confirm: `"Refactor folder: refactors/refactor_N_<slug>/ created."`
+
+### 3. Mode selection
+
+Ask the user:
+
+> **Choose execution mode:**
+>
+> **A — Sequential (interactive):** Phases run one by one in order. You can discuss findings at each step before moving forward. The science audit is fully interactive.
+>
+> **B — Parallel:** Science audit, antipattern audit, and performance baseline are launched simultaneously as independent agents — each writes its own report. Key findings from all three are then presented as a unified synthesis before any code is touched.
+>
+> Which mode? (A or B)
+
+Proceed to the section matching the user's choice.
+
+---
+
+## Sequential Mode
 
 ---
 
@@ -129,19 +147,102 @@ If not, say "go" and Phase 3 starts.
 
 **Do not proceed until the user responds.** Silence is not confirmation.
 
-When the user confirms, proceed.
+When the user confirms, proceed to Phase 3.
+
+---
+
+## Parallel Mode
+
+### Parallel Analysis Block
+
+Dispatch the following three agents **simultaneously in a single response** — do not wait for one before starting the others. Each agent receives only the context it needs (codebase path, user concern, its own skill file). They do not share context with each other at this stage.
+
+**Agent 1 — Science Audit (autonomous)**
+
+Invoke skill: `skills/utility/deep-scientific-refactor/SKILL.md`
+
+Pass:
+- The codebase path
+- The user concern (if any)
+- Instruction: **run in autonomous mode — skip all interactive steps (Step 0, user-reaction collection). Produce only the written audit output.**
+
+Output: `refactors/refactor_N_<slug>/phase1_science_audit.md`
+
+**Agent 2 — Antipattern Audit (autonomous)**
+
+Invoke skill: `skills/utility/agentic-antipattern-audit/SKILL.md`
+
+Pass:
+- The codebase path
+- Instruction: run fully autonomously, no cross-context from Agent 1.
+
+Output: `refactors/refactor_N_<slug>/phase2_antipattern_findings.md`
+
+**Agent 3 — Performance Baseline (autonomous)**
+
+Invoke skill: `skills/utility/optimization-refactor/SKILL.md`
+
+Pass:
+- The codebase path
+- Instruction: **profile-only mode — run CPU and memory profiling on the primary entry point(s) with representative input. Do NOT apply any fixes. Produce only the baseline profile report.**
+
+Output: `refactors/refactor_N_<slug>/phase_perf_baseline.md`
+
+Wait until all three output files exist before proceeding.
+
+---
+
+### Parallel Synthesis — Unified Findings (mandatory human gate)
+
+Read all three reports. Cross-reference them: do any antipatterns explain the profiling hotspots? Does the science audit flag the same structural area as the antipattern audit? Consolidate into a synthesis block and present it to the user:
+
+```
+Parallel analysis complete. Here is the unified synthesis across all three lenses:
+
+## Top findings — Science Audit
+- [top 3–5 flags, one line each, with severity]
+
+## Top findings — Antipattern Audit
+- [top 3–5 antipatterns by severity, one line each: AP-N — name — affected file]
+
+## Top findings — Performance Baseline
+- [top 2–3 hotspots: function/module — CPU% or memory — root cause hypothesis]
+
+## Cross-references
+- [any finding that appears in 2 or more lenses — these are the highest-priority items]
+
+## Proposed execution order for Phase 3
+1. [item — reason this must come first]
+2. [item]
+...
+
+Phase 3 will apply all fixes in the proposed order.
+Anything to exclude or reorder before Phase 3 begins?
+If not, say "go" and Phase 3 starts.
+```
+
+**Do not proceed until the user responds.** Silence is not confirmation.
+
+When the user confirms (or adjusts the order), proceed to Phase 3 with:
+- `phase1_science_audit.md` as the science context
+- `phase2_antipattern_findings.md` as the antipattern context
+- `phase_perf_baseline.md` as the performance context
+- The user's confirmed execution order as the sequencing constraint for Phase 3
 
 ---
 
 ## Phase 3 — Architectural Refactor (autonomous)
 
+*Both Sequential and Parallel modes converge here.*
+
 **Invoke skill:** `skills/utility/architectural-refactor/SKILL.md` (`architectural-refactor`)
 
 Pass:
 - The codebase path
-- The science audit findings (Phase 1 output)
-- The antipattern findings (Phase 2 output) — so the refactor works from the confirmed findings table
-- The user's confirmation and any exclusions from the checkpoint
+- The science audit findings (`phase1_science_audit.md`)
+- The antipattern findings (`phase2_antipattern_findings.md`)
+- The performance baseline (`phase_perf_baseline.md`) — if it exists (parallel mode only)
+- The user's confirmation, any exclusions, and the agreed execution order from the checkpoint
 
 The skill will:
 - Apply module depth/seam/deletion-test lens
@@ -203,7 +304,9 @@ refactors/refactor_N_<slug>/phase5_test_verification.md
 - Phase 2 antipattern fixes included AP-8 (N+1) or AP-11 (operation granularity) — profiling validates the fix
 - The user explicitly requests a performance pass
 
-**If none apply:** skip Phase 4 and proceed to the Final Report.
+**If none apply:** skip Phase 6 and proceed to the Final Report.
+
+**Parallel mode note:** `phase_perf_baseline.md` already exists — pass it to the skill so it skips re-profiling and goes directly to applying optimisations.
 
 **Invoke skill:** `skills/utility/optimization-refactor/SKILL.md` (`optimization-refactor`)
 
@@ -264,6 +367,7 @@ Full report: phase5_test_verification.md
 
 ## Phase 6 — Performance Optimization
 [if run: top bottlenecks addressed, before/after delta; if skipped: note reason]
+[parallel mode: baseline was pre-computed — only delta from Phase 3 fixes is reported here]
 Full report: phase6_optimization.md (if run)
 
 ## Net impact
@@ -282,6 +386,7 @@ Agentic Refactor Army complete.
 refactors/refactor_N_<slug>/
   phase1_science_audit.md
   phase2_antipattern_findings.md
+  phase_perf_baseline.md    ← parallel mode only
   phase3_architecture.md
   phase4_data_migration.md  ← if Phase 4 ran
   phase5_test_verification.md
