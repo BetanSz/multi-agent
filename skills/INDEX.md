@@ -1,4 +1,4 @@
-# Skills Index
+﻿# Skills Index
 
 Single source of truth for all skills available in this project.
 
@@ -12,17 +12,17 @@ Single source of truth for all skills available in this project.
 
 | Skill | Path | Description |
 |-------|------|-------------|
-| **agentic-sprint-army** | `skills/core/agentic-sprint-army/` | **Main entry point** — `/agentic-sprint-army "description"` runs the full pipeline: brainstorm → interview → HITL → agents → sprint_log |
-| **agentic-refactor-army** | `skills/core/agentic-refactor-army/` | **Refactor entry point** — `/agentic-refactor-army "path [— concern]"` runs: science audit (interactive) → antipattern + depth refactor (autonomous) → diff review checkpoint → deep architectural refactor (autonomous) → performance optimization (conditional, Phase 4); artifacts in `refactors/refactor_N_<slug>/` |
-| **hitl-analyzer** | `skills/core/hitl-analyzer/` | **Pre-flight gate** — reads sprint file, verifies every human-required action works before agents start; blocks until 100% confirmed |
-| **execute-sprint** | `skills/core/execute-sprint/` | **Autonomous execution engine** — reads a confirmed sprint file, builds task DAG, dispatches agents (plan → code → review → test) in order, no human interaction except genuine blockers |
-| plan-agent | `skills/core/plan-agent/` | Architect specialist: scoping, API design, implementation sequence |
-| code-agent | `skills/core/code-agent/` | Implementation specialist: Pythonic, efficient, minimal footprint, stays with existing stack |
-| review-agent | `skills/core/review-agent/` | 3-mode reviewer: review / fix / architectural-fix-with-test-gate — includes performance + best-practice analysis |
-| test-generator-agent | `skills/core/test-generator-agent/` | L3 sprints: standard TDD tests + 6 agentic failure pattern tests (AT-1 silent failure visibility — break each argument and assert failure is observable; AT-2 idempotency; AT-3 interface contract with wrong dict shapes; AT-4 prompt regression snapshots; AT-5 threshold boundaries; AT-6 smoke). All external calls mocked — zero real API cost. |
-| test-runner-agent | `skills/core/test-runner-agent/` | L2/L3 sprints: runs existing + new tests, signals pass/fail to conductor, triggers code-agent retry on failure |
-| **sprint-reporter** | `skills/core/sprint-reporter/` | **Post-sprint reporter** — reads all task output files in `sprints/sprint_N_<slug>/` after execute-sprint completes and writes `sprint_N_log.md` with full visibility into agent decisions |
-| **sprint-premortem** | `skills/core/sprint-premortem/` | **Final step** — prospective hindsight on the sprint's deliverables; classifies risks as Tigers, Paper Tigers, and Elephants; produces `sprint_N_premortem.md` |
+| **agentic-sprint-army** | `skills/sprint/agentic-sprint-army/` | **Main entry point** — `/agentic-sprint-army "description"` runs the full pipeline: brainstorm → interview → HITL → agents → sprint_log |
+| **agentic-refactor-army** | `skills/refactor/agentic-refactor-army/` | **Refactor entry point** — `/agentic-refactor-army "path [— concern]"` runs: science audit (interactive) → antipattern + depth refactor (autonomous) → diff review checkpoint → deep architectural refactor (autonomous) → performance optimization (conditional, Phase 4); artifacts in `refactors/refactor_N_<slug>/` |
+| **hitl-analyzer** | `skills/sprint/hitl-analyzer/` | **Pre-flight gate** — reads sprint file, verifies every human-required action works before agents start; blocks until 100% confirmed |
+| **execute-sprint** | `skills/sprint/sprint-dag-executor/` | **Autonomous execution engine** — reads a confirmed sprint file, builds task DAG, dispatches agents (plan → code → review → test) in order, no human interaction except genuine blockers |
+| plan-agent | `skills/sprint/plan-agent/` | Architect specialist: scoping, API design, implementation sequence |
+| code-agent | `skills/sprint/code-agent/` | Implementation specialist: Pythonic, efficient, minimal footprint, stays with existing stack |
+| review-agent | `skills/sprint/review-agent/` | 3-mode reviewer: review / fix / architectural-fix-with-test-gate — includes performance + best-practice analysis |
+| test-generator-agent | `skills/sprint/test-gen-agent/` | L3 sprints: standard TDD tests + 6 agentic failure pattern tests (AT-1 silent failure visibility — break each argument and assert failure is observable; AT-2 idempotency; AT-3 interface contract with wrong dict shapes; AT-4 prompt regression snapshots; AT-5 threshold boundaries; AT-6 smoke). All external calls mocked — zero real API cost. |
+| test-runner-agent | `skills/sprint/test-run-agent/` | L2/L3 sprints: runs existing + new tests, signals pass/fail to conductor, triggers code-agent retry on failure |
+| **sprint-reporter** | `skills/sprint/sprint-reporter/` | **Post-sprint reporter** — reads all task output files in `sprints/sprint_N_<slug>/` after sprint-dag-executor completes and writes `sprint_N_log.md` with full visibility into agent decisions |
+| **sprint-premortem** | `skills/sprint/sprint-premortem/` | **Final step** — prospective hindsight on the sprint's deliverables; classifies risks as Tigers, Paper Tigers, and Elephants; produces `sprint_N_premortem.md` |
 
 ---
 
@@ -120,13 +120,13 @@ Single source of truth for all skills available in this project.
 | Skill | Path | Description |
 |-------|------|-------------|
 | **repo-init** | `skills/utility/repo-init/` | **Project bootstrapper** — folder structure, conda env, .gitignore, .env.example, CLAUDE.md, pyproject.toml; stack-aware (Python/Azure, FastAPI, TS); never overwrites existing files |
-| **agentic-antipattern-audit** | `skills/utility/agentic-antipattern-audit/` | **14-antipattern audit + test gap report** — AP-1 dead code through AP-14 inter-file bounce; AT-1→AT-6 test gap audit; produces a combined findings table with no code changes. Phase 2 of `agentic-refactor-army`. |
-| **architectural-refactor** | `skills/utility/architectural-refactor/` | **Structural redesign** — module depth/seam/deletion-test lens, KISS/DRY principles, code smell catalog; authorized for large-scale changes (dissolve classes, merge files, reroute call graphs). Phase 3 of `agentic-refactor-army`. |
-| **data-migration** | `skills/utility/data-migration/` | **Data migration protocol** — classify change (schema/logic/structural), impact assessment, cost gate for LLM reprocessing, 3 strategies (delete+reprocess, patch in place, dual-run+compare), 3-doc sample before full scale. Phase 4 of `agentic-refactor-army` (conditional). |
-| **deep-scientific-refactor** | `skills/utility/deep-scientific-refactor/` | **Scientific review of pipelines and evaluation systems** — senior data scientist persona. Opens with a pipeline portrait: minimal, precise prose description of what the system actually computes, with inline [?] flags on dubious parts; user response collected but audit proceeds fully independently. Then three formal lenses: (1) data flow correctness; (2) evaluation soundness (metric validity, null inflation, circular evaluation, score calibration, threshold justification, baseline, statistical power analysis with N_min formula and cost-to-close); (3) output completeness. Abstracts away from implementation — reads logic, math, and scientific validity only |
-| **optimization-refactor** | `skills/utility/optimization-refactor/` | **Python runtime performance audit** — profiles CPU and memory (cProfile, memory_profiler), identifies hot spots, applies targeted optimizations (vectorization, generators, caching, async I/O, data structure substitution). Run after `architectural-refactor` when performance is a concern. Phase 6 of `agentic-refactor-army`. |
+| **agentic-antipattern-audit** | `skills/refactor/refactor-antipatterns/` | **14-antipattern audit + test gap report** — AP-1 dead code through AP-14 inter-file bounce; AT-1→AT-6 test gap audit; produces a combined findings table with no code changes. Phase 2 of `agentic-refactor-army`. |
+| **architectural-refactor** | `skills/refactor/refactor-structure/` | **Structural redesign** — module depth/seam/deletion-test lens, KISS/DRY principles, code smell catalog; authorized for large-scale changes (dissolve classes, merge files, reroute call graphs). Phase 3 of `agentic-refactor-army`. |
+| **data-migration** | `skills/refactor/refactor-data/` | **Data migration protocol** — classify change (schema/logic/structural), impact assessment, cost gate for LLM reprocessing, 3 strategies (delete+reprocess, patch in place, dual-run+compare), 3-doc sample before full scale. Phase 4 of `agentic-refactor-army` (conditional). |
+| **deep-scientific-refactor** | `skills/refactor/refactor-science/` | **Scientific review of pipelines and evaluation systems** — senior data scientist persona. Opens with a pipeline portrait: minimal, precise prose description of what the system actually computes, with inline [?] flags on dubious parts; user response collected but audit proceeds fully independently. Then three formal lenses: (1) data flow correctness; (2) evaluation soundness (metric validity, null inflation, circular evaluation, score calibration, threshold justification, baseline, statistical power analysis with N_min formula and cost-to-close); (3) output completeness. Abstracts away from implementation — reads logic, math, and scientific validity only |
+| **optimization-refactor** | `skills/refactor/refactor-perf/` | **Python runtime performance audit** — profiles CPU and memory (cProfile, memory_profiler), identifies hot spots, applies targeted optimizations (vectorization, generators, caching, async I/O, data structure substitution). Run after `refactor-structure` when performance is a concern. Phase 6 of `agentic-refactor-army`. |
 | agent-browser | `skills/utility/agent-browser/` | Browser automation agent |
-| process-interviewer | `skills/utility/process-interviewer/` | Relentless interviewer: extracts complete process before building anything |
+| process-interviewer | `skills/sprint/sprint-design/` | Relentless interviewer: extracts complete process before building anything |
 | api-documentation | `skills/utility/api-documentation/` | Document REST APIs in OpenAPI 3.0 — schemas, examples, auth, response codes |
 | webapp-testing | `.agents/skills/webapp-testing/` | Playwright Python testing for web apps — decision tree, server lifecycle, selector patterns |
 

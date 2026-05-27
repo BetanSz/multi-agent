@@ -1,4 +1,4 @@
-# multi-agent
+﻿# multi-agent
 
 A skills library for Claude Code built around two autonomous pipelines: the **Agentic Sprint Army** for building features sprint by sprint, and the **Agentic Refactor Army** for cleaning up what several sprints of autonomous code produce.
 
@@ -64,7 +64,7 @@ Run the refactor army every few sprints, or whenever the codebase starts feeling
 Create `.claude/commands/agentic-sprint-army.md` in your project:
 
 ```markdown
-Read and follow: `../mutlit-agent/skills/core/agentic-sprint-army/SKILL.md`
+Read and follow: `../mutlit-agent/skills/sprint/agentic-sprint-army/SKILL.md`
 **Skill path resolution**: all skill paths are relative to `../mutlit-agent/`. Prepend `../mutlit-agent/` to any path that does not start with `/` or `../`.
 **Project context**: sprint files and artifacts live in THIS project under `sprints/sprint_N_<slug>/`.
 Apply to: $ARGUMENTS
@@ -73,7 +73,7 @@ Apply to: $ARGUMENTS
 And `.claude/commands/agentic-refactor-army.md`:
 
 ```markdown
-Read and follow: `../mutlit-agent/skills/core/agentic-refactor-army/SKILL.md`
+Read and follow: `../mutlit-agent/skills/refactor/agentic-refactor-army/SKILL.md`
 Apply to: $ARGUMENTS
 ```
 
@@ -97,27 +97,27 @@ npx skills update   # install / update all external skills
 
 | Skill | Description |
 |-------|-------------|
-| `skills/core/agentic-sprint-army/` | Entry point |
-| `skills/core/hitl-analyzer/` | Pre-flight gate — conda env, credentials, Azure resources, git state |
-| `skills/core/execute-sprint/` | Autonomous execution engine — DAG dispatch |
-| `skills/core/plan-agent/` | Architect: scoping, API design, implementation sequence |
-| `skills/core/code-agent/` | Implementation: Pythonic, minimal footprint |
-| `skills/core/review-agent/` | 3-mode reviewer: review / fix / architectural-fix-with-test-gate |
-| `skills/core/test-generator-agent/` | TDD + 6 agentic failure pattern tests (AT-1 through AT-6) |
-| `skills/core/test-runner-agent/` | Runs tests, signals pass/fail, triggers retry |
-| `skills/core/sprint-reporter/` | Writes `sprint_N_log.md` after execution |
-| `skills/core/sprint-premortem/` | Prospective risk analysis |
+| `skills/sprint/agentic-sprint-army/` | Entry point |
+| `skills/sprint/hitl-analyzer/` | Pre-flight gate — conda env, credentials, Azure resources, git state |
+| `skills/sprint/sprint-dag-executor/` | Autonomous execution engine — DAG dispatch |
+| `skills/sprint/plan-agent/` | Architect: scoping, API design, implementation sequence |
+| `skills/sprint/code-agent/` | Implementation: Pythonic, minimal footprint |
+| `skills/sprint/review-agent/` | 3-mode reviewer: review / fix / architectural-fix-with-test-gate |
+| `skills/sprint/test-gen-agent/` | TDD + 6 agentic failure pattern tests (AT-1 through AT-6) |
+| `skills/sprint/test-run-agent/` | Runs tests, signals pass/fail, triggers retry |
+| `skills/sprint/sprint-reporter/` | Writes `sprint_N_log.md` after execution |
+| `skills/sprint/sprint-premortem/` | Prospective risk analysis |
 
 ### Refactor Army internals
 
 | Skill | Description |
 |-------|-------------|
-| `skills/core/agentic-refactor-army/` | Entry point |
-| `skills/utility/deep-scientific-refactor/` | Science audit — pipeline portrait, evaluation soundness, statistical power |
-| `skills/utility/agentic-antipattern-audit/` | 14 agentic antipatterns + test gap audit (AT-1→AT-6) — findings table only |
-| `skills/utility/architectural-refactor/` | Depth/seam lens, KISS/DRY, code smells — applies all fixes |
-| `skills/utility/data-migration/` | Cost gate + 3 migration strategies for schema/logic changes |
-| `skills/utility/optimization-refactor/` | CPU/memory profiling + targeted Python optimizations |
+| `skills/refactor/agentic-refactor-army/` | Entry point |
+| `skills/refactor/refactor-science/` | Science audit — pipeline portrait, evaluation soundness, statistical power |
+| `skills/refactor/refactor-antipatterns/` | 14 agentic antipatterns + test gap audit (AT-1→AT-6) — findings table only |
+| `skills/refactor/refactor-structure/` | Depth/seam lens, KISS/DRY, code smells — applies all fixes |
+| `skills/refactor/refactor-data/` | Cost gate + 3 migration strategies for schema/logic changes |
+| `skills/refactor/refactor-perf/` | CPU/memory profiling + targeted Python optimizations |
 
 ### Utility
 
