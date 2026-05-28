@@ -36,6 +36,10 @@ If the path is unambiguous and low-risk, skip the block and just act.
 
 Read `references/sprint-file-template.md` now — it is the contract between this system and any calling project.
 
+## File output rule
+
+**All `.md` files produced during a sprint (design specs, sprint file, task logs, sprint log, premortem) must be written inside the sprint folder: `sprints/sprint_N_<subject>/`.** Create the folder at the start of Step 2 if it does not already exist. No sub-skill may write sprint-related markdown files anywhere else.
+
 ## Pipeline
 
 ### Step 1 — Brainstorm

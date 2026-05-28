@@ -28,10 +28,9 @@ You MUST create a task for each of these items and complete them in order:
 3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
 4. **Propose 2-3 approaches** — with trade-offs and your recommendation
 5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
+6. **Write design doc** — save to the sprint folder (`sprints/sprint_N_<subject>/`) as `design.md`
 7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **User reviews written spec** — ask user to review the spec file before proceeding
-9. **Transition to sprint planning** — return the approved direction to sprint-army; sprint-army will invoke sprint-design (process-interviewer) to convert the design into a concrete sprint file
+8. **Transition to sprint planning** — return the approved direction to sprint-army; sprint-army will invoke sprint-design (process-interviewer) to convert the design into a concrete sprint file
 
 ## Process Flow
 
@@ -46,7 +45,6 @@ digraph sprint_brainstorm {
     "User approves design?" [shape=diamond];
     "Write design doc" [shape=box];
     "Spec self-review\n(fix inline)" [shape=box];
-    "User reviews spec?" [shape=diamond];
     "Hand off to sprint-design" [shape=doublecircle];
 
     "Explore project context" -> "Visual questions ahead?";
@@ -59,9 +57,7 @@ digraph sprint_brainstorm {
     "User approves design?" -> "Present design sections" [label="no, revise"];
     "User approves design?" -> "Write design doc" [label="yes"];
     "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Hand off to sprint-design" [label="approved"];
+    "Spec self-review\n(fix inline)" -> "Hand off to sprint-design";
 }
 ```
 
@@ -110,9 +106,7 @@ digraph sprint_brainstorm {
 
 **Documentation:**
 
-- Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
-  - (User preferences for spec location override this default)
-- Commit the design document to git
+- Write the validated design (spec) to the sprint folder as `design.md` — the sprint conductor controls the exact path
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:
@@ -123,13 +117,6 @@ After writing the spec document, look at it with fresh eyes:
 4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
 
 Fix any issues inline. No need to re-review — just fix and move on.
-
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
-
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we move to sprint planning."
-
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
 
 **Hand-off:**
 
