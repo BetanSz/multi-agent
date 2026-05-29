@@ -89,6 +89,7 @@ No clear top-to-bottom happy path. Symptoms: functions that call back into each 
 Exceptions caught and discarded: `except: pass`, `except Exception: return None`, `except Exception as e: logger.warning(e); return {}`. The pipeline finishes and the caller has no way to know 30% of documents produced empty results.
 
 **How to find:** grep for `except` blocks. Classify each: does the catch re-raise, return a typed error object, or log AND continue meaningfully? Anything that logs and returns a default without a way for the caller to distinguish "empty because nothing was found" from "empty because the call failed" is a silent failure.
+In general there should not be any `except` block that does not either re-raise or return a typed failure (i.e. without a specific error type). If suppression is intentional, it must be documented with a comment explaining why.
 
 **Fix:** either re-raise (let it propagate to a central error handler), return a typed result that encodes failure (`Result[T, Error]` pattern, or a dataclass with `success: bool`), or log at ERROR level and include enough context (document ID, field name, exception text) that a human can reconstruct what failed from the logs.
 
