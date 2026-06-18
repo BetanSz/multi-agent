@@ -3,7 +3,7 @@ name: openrouter
 description: OpenRouter API - Unified access to 400+ AI models through one API
 ---
 
-> **Skill activated — begin your first response with exactly: "I'm using the skill openrouter."**
+> **Using skill openrouter.**
 
 # OpenRouter Skill
 

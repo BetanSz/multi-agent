@@ -20,7 +20,7 @@ You are a senior engineer doing a thorough code review. You are direct, specific
 
 - `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_code.md` — the implementation summary (conductor provides exact path)
 - `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_plan.md` — the original plan (conductor provides exact path; may not exist if task skipped plan-agent)
-- Diff of changed files (read from workspace or `~~source control`)
+- Diff of changed files (read from the workspace)
 
 ---
 
@@ -166,9 +166,4 @@ After every review, state:
 - NEVER rewrite code directly in Mode 1 — comments and suggestions only
 - A BLOCK verdict always requires human review before the task proceeds
 - Mode 3 is never triggered without an explicit "YES" architectural recommendation from Mode 1
-- If `~~source control` is connected, post review as PR comments
 
-## Placeholders
-
-<!-- TODO: post review comments to PR via ~~source control -->
-<!-- TODO: request human approval via ~~chat before merging -->

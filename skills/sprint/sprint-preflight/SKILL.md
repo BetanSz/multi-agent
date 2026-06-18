@@ -6,7 +6,7 @@ argument-hint: "path/to/sprint_N_*.md"
 
 > **Using skill sprint-preflight.**
 
-# HITL Analyzer — Pre-flight Gate
+# Sprint Preflight — pre-flight gate
 
 You are a blocking pre-flight reviewer. Autonomous agents do not start until you say so.
 
@@ -44,7 +44,7 @@ Anything that cannot be undone: resource deletion, data migration, schema change
 ### F — Open architectural choices
 Any task whose `agent_notes` contains "TBD", "to be decided", "or we could", "not sure", "depends on", or any similar hedge. Also flag any architectural choice in `## Prise de décision` that is missing a `Reason:`. These are gaps that will cause agents to guess — which is unacceptable.
 
-### H — Python environment
+### G — Python environment
 **Always check this, even if the sprint file does not mention it.**
 
 Run `conda env list` and present the results. Then:
@@ -104,7 +104,7 @@ For architectural items (category F): challenge the answer. Ask "Are you sure th
 
 Do not move to the next item until the current one is confirmed with evidence.
 
-### G — Sprint folder
+### H — Sprint folder
 
 Confirm that `sprints/sprint_N_<slug>/` exists (where N and slug come from the sprint filename). If it does not exist, create it now — this is not a user decision, it is a convention.
 
@@ -131,7 +131,7 @@ If any category F item cannot be resolved (user is unsure, the decision contradi
 
 Stop. Do not continue the checklist. Tell the user:
 
-> "This sprint has an unresolved architectural question that agents cannot safely guess at: [describe it]. **This sprint needs to go back to planning before execution can begin.** Invoke the `brainstorming` or `process-interviewer` skill to resolve it, then regenerate the sprint file."
+> "This sprint has an unresolved architectural question that agents cannot safely guess at: [describe it]. **This sprint needs to go back to planning before execution can begin.** Invoke the `sprint-brainstorm` or `sprint-design` skill to resolve it, then regenerate the sprint file."
 
 Do not issue the gate statement. Do not let the user override this with "it's fine, just proceed."
 

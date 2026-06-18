@@ -68,8 +68,8 @@ All files live in `sprints/sprint_N_<slug>/`. Naming pattern: `task_{id}_{desc-s
 task_{id}_{desc-slug}_plan.md      ← after plan-agent
 task_{id}_{desc-slug}_code.md      ← after code-agent
 task_{id}_{desc-slug}_review.md    ← after review-agent
-task_{id}_{desc-slug}_test_gen.md  ← after test-generator-agent
-task_{id}_{desc-slug}_test_run.md  ← after test-runner-agent
+task_{id}_{desc-slug}_test_gen.md  ← after test-gen-agent
+task_{id}_{desc-slug}_test_run.md  ← after test-run-agent
 ```
 
 Example for task-2 "Define Pydantic schemas":
@@ -91,7 +91,7 @@ Run the following agents in order for each task. Each agent is a separate `Agent
 Read `skills/sprint/plan-agent/SKILL.md`.
 Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_plan.md`
 
-### 4.2 test-generator-agent — only if quality level is L3
+### 4.2 test-gen-agent — only if quality level is L3
 
 **Runs before code-agent.** Tests are written against the plan spec, not the implementation. This is the TDD contract: failing tests exist before any production code is written.
 
@@ -117,14 +117,14 @@ Verdicts:
 - **REQUEST CHANGES** — return to code-agent with review feedback. Maximum 2 retries; after the second retry, run review-agent once more. If still REQUEST CHANGES after 2 retries → treat as BLOCK.
 - **BLOCK** — trigger mid-sprint HITL pause (see section 5)
 
-### 4.5 test-runner-agent — only if quality level is L2 or L3
+### 4.5 test-run-agent — only if quality level is L2 or L3
 
 Read `skills/sprint/test-run-agent/SKILL.md`.
 Output: `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_run.md`
 
 Verdicts:
 - **PASS** — task complete. Write a one-line summary to `sprints/sprint_N_<slug>/status.md`.
-- **FAIL** — return to code-agent with full failure context. Maximum 2 retries, then run test-runner-agent again. If still FAIL after 2 retries → trigger mid-sprint HITL pause.
+- **FAIL** — return to code-agent with full failure context. Maximum 2 retries, then run test-run-agent again. If still FAIL after 2 retries → trigger mid-sprint HITL pause.
 
 ---
 
@@ -208,7 +208,7 @@ Phase N — <task name>
   → plan-agent: designing <scope>
   → code-agent: implementing <what>
   → review-agent: reviewing <what>
-  → test-runner: running <suite>
+  → test-run-agent: running <suite>
 ```
 
 **On phase completion**, print:
@@ -223,11 +223,11 @@ Phase N — <task name>
 
 Keep descriptions concrete (name the files, functions, or schemas involved), not generic ("implementing features").
 
-## 9 — Mandatory closing steps
+## 8 — Mandatory closing steps
 
-**The sprint is not complete until both closing files exist. Do not report the sprint as done, do not output a completion message, do not stop — until steps 9.1 and 9.2 are finished.**
+**The sprint is not complete until both closing files exist. Do not report the sprint as done, do not output a completion message, do not stop — until steps 8.1 and 8.2 are finished.**
 
-### 9.1 — Sprint log (mandatory)
+### 8.1 — Sprint log (mandatory)
 
 Read and execute `skills/sprint/sprint-reporter/SKILL.md` now. Do not skip this step even if the sprint ran smoothly and the result feels obvious.
 
@@ -237,9 +237,9 @@ Pass:
 - Any mid-sprint HITL pauses
 - Any autonomous decisions made by agents
 
-Confirm `sprints/sprint_N_<slug>/sprint_N_log.md` was written before proceeding to 9.2.
+Confirm `sprints/sprint_N_<slug>/sprint_N_log.md` was written before proceeding to 8.2.
 
-### 9.2 — Pre-mortem (mandatory)
+### 8.2 — Pre-mortem (mandatory)
 
 Read and execute `skills/sprint/sprint-premortem/SKILL.md` now.
 

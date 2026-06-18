@@ -1,6 +1,6 @@
 ---
 name: sprint-brainstorm
-description: "Design-first exploration step. Turns a fuzzy idea into an approved direction before any sprint planning begins. Run as Step 1 of sprint-army — do NOT skip, even for seemingly simple requests. Explores context, asks clarifying questions one at a time, proposes 2-3 approaches, presents a design, writes a spec, then hands the approved direction to sprint-design (the process-interviewer). Copied from: .agents/skills/brainstorming/ (source: wshobson/agents on GitHub). Customised for the sprint-army pipeline: terminal state is handing off to sprint-design, not invoking writing-plans."
+description: "Design-first exploration step. Turns a fuzzy idea into an approved direction before any sprint planning begins. Run as Step 1 of sprint-army — do NOT skip, even for seemingly simple requests. Explores context, asks clarifying questions one at a time, proposes 2-3 approaches, presents a design, writes a spec, then hands the approved direction to sprint-design. Copied from: .agents/skills/brainstorming/ (source: obra/superpowers on GitHub). Customised for the sprint-army pipeline: terminal state is handing off to sprint-design, not invoking writing-plans."
 ---
 
 > **Using skill sprint-brainstorm.**
@@ -30,7 +30,7 @@ You MUST create a task for each of these items and complete them in order:
 5. **Present design** — in sections scaled to their complexity, get user approval after each section
 6. **Write design doc** — save to the sprint folder (`sprints/sprint_N_<subject>/`) as `design.md`
 7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **Transition to sprint planning** — return the approved direction to sprint-army; sprint-army will invoke sprint-design (process-interviewer) to convert the design into a concrete sprint file
+8. **Transition to sprint planning** — return the approved direction to sprint-army; sprint-army will invoke sprint-design to convert the design into a concrete sprint file
 
 ## Process Flow
 
@@ -61,7 +61,7 @@ digraph sprint_brainstorm {
 }
 ```
 
-**The terminal state is handing the approved direction back to sprint-army.** sprint-army will then invoke `sprint-design` (process-interviewer) to extract the full task list, dependencies, and quality level for the sprint file. Do NOT invoke writing-plans or any implementation skill.
+**The terminal state is handing the approved direction back to sprint-army.** sprint-army will then invoke `sprint-design` to extract the full task list, dependencies, and quality level for the sprint file. Do NOT invoke writing-plans or any implementation skill.
 
 ## The Process
 

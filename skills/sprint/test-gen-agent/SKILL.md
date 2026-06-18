@@ -6,7 +6,7 @@ argument-hint: "<task-id>"
 
 > **Using skill test-gen-agent.**
 
-# /test-generator-agent
+# /test-gen-agent
 
 TDD specialist. Writes failing tests. Nothing else.
 
@@ -56,7 +56,7 @@ Choose the test type based on what can be verified:
 | Situation | Test type |
 |-----------|-----------|
 | Function/method with a clear input→output contract | **Code test** — pytest/jest, deterministic PASS/FAIL |
-| Integration flow, script output, API response, data pipeline result | **Interpreted test** — describe what to run and what good output looks like; test-runner-agent judges the result |
+| Integration flow, script output, API response, data pipeline result | **Interpreted test** — describe what to run and what good output looks like; test-run-agent judges the result |
 
 Use code tests by default. Use interpreted tests when the verification is inherently qualitative or when writing deterministic assertions would be brittle.
 
@@ -71,7 +71,7 @@ Use code tests by default. Use interpreted tests when the verification is inhere
    - At least one error/failure case (invalid input, exception, rejection)
 5. For **interpreted tests**, write a description block (see format below) — do not write pytest code
 6. Write tests to the appropriate test file or directory — follow existing project structure
-7. Do NOT run the tests — test-runner-agent runs them
+7. Do NOT run the tests — test-run-agent runs them
 8. Write the output file
 
 ## TDD protocol (mandatory)
@@ -96,11 +96,11 @@ Write interpreted tests as a fenced block in the test file (or in a dedicated `t
 **Why not a code test:** result depends on live data shape, not a deterministic assertion
 ```
 
-test-runner-agent reads this block and executes it in interpreted mode.
+test-run-agent reads this block and executes it in interpreted mode.
 
 ## Output
 
-**Writing this file is the completion signal.** The conductor verifies its existence before dispatching test-runner-agent.
+**Writing this file is the completion signal.** The conductor verifies its existence before dispatching test-run-agent.
 
 Write `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_gen.md` (conductor provides the exact path):
 
@@ -122,7 +122,7 @@ Write `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_test_gen.md` (conductor pro
 
 ### TDD confirmation
 - Each test was written before implementation was checked
-- Each test is expected to fail until test-runner-agent runs
+- Each test is expected to fail until test-run-agent runs
 
 ### Skill friction
 <!-- Only populate if you hit genuine friction with these skill instructions.

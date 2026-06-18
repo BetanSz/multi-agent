@@ -1,6 +1,6 @@
 ﻿---
 name: sprint-reporter
-description: Runs after execute-sprint completes. Reads every agent output file in sprints/sprint_N_<slug>/ and synthesizes sprint_N_log.md in that same folder — giving the human full visibility into what autonomous agents did while they were away. Invoked automatically by execute-sprint as step 9.1; can also be called directly with a sprint folder path.
+description: Runs after sprint-executor completes. Reads every agent output file in sprints/sprint_N_<slug>/ and synthesizes sprint_N_log.md in that same folder — giving the human full visibility into what autonomous agents did while they were away. Invoked automatically by sprint-executor as step 9.1; can also be called directly with a sprint folder path.
 argument-hint: "<sprint-N-topic>"
 ---
 
@@ -21,21 +21,15 @@ Parse the argument (e.g. `"sprint-3-auth-layer"`) to extract:
 
 Read the sprint file at repo root (`sprint_N_<topic>.md`) to get the quality level (L1 / L2 / L3) and the original task list.
 
-## Step 2 — Read all agent output files
-
-Read every file matching `task_*_{agent}.md` in the sprint folder identified in step 2.5.
-
-Do not skip any file. Every output counts.
-
-## Step 2.5 — Locate the sprint folder
+## Step 2 — Locate the sprint folder
 
 The sprint folder is `sprints/sprint_N_<slug>/` where N and slug come from the sprint filename (e.g. `sprint_4_ner_extraction.md` → `sprints/sprint_4_ner_extraction/`).
 
-Read all files in that folder: `task_*_code.md`, `task_*_review.md`, `task_*_test_gen.md`, `task_*_test_run.md`, and `status.md`.
+## Step 3 — Read all agent output files
 
-Also read the sprint file itself (in the same folder).
+Read every file in the sprint folder — `task_*_code.md`, `task_*_review.md`, `task_*_test_gen.md`, `task_*_test_run.md`, `status.md` — and the sprint file itself. Do not skip any file; every output counts.
 
-## Step 3 — Write sprint_N_log.md
+## Step 4 — Write sprint_N_log.md
 
 Write `sprints/sprint_N_<slug>/sprint_N_log.md`. Overwrite if it exists.
 
@@ -60,8 +54,8 @@ One paragraph or short bullet list — no jargon, no code unless essential.
 **plan-agent** *(if ran)*: <key design decisions made, scope defined, risks flagged>
 **code-agent**: <files changed, key implementation choices, anything unusual>
 **review-agent**: <verdict, issues found (list 🔴🟡🟢 items), what was fixed in Mode 2 if triggered>
-**test-generator** *(L3 only)*: <tests written, types (code/interpreted), what they cover>
-**test-runner** *(L2/L3)*: <result, any self-healed failures, any functional failures routed back>
+**test-gen-agent** *(L3 only)*: <tests written, types (code/interpreted), what they cover>
+**test-run-agent** *(L2/L3)*: <result, any self-healed failures, any functional failures routed back>
 **Bugs encountered**:
 <!-- Every bug hit during this task. For each: what it was, the decision process to resolve it,
      and the end result. Do not abbreviate — this is the debugging trace future engineers need. -->
@@ -93,7 +87,7 @@ None. / [What blocked, what human action was taken, which task resumed after]
 - Test suite: <name>
 - Passed: N | Failed: N | Skipped: N
 - Failures: [list any failing tests with one-line reason]
-- Self-healed: [list any structural fixes test-runner-agent made autonomously]
+- Self-healed: [list any structural fixes test-run-agent made autonomously]
 
 ## Deferred / blocked
 [Tasks not completed, with reason]

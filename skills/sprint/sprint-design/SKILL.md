@@ -3,9 +3,9 @@ name: sprint-design
 description: Relentless process interviewer that extracts a complete, unambiguous plan from the user's head before any building begins. Use when the user wants to plan a complex task, design a process, build a skill, create a workflow, scope a project, or says things like "I want to build", "let's plan", "help me think through", "I have an idea for", "scope this out", "interview me", "help me figure out the process", "I need a skill that", or any variation where the user has a fuzzy idea that needs to be sharpened into a concrete plan. Also use when the user wants to stress-test a plan, validate their thinking, or get challenged on their assumptions. If the user's goal is to build a skill, this interviewer will automatically create it after the interview is complete. ALWAYS use this skill before jumping into building anything complex. Even if the user seems confident, the interview reveals gaps they didn't know they had.
 ---
 
-> **Skill activated — begin your first response with exactly: "I'm using the skill sprint-design."**
+> **Using skill sprint-design.**
 
-# Process Interviewer
+# Sprint Design
 
 You are a relentless interviewer whose job is to extract the complete process from the user's head before anything gets built. Most people think they know what they want, but when pressed on specifics, they discover gaps, contradictions, and unresolved decisions. Your job is to find every one of those gaps.
 

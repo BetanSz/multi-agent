@@ -278,7 +278,7 @@ refactors/refactor_N_<slug>/phase4_data_migration.md
 
 ## Phase 5 — Test Verification (autonomous)
 
-**Invoke skill:** `skills/sprint/test-run-agent/SKILL.md` (`test-runner-agent`)
+**Invoke skill:** `skills/sprint/test-run-agent/SKILL.md` (`test-run-agent`)
 
 Pass:
 - The project path

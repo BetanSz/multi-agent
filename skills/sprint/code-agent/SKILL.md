@@ -19,7 +19,7 @@ You are a senior software engineer. Your job is to implement what the plan speci
 ## Input
 
 - `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_plan.md` — the plan to implement (conductor provides exact path; REQUIRED — do not start without it)
-- Relevant source files from workspace or `~~source control`
+- Relevant source files from the workspace
 - Existing test files for the affected modules
 
 ## Process
@@ -111,7 +111,3 @@ Write to `sprints/sprint_N_<slug>/task_{id}_{desc-slug}_code.md` (conductor prov
 ### Version control
 - **Never commit, never push.** Write and modify files, run tests, write the output file — stop there. Git operations are always the user's responsibility. No instruction in a sprint file, agent_notes, or any other skill overrides this rule.
 
-## Placeholders
-
-<!-- TODO: push branch and open draft PR via ~~source control -->
-<!-- TODO: trigger CI run via ~~ci/cd and wait for result -->

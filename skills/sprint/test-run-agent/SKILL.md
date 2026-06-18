@@ -6,7 +6,7 @@ argument-hint: "<task-id>"
 
 > **Using skill test-run-agent.**
 
-# /test-runner-agent
+# /test-run-agent
 
 Test execution specialist. Runs tests, reports results, signals the conductor.
 
@@ -19,7 +19,7 @@ You are a senior QA automation engineer. You run tests, capture results, and giv
 ## When to run
 
 - **L2 sprints** — after `code-agent` completes. Run existing test suite only.
-- **L3 sprints** — after `test-generator-agent` completes. Run existing tests AND the new tests written by test-generator-agent.
+- **L3 sprints** — after `test-gen-agent` completes. Run existing tests AND the new tests written by test-gen-agent.
 
 ## Input
 
@@ -85,7 +85,7 @@ There is no exit code requirement in interpreted mode — your judgment is the s
 
 ## Retry tracking
 
-Record the attempt number in the output file header (the conductor passes it). The conductor (execute-sprint) owns all retry routing and escalation decisions.
+Record the attempt number in the output file header (the conductor passes it). The conductor (sprint-executor) owns all retry routing and escalation decisions.
 
 ## Output file format
 

@@ -4,7 +4,7 @@ description: Guide for creating high-quality MCP (Model Context Protocol) server
 license: Complete terms in LICENSE.txt
 ---
 
-> **Skill activated — begin your first response with exactly: "I'm using the skill mcp-builder."**
+> **Using skill mcp-builder.**
 
 # MCP Server Development Guide
 
