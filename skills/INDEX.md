@@ -94,7 +94,7 @@ One identifier per skill, used **verbatim** in all four slots: folder name = fro
 
 ## External skills — `.agents/skills/` (resolved from `skills-lock.json`)
 
-Not committed. Install/refresh with `npx skills update`. Sources of truth: the lock file + upstream repos. The sprint executor also reaches Azure skills via `skills/azure-*` bridge symlinks.
+Not committed. Install/refresh with `npx skills update`. Sources of truth: the lock file + upstream repos. Skills here are **read-only** — never edited (to customize one, "adopt" it: move it into `skills/` and drop it from the lock). Cross-references point at `.agents/skills/<name>/` directly — no bridge symlinks.
 
 | Skill | Source repo |
 |-------|-------------|

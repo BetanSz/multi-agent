@@ -18,6 +18,9 @@ These were aspirational `~~`/TODO notes inside the agent skills. The agents deli
 - `code-agent` / `review-agent`: turn the Python/FastAPI-specific conventions into a language profile applied when `stack: python`.
 - `refactor-perf`: frame as the Python performance profile (when `stack: python`); leave room for other stacks.
 
-## Dual-location external skills cleanup
+## Local structure (decided 2026-06-18: reference model, 3-tier)
 
-External skills currently live in `.agents/skills/` **and** are bridged into `skills/` via `azure-*` symlinks that `sprint-executor` paths depend on. Target: one home (`.agents/skills/`), update the executor's references, remove the bridge symlinks.
+- **Library** = `mutlit-agent` — the only thing an agent loads. `skills/` = your own (edited here, one copy); `.agents/skills/` = externals pulled by `npx skills update` (read-only, gitignored); `skills-lock.json` = the dependency list.
+- **Sources** = per-repo clones for exploration only (`git pull` to browse latest); promote keepers into the lock file.
+- ✅ Done: removed the `skills/azure-*` bridge symlinks; `sprint-executor` now references `.agents/skills/` directly.
+- Optional: group the desktop source clones under a single `sources/` folder.
