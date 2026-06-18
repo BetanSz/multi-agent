@@ -1,6 +1,6 @@
 ﻿---
 name: refactor-army
-description: Orchestrates the full agentic refactor army pipeline. Two execution modes — Sequential (interactive, one phase at a time) or Parallel (science audit + antipattern audit + perf baseline dispatched simultaneously, then unified synthesis before any code is touched). Both modes converge at the architectural refactor and produce a complete refactor log under refactors/refactor_N_<slug>/. Invoke via /agentic-refactor-army "path/to/codebase [optional concern]".
+description: Orchestrates the full agentic refactor army pipeline. Two execution modes — Sequential (interactive, one phase at a time) or Parallel (science audit + antipattern audit + perf baseline dispatched simultaneously, then unified synthesis before any code is touched). Both modes converge at the architectural refactor and produce a complete refactor log under refactors/refactor_N_<slug>/. Invoke via /refactor-army "path/to/codebase [optional concern]".
 argument-hint: '"path/to/codebase" or "path/to/codebase — specific concern"'
 ---
 
@@ -313,7 +313,7 @@ refactors/refactor_N_<slug>/phase5_test_verification.md
 Pass:
 - The codebase path
 - The refactor folder path — the skill reads `phase1_science_audit.md` and `phase3_architecture.md` automatically
-- Instruction: called as Phase 6 of `agentic-refactor-army` — context from prior phases is pre-loaded
+- Instruction: called as Phase 6 of `refactor-army` — context from prior phases is pre-loaded
 
 The optimization-refactor skill will:
 - Profile CPU and memory on the primary entry point(s) with representative input

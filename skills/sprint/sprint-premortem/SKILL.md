@@ -130,7 +130,7 @@ Write `sprints/sprint_N_<slug>/sprint_N_premortem.md`:
 
 ## Recommended next sprint focus
 <!-- If sprint-blocking tigers exist: state what must be fixed first.
-     Otherwise: proposed /agentic-sprint-army based on risk patterns. -->
+     Otherwise: proposed /sprint-army based on risk patterns. -->
 ```
 
 ## Rules

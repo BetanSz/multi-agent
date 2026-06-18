@@ -1,6 +1,6 @@
 ﻿---
 name: refactor-structure
-description: Structural redesign of Python codebases that have accumulated architectural debt across multiple sprints. Applies the module depth/seam/deletion-test lens, KISS/DRY principles, and a code smell catalog to reshape module boundaries, execution flows, and abstraction levels. Authorized for large-scale changes: dissolving classes, merging files, rerouting call graphs. Input: findings table from agentic-antipattern-audit. Called as Phase 3 of agentic-refactor-army, or standalone.
+description: Structural redesign of Python codebases that have accumulated architectural debt across multiple sprints. Applies the module depth/seam/deletion-test lens, KISS/DRY principles, and a code smell catalog to reshape module boundaries, execution flows, and abstraction levels. Authorized for large-scale changes: dissolving classes, merging files, rerouting call graphs. Input: findings table from agentic-antipattern-audit. Called as Phase 3 of refactor-army, or standalone.
 argument-hint: "<module, folder, or 'full codebase'>"
 ---
 

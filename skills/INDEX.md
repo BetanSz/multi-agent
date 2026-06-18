@@ -1,158 +1,120 @@
-﻿# Skills Index
+# Skills Index
 
-Single source of truth for all skills available in this project.
+The single source of truth for every skill in this library. If a skill is not listed here, it does not exist.
 
 **Two locations:**
-- `skills/` — custom skills (this folder, version-controlled)
-- `.agents/skills/` — external skills installed via `npx skills` (updatable with `npx skills update`)
+- `skills/` — local skills, version-controlled in this repo
+- `.agents/skills/` — external skills resolved from `skills-lock.json` (gitignored; run `npx skills update` to install/refresh)
+
+## Naming convention (so names stop drifting)
+
+One identifier per skill, used **verbatim** in all four slots: folder name = frontmatter `name:` = slash command (entry skills) = every cross-reference. Role is encoded by suffix:
+
+- **`*-army`** — a macro conductor you launch (`/sprint-army`, `/refactor-army`)
+- **`*-agent`** — a worker the army dispatches, one job each (`plan-agent`, `code-agent`, …)
+- **plain name** — a phase/helper skill named for what it produces (`sprint-design`, `sprint-preflight`, `refactor-science`, …)
 
 ---
 
-## Agent Army — Sprint Execution
+## Sprint Army — `skills/sprint/`
 
-| Skill | Path | Description |
-|-------|------|-------------|
-| **agentic-sprint-army** | `skills/sprint/agentic-sprint-army/` | **Main entry point** — `/agentic-sprint-army "description"` runs the full pipeline: brainstorm → interview → HITL → agents → sprint_log |
-| **agentic-refactor-army** | `skills/refactor/agentic-refactor-army/` | **Refactor entry point** — `/agentic-refactor-army "path [— concern]"` runs: science audit (interactive) → antipattern + depth refactor (autonomous) → diff review checkpoint → deep architectural refactor (autonomous) → performance optimization (conditional, Phase 4); artifacts in `refactors/refactor_N_<slug>/` |
-| **hitl-analyzer** | `skills/sprint/hitl-analyzer/` | **Pre-flight gate** — reads sprint file, verifies every human-required action works before agents start; blocks until 100% confirmed |
-| **execute-sprint** | `skills/sprint/sprint-dag-executor/` | **Autonomous execution engine** — reads a confirmed sprint file, builds task DAG, dispatches agents (plan → code → review → test) in order, no human interaction except genuine blockers |
-| plan-agent | `skills/sprint/plan-agent/` | Architect specialist: scoping, API design, implementation sequence |
-| code-agent | `skills/sprint/code-agent/` | Implementation specialist: Pythonic, efficient, minimal footprint, stays with existing stack |
-| review-agent | `skills/sprint/review-agent/` | 3-mode reviewer: review / fix / architectural-fix-with-test-gate — includes performance + best-practice analysis |
-| test-generator-agent | `skills/sprint/test-gen-agent/` | L3 sprints: standard TDD tests + 6 agentic failure pattern tests (AT-1 silent failure visibility — break each argument and assert failure is observable; AT-2 idempotency; AT-3 interface contract with wrong dict shapes; AT-4 prompt regression snapshots; AT-5 threshold boundaries; AT-6 smoke). All external calls mocked — zero real API cost. |
-| test-runner-agent | `skills/sprint/test-run-agent/` | L2/L3 sprints: runs existing + new tests, signals pass/fail to conductor, triggers code-agent retry on failure |
-| **sprint-reporter** | `skills/sprint/sprint-reporter/` | **Post-sprint reporter** — reads all task output files in `sprints/sprint_N_<slug>/` after sprint-dag-executor completes and writes `sprint_N_log.md` with full visibility into agent decisions |
-| **sprint-premortem** | `skills/sprint/sprint-premortem/` | **Final step** — prospective hindsight on the sprint's deliverables; classifies risks as Tigers, Paper Tigers, and Elephants; produces `sprint_N_premortem.md` |
-
----
-
-## Superpowers — Structured development workflow
-*Source: [obra/superpowers](https://github.com/obra/superpowers) · installed via `npx skills` · update with `npx skills update`*
-
-| Skill | Path | Description |
-|-------|------|-------------|
-| using-superpowers | `.agents/skills/using-superpowers/` | Foundational protocol: always invoke skills first, 3-tier instruction hierarchy |
-| brainstorming | `.agents/skills/brainstorming/` | Design-first: 9-step process, no implementation until design approved |
-| writing-plans | `.agents/skills/writing-plans/` | Creates detailed TDD plans with atomic 2-5 min tasks |
-| executing-plans | `.agents/skills/executing-plans/` | Executes plans step by step with safety gates |
-| subagent-driven-development | `.agents/skills/subagent-driven-development/` | Fresh subagent per task + 2-stage review (spec then quality) |
-| dispatching-parallel-agents | `.agents/skills/dispatching-parallel-agents/` | Delegate independent tasks to concurrent agents |
-| using-git-worktrees | `.agents/skills/using-git-worktrees/` | Isolated workspaces for parallel agent work |
-| systematic-debugging | `.agents/skills/systematic-debugging/` | Root cause investigation before any fix |
-| test-driven-development | `.agents/skills/test-driven-development/` | Red-Green-Refactor, failing test before production code |
-| requesting-code-review | `.agents/skills/requesting-code-review/` | Dispatch reviewer subagents with focused context |
-| verification-before-completion | `.agents/skills/verification-before-completion/` | No completion claims without fresh verification evidence |
-| finishing-a-development-branch | `.agents/skills/finishing-a-development-branch/` | 5-step branch completion: verify, detect env, execute, cleanup |
+| Skill | Path | Role | Description |
+|-------|------|------|-------------|
+| **sprint-army** | `skills/sprint/sprint-army/` | macro | **Entry point** — `/sprint-army "description"` runs the full pipeline: brainstorm → design → preflight → autonomous execution → sprint log → premortem |
+| sprint-brainstorm | `skills/sprint/sprint-brainstorm/` | phase | Design session; locks decisions before any build |
+| sprint-design | `skills/sprint/sprint-design/` | phase | Relentless interviewer — turns an approved direction into a concrete sprint file (tasks, `depends_on`, quality level) |
+| sprint-preflight | `skills/sprint/sprint-preflight/` | phase | Pre-flight HITL gate — verifies every human-required action (env, credentials, Azure, git state) works before agents start; blocks until 100% confirmed |
+| sprint-executor | `skills/sprint/sprint-executor/` | engine | Autonomous execution engine — builds the task DAG, dispatches agents (plan → code → review → test) in waves, no human interaction except genuine blockers |
+| plan-agent | `skills/sprint/plan-agent/` | agent | Architect: scoping, API design, implementation sequence |
+| code-agent | `skills/sprint/code-agent/` | agent | Implementation: Pythonic, efficient, minimal footprint, stays with existing stack; never commits |
+| review-agent | `skills/sprint/review-agent/` | agent | 3-mode reviewer: review / fix / architectural-fix-with-test-gate; includes performance + best-practice checks |
+| test-gen-agent | `skills/sprint/test-gen-agent/` | agent | L3 sprints: TDD tests + 6 agentic failure-pattern tests (AT-1→AT-6); all external calls mocked |
+| test-run-agent | `skills/sprint/test-run-agent/` | agent | L2/L3 sprints: runs existing + new tests, signals pass/fail, triggers code-agent retry on failure |
+| sprint-reporter | `skills/sprint/sprint-reporter/` | phase | Reads all task outputs and writes `sprint_N_log.md` — full visibility into agent decisions |
+| sprint-premortem | `skills/sprint/sprint-premortem/` | phase | Prospective hindsight on deliverables; classifies risk as Tigers / Paper Tigers / Elephants |
 
 ---
 
-## Automation loop
+## Refactor Army — `skills/refactor/`
 
-| Skill | Path | Description |
-|-------|------|-------------|
-| ralph-loop | `.agents/skills/ralph-loop/` | Agent-driven dev loop: user stories → acceptance criteria → iterative agent verification |
-
----
-
-## Azure — Microsoft official
-*Source: [microsoft/azure-skills](https://github.com/microsoft/azure-skills) · 327K+ installs · installed via `npx skills`*
-
-| Skill | Path | Description |
-|-------|------|-------------|
-| azure-ai | `.agents/skills/azure-ai/` | Azure AI services: Azure OpenAI, Cognitive Services, ML — patterns and SDK usage |
-| azure-deploy | `.agents/skills/azure-deploy/` | Deploy to Azure: App Service, Functions, Container Apps, AKS |
-| azure-prepare | `.agents/skills/azure-prepare/` | Azure environment setup: subscriptions, resource groups, CLI auth, prerequisites |
-| azure-diagnostics | `.agents/skills/azure-diagnostics/` | Diagnose Azure issues: logs, metrics, alerts, Monitor, Application Insights |
-| azure-storage | `.agents/skills/azure-storage/` | Azure Storage: blobs, queues, tables, files — SDK patterns and operations |
-| azure-validate | `.agents/skills/azure-validate/` | Validate Azure configurations, policies, naming conventions, and deployments |
+| Skill | Path | Role | Description |
+|-------|------|------|-------------|
+| **refactor-army** | `skills/refactor/refactor-army/` | macro | **Entry point** — `/refactor-army "path [— concern]"`; Sequential or Parallel mode → science audit → antipattern audit → review checkpoint → architectural refactor → data migration (cond.) → test verification → perf optimization (cond.); artifacts in `refactors/refactor_N_<slug>/` |
+| refactor-science | `skills/refactor/refactor-science/` | phase | Scientific review — pipeline portrait, data-flow correctness, evaluation soundness (metric validity, null inflation, statistical power), output completeness |
+| refactor-antipatterns | `skills/refactor/refactor-antipatterns/` | phase | 14-antipattern audit (AP-1→AP-14) + AT-1→AT-6 test-gap report; findings table only, no code changes |
+| refactor-structure | `skills/refactor/refactor-structure/` | phase | Structural redesign — depth/seam/deletion-test lens, KISS/DRY, code-smell catalog; applies fixes |
+| refactor-data | `skills/refactor/refactor-data/` | phase | Data-migration protocol — classify change, cost gate for LLM reprocessing, 3 strategies, 3-doc sample before full scale |
+| refactor-perf | `skills/refactor/refactor-perf/` | phase | Python runtime performance audit — cProfile/memory_profiler, targeted optimizations (vectorization, generators, caching, async I/O) |
 
 ---
 
-## Agile
+## Agile — `skills/agile/`
 
 | Skill | Path | Description |
 |-------|------|-------------|
-| backlog-management | `skills/agile/backlog-management/` | GitHub backlog end-to-end: create issues, triage, sprint plan, release notes — enforces label taxonomy and DoR |
+| backlog-management | `skills/agile/backlog-management/` | GitHub backlog end-to-end: issues, triage, sprint plan, release notes; enforces label taxonomy and DoR |
 
----
-
-## Architecture & Design
+## AI Tools — `skills/ai-tools/`
 
 | Skill | Path | Description |
 |-------|------|-------------|
-| architecture-decision-records | `.agents/skills/architecture-decision-records/` | Write and maintain ADRs — 5 templates (MADR, lightweight, Y-statement, deprecation, RFC), lifecycle management |
-| architecture-patterns | `.agents/skills/architecture-patterns/` | Clean Architecture, Hexagonal, DDD — Python-first code examples, directory structures, in-memory adapter testing |
-| improve-codebase-architecture | `.agents/skills/improve-codebase-architecture/` | Surface architectural friction using depth/seam/leverage language; deepening opportunities with deletion test |
-
----
-
-## Code Quality
-
-| Skill | Path | Description |
-|-------|------|-------------|
-| code-review-excellence | `.agents/skills/code-review-excellence/` | Code review methodology — feedback techniques, severity labels, handling disagreements, language-specific patterns |
-| receiving-code-review | `.agents/skills/receiving-code-review/` | How to receive review feedback — verify before implementing, technical pushback, no performative agreement |
-| superficial-file-refactor | `.agents/skills/superficial-file-refactor/` | Surgical refactoring — 10 code smells with before/after, extract method, type safety, design patterns (external, installed via npx) |
-| python-performance-optimization | `.agents/skills/python-performance-optimization/` | Profile and optimize Python — cProfile, memory_profiler, py-spy, list comprehensions, dict lookups, generators |
-
----
-
-## Research
-
-| Skill | Path | Description |
-|-------|------|-------------|
-| deep-research | `skills/research/deep-research/` | OpenAI o4-mini-deep-research: 10-20 min web-enabled research with prompt enhancement |
-| find-skills | `skills/research/find-skills/` | Discovers and installs skills from skills.sh via `npx skills find` |
-
----
-
-## AI Tools
-
-| Skill | Path | Description |
-|-------|------|-------------|
-| prompt-master | `skills/ai-tools/prompt-master/` | Generates optimized prompts for 30+ tools (Claude, GPT, Cursor, Midjourney, etc.) |
+| prompt-master | `skills/ai-tools/prompt-master/` | Generates optimized prompts for 30+ tools (Claude, GPT, Cursor, Midjourney, …) |
 | mcp-builder | `skills/ai-tools/mcp-builder/` | Full guide for building MCP servers (TypeScript preferred, 4-phase process) |
+| openrouter | `skills/ai-tools/openrouter/` | OpenRouter integration — unified access to many LLM providers via one API |
 
----
-
-## Utility
+## Research — `skills/research/`
 
 | Skill | Path | Description |
 |-------|------|-------------|
-| **repo-init** | `skills/utility/repo-init/` | **Project bootstrapper** — folder structure, conda env, .gitignore, .env.example, CLAUDE.md, pyproject.toml; stack-aware (Python/Azure, FastAPI, TS); never overwrites existing files |
-| **agentic-antipattern-audit** | `skills/refactor/refactor-antipatterns/` | **14-antipattern audit + test gap report** — AP-1 dead code through AP-14 inter-file bounce; AT-1→AT-6 test gap audit; produces a combined findings table with no code changes. Phase 2 of `agentic-refactor-army`. |
-| **architectural-refactor** | `skills/refactor/refactor-structure/` | **Structural redesign** — module depth/seam/deletion-test lens, KISS/DRY principles, code smell catalog; authorized for large-scale changes (dissolve classes, merge files, reroute call graphs). Phase 3 of `agentic-refactor-army`. |
-| **data-migration** | `skills/refactor/refactor-data/` | **Data migration protocol** — classify change (schema/logic/structural), impact assessment, cost gate for LLM reprocessing, 3 strategies (delete+reprocess, patch in place, dual-run+compare), 3-doc sample before full scale. Phase 4 of `agentic-refactor-army` (conditional). |
-| **deep-scientific-refactor** | `skills/refactor/refactor-science/` | **Scientific review of pipelines and evaluation systems** — senior data scientist persona. Opens with a pipeline portrait: minimal, precise prose description of what the system actually computes, with inline [?] flags on dubious parts; user response collected but audit proceeds fully independently. Then three formal lenses: (1) data flow correctness; (2) evaluation soundness (metric validity, null inflation, circular evaluation, score calibration, threshold justification, baseline, statistical power analysis with N_min formula and cost-to-close); (3) output completeness. Abstracts away from implementation — reads logic, math, and scientific validity only |
-| **optimization-refactor** | `skills/refactor/refactor-perf/` | **Python runtime performance audit** — profiles CPU and memory (cProfile, memory_profiler), identifies hot spots, applies targeted optimizations (vectorization, generators, caching, async I/O, data structure substitution). Run after `refactor-structure` when performance is a concern. Phase 6 of `agentic-refactor-army`. |
+| deep-research | `skills/research/deep-research/` | o4-mini-deep-research: 10–20 min web-enabled research with prompt enhancement |
+| find-skills | `skills/research/find-skills/` | Discovers and installs skills from skills.sh via `npx skills find` |
+| fact-checker | `skills/research/fact-checker/` | Verifies claims against sources; flags unsupported assertions |
+| decision-toolkit | `skills/research/decision-toolkit/` | Structured decision-making frameworks + cognitive-bias encyclopedia + decision templates |
+
+## Content — `skills/content/`
+
+| Skill | Path | Description |
+|-------|------|-------------|
+| audio-transcriber | `skills/content/audio-transcriber/` | Transcribe audio files (Whisper and alternatives); install + transcribe scripts |
+| humanizer | `skills/content/humanizer/` | Rewrites AI-sounding text into natural human prose |
+| frontend-slides | `skills/content/frontend-slides/` | Generates HTML/CSS slide decks with style presets |
+
+## Utility — `skills/utility/`
+
+| Skill | Path | Description |
+|-------|------|-------------|
+| repo-init | `skills/utility/repo-init/` | Project bootstrapper — folders, conda env, .gitignore, .env.example, CLAUDE.md, pyproject.toml; stack-aware; never overwrites |
 | agent-browser | `skills/utility/agent-browser/` | Browser automation agent |
-| process-interviewer | `skills/sprint/sprint-design/` | Relentless interviewer: extracts complete process before building anything |
 | api-documentation | `skills/utility/api-documentation/` | Document REST APIs in OpenAPI 3.0 — schemas, examples, auth, response codes |
-| webapp-testing | `.agents/skills/webapp-testing/` | Playwright Python testing for web apps — decision tree, server lifecycle, selector patterns |
+| file-organizer | `skills/utility/file-organizer/` | Organizes files and folders by rules |
+| claude-code-commands | `skills/utility/claude-code-commands/` | Loose Claude Code command snippets (`perf-analyze`, `refactor`) — not a SKILL.md skill |
+| seloger-scraper | `skills/utility/seloger-scraper/` | SeLoger real-estate scraper (`scraper.py`) — standalone script, not a SKILL.md skill |
 
 ---
 
-## How to update external skills
+## External skills — `.agents/skills/` (resolved from `skills-lock.json`)
+
+Not committed. Install/refresh with `npx skills update`. Sources of truth: the lock file + upstream repos. The sprint executor also reaches Azure skills via `skills/azure-*` bridge symlinks.
+
+| Skill | Source repo |
+|-------|-------------|
+| architecture-decision-records | wshobson/agents |
+| architecture-patterns | wshobson/agents |
+| azure-ai · azure-deploy · azure-diagnostics · azure-prepare · azure-storage · azure-validate | microsoft/azure-skills |
+| brainstorming · finishing-a-development-branch · receiving-code-review · requesting-code-review · systematic-debugging · verification-before-completion | obra/superpowers |
+| diagnose · grill-me · grill-with-docs · improve-codebase-architecture · tdd · to-issues · to-prd | mattpocock/skills |
+| performance | addyosmani/web-quality-skills |
+| webapp-testing | anthropics/skills |
+
+---
+
+## Managing skills
 
 ```bash
-# Update all installed skills
-npx skills update
-
-# Update a specific skill
-npx skills update brainstorming
-
-# List all installed skills
-npx skills list
+npx skills update            # install / refresh all external skills from the lock file
+npx skills update <name>     # refresh one
+npx skills list              # list installed external skills
+npx skills find <query>      # search skills.sh for new skills
 ```
 
-## How to add a new skill from Bureau projects
-
-Copy the skill folder into the appropriate category under `skills/`, e.g.:
-```
-skills/
-  core/          — orchestration and multi-agent coordination
-  research/      — information gathering
-  ai-tools/      — AI APIs and model integration
-  utility/       — refactoring, optimization, process design, browser
-  other/         — domain-specific
-```
+**Adding a local skill:** create `skills/<category>/<identifier>/SKILL.md`, set frontmatter `name:` equal to the folder name, and add a row here. **Adding an external skill:** `npx skills add <owner/repo>` (writes to `skills-lock.json`), then add a row to the external table.

@@ -1,6 +1,6 @@
 ﻿---
 name: refactor-antipatterns
-description: Audits Python/Azure data pipelines for 14 agentic coding antipatterns (AP-1 dead code, AP-2 client over-instantiation, AP-3 spaghetti flow, AP-4 silent failures, AP-5 prompt drift, AP-6 missing idempotency, AP-7 abstraction inconsistency, AP-8 N+1 calls, AP-9 type hint theater, AP-10 boilerplate overkill, AP-11 operation granularity, AP-12 exception suppression, AP-13 config sprawl, AP-14 inter-file bounce) plus a test gap audit (AT-1 through AT-6). Produces a combined findings table before any fix is applied. Called as Phase 2 of agentic-refactor-army, or standalone.
+description: Audits Python/Azure data pipelines for 14 agentic coding antipatterns (AP-1 dead code, AP-2 client over-instantiation, AP-3 spaghetti flow, AP-4 silent failures, AP-5 prompt drift, AP-6 missing idempotency, AP-7 abstraction inconsistency, AP-8 N+1 calls, AP-9 type hint theater, AP-10 boilerplate overkill, AP-11 operation granularity, AP-12 exception suppression, AP-13 config sprawl, AP-14 inter-file bounce) plus a test gap audit (AT-1 through AT-6). Produces a combined findings table before any fix is applied. Called as Phase 2 of refactor-army, or standalone.
 argument-hint: "<module, folder, or 'full codebase'>"
 ---
 

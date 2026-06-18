@@ -1,6 +1,6 @@
 ﻿---
 name: refactor-data
-description: Data migration protocol for when code changes affect the schema or semantics of data stored in Cosmos DB, Blob Storage, or any persistent store. Classifies the change (schema / logic / structural), assesses impact, gates on LLM reprocessing cost, and executes migration with a 3-document sample before full scale. Three strategies: delete+reprocess, patch in place, dual-run+compare. Called as Phase 4 of agentic-refactor-army (conditional), or standalone after any code change that touches stored data.
+description: Data migration protocol for when code changes affect the schema or semantics of data stored in Cosmos DB, Blob Storage, or any persistent store. Classifies the change (schema / logic / structural), assesses impact, gates on LLM reprocessing cost, and executes migration with a 3-document sample before full scale. Three strategies: delete+reprocess, patch in place, dual-run+compare. Called as Phase 4 of refactor-army (conditional), or standalone after any code change that touches stored data.
 argument-hint: "<affected container or 'assess from codebase'>"
 ---
 

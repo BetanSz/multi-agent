@@ -1,6 +1,6 @@
 ﻿---
 name: sprint-army
-description: Entry point for the multi-agent sprint system. Launches the full sprint pipeline: brainstorm → process-interview → HITL checklist → autonomous agent execution → sprint log. Use when the user types /agentic-sprint-army "description" or asks to start, run, or kick off a sprint. This skill orchestrates all other skills in sequence and must be invoked before any sprint work begins. Also use when a previous sprint's conductor proposes a next sprint.
+description: Entry point for the multi-agent sprint system. Launches the full sprint pipeline: brainstorm → process-interview → HITL checklist → autonomous agent execution → sprint log. Use when the user types /sprint-army "description" or asks to start, run, or kick off a sprint. This skill orchestrates all other skills in sequence and must be invoked before any sprint work begins. Also use when a previous sprint's conductor proposes a next sprint.
 argument-hint: '"plain-text description of what this sprint builds"'
 ---
 
@@ -60,14 +60,14 @@ Goal: sharpen the approved design into a concrete sprint file. By the end of thi
 Write the sprint file (`sprint_N_<topic>.md`) to `sprints/sprint_N_<topic>/` — create the folder if it does not exist. Use the template in `references/sprint-file-template.md`.
 
 ### Step 3 — HITL upfront review
-Read and follow `skills/sprint/hitl-analyzer/SKILL.md`. Pass the sprint file path as argument.
+Read and follow `skills/sprint/sprint-preflight/SKILL.md`. Pass the sprint file path as argument.
 
-Do not proceed to Step 4 until hitl-analyzer outputs "HITL REVIEW COMPLETE — autonomous execution may begin".
+Do not proceed to Step 4 until sprint-preflight outputs "HITL REVIEW COMPLETE — autonomous execution may begin".
 
 ### Step 4 — Autonomous execution
-Read and follow `skills/sprint/sprint-dag-executor/SKILL.md`. Pass the sprint file path as argument.
+Read and follow `skills/sprint/sprint-executor/SKILL.md`. Pass the sprint file path as argument.
 
-All agent dispatch, DAG execution, retry logic, and mid-sprint HITL handling is owned by sprint-dag-executor.
+All agent dispatch, DAG execution, retry logic, and mid-sprint HITL handling is owned by sprint-executor.
 
 ### Step 5 — Sprint log
 Read and follow `skills/sprint/sprint-reporter/SKILL.md`. Pass the sprint folder path as argument.

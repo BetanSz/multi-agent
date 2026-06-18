@@ -8,12 +8,12 @@ A skills library for Claude Code built around two autonomous pipelines: the **Ag
 
 ## The two pipelines
 
-### `/agentic-sprint-army` — Sprint Army
+### `/sprint-army` — Sprint Army
 
 Use this to build things. Each invocation runs one full sprint: design → code → review → test → risk analysis, with a human-in-the-loop gate before agents touch any code.
 
 ```
-/agentic-sprint-army "build an API endpoint that does X"
+/sprint-army "build an API endpoint that does X"
 ```
 
 Pipeline:
@@ -28,12 +28,12 @@ Sprint artifacts land in `sprints/sprint_N_<slug>/`.
 
 ---
 
-### `/agentic-refactor-army` — Refactor Army
+### `/refactor-army` — Refactor Army
 
 Use this after several sprints have accumulated. Autonomous agents are good at producing working code quickly but tend to accumulate antipatterns over time — unnecessary API calls, redundant client instantiation, spaghetti execution flow, missing validation. Run this periodically to address that.
 
 ```
-/agentic-refactor-army "path/to/codebase — optional specific concern"
+/refactor-army "path/to/codebase — optional specific concern"
 ```
 
 Pipeline:
@@ -52,7 +52,7 @@ Refactor artifacts land in `refactors/refactor_N_<slug>/`.
 ## Recommended workflow
 
 ```
-sprint 1 → sprint 2 → sprint 3 → /agentic-refactor-army → sprint 4 → sprint 5 → …
+sprint 1 → sprint 2 → sprint 3 → /refactor-army → sprint 4 → sprint 5 → …
 ```
 
 Run the refactor army every few sprints, or whenever the codebase starts feeling hard to extend. The science audit catches problems that pure code review misses — wrong evaluation metrics, silent data drops, statistical power gaps.
@@ -61,19 +61,19 @@ Run the refactor army every few sprints, or whenever the codebase starts feeling
 
 ## Using in another project
 
-Create `.claude/commands/agentic-sprint-army.md` in your project:
+Create `.claude/commands/sprint-army.md` in your project:
 
 ```markdown
-Read and follow: `../mutlit-agent/skills/sprint/agentic-sprint-army/SKILL.md`
+Read and follow: `../mutlit-agent/skills/sprint/sprint-army/SKILL.md`
 **Skill path resolution**: all skill paths are relative to `../mutlit-agent/`. Prepend `../mutlit-agent/` to any path that does not start with `/` or `../`.
 **Project context**: sprint files and artifacts live in THIS project under `sprints/sprint_N_<slug>/`.
 Apply to: $ARGUMENTS
 ```
 
-And `.claude/commands/agentic-refactor-army.md`:
+And `.claude/commands/refactor-army.md`:
 
 ```markdown
-Read and follow: `../mutlit-agent/skills/refactor/agentic-refactor-army/SKILL.md`
+Read and follow: `../mutlit-agent/skills/refactor/refactor-army/SKILL.md`
 Apply to: $ARGUMENTS
 ```
 
@@ -97,9 +97,9 @@ npx skills update   # install / update all external skills
 
 | Skill | Description |
 |-------|-------------|
-| `skills/sprint/agentic-sprint-army/` | Entry point |
-| `skills/sprint/hitl-analyzer/` | Pre-flight gate — conda env, credentials, Azure resources, git state |
-| `skills/sprint/sprint-dag-executor/` | Autonomous execution engine — DAG dispatch |
+| `skills/sprint/sprint-army/` | Entry point |
+| `skills/sprint/sprint-preflight/` | Pre-flight gate — conda env, credentials, Azure resources, git state |
+| `skills/sprint/sprint-executor/` | Autonomous execution engine — DAG dispatch |
 | `skills/sprint/plan-agent/` | Architect: scoping, API design, implementation sequence |
 | `skills/sprint/code-agent/` | Implementation: Pythonic, minimal footprint |
 | `skills/sprint/review-agent/` | 3-mode reviewer: review / fix / architectural-fix-with-test-gate |
@@ -112,7 +112,7 @@ npx skills update   # install / update all external skills
 
 | Skill | Description |
 |-------|-------------|
-| `skills/refactor/agentic-refactor-army/` | Entry point |
+| `skills/refactor/refactor-army/` | Entry point |
 | `skills/refactor/refactor-science/` | Science audit — pipeline portrait, evaluation soundness, statistical power |
 | `skills/refactor/refactor-antipatterns/` | 14 agentic antipatterns + test gap audit (AT-1→AT-6) — findings table only |
 | `skills/refactor/refactor-structure/` | Depth/seam lens, KISS/DRY, code smells — applies all fixes |
@@ -131,15 +131,16 @@ npx skills update   # install / update all external skills
 
 ```
 skills/
-  core/           ← sprint and refactor pipeline orchestrators + agents
-  utility/        ← repo-init, deep-pipeline-refactor, deep-scientific-refactor, …
-  research/       ← deep-research, fact-checker
-  ai-tools/       ← prompt-master, openrouter, mcp-builder
-  content/        ← audio-transcriber, humanizer, frontend-slides, decision-toolkit
+  sprint/         ← sprint army: entry + executor + preflight + agents + reporter/premortem
+  refactor/       ← refactor army: entry + science/antipattern/structure/data/perf
   agile/          ← backlog-management
-  INDEX.md        ← full skill catalog
+  ai-tools/       ← prompt-master, openrouter, mcp-builder
+  research/       ← deep-research, find-skills, fact-checker, decision-toolkit
+  content/        ← audio-transcriber, humanizer, frontend-slides
+  utility/        ← repo-init, agent-browser, api-documentation, file-organizer, claude-code-commands, seloger-scraper
+  INDEX.md        ← full skill catalog (the registry)
 .agents/skills/   ← external skills (gitignored — install with npx skills update)
-sprints/          ← sprint artifacts from /agentic-sprint-army
-refactors/        ← refactor artifacts from /agentic-refactor-army
+sprints/          ← sprint artifacts from /sprint-army
+refactors/        ← refactor artifacts from /refactor-army
 .claude/commands/ ← Claude Code slash command definitions
 ```

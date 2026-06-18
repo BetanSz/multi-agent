@@ -1,6 +1,6 @@
 # Sprint File Template
 
-This is the contract between any calling project and the agentic-sprint-army system. Any project that generates a sprint file must follow this structure. The conductor reads this file to execute the sprint.
+This is the contract between any calling project and the sprint-army system. Any project that generates a sprint file must follow this structure. The conductor reads this file to execute the sprint.
 
 ## Template
 
