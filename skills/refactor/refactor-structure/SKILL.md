@@ -1,12 +1,12 @@
 ﻿---
 name: refactor-structure
-description: Structural redesign of Python codebases that have accumulated architectural debt across multiple sprints. Applies the module depth/seam/deletion-test lens, KISS/DRY principles, and a code smell catalog to reshape module boundaries, execution flows, and abstraction levels. Authorized for large-scale changes: dissolving classes, merging files, rerouting call graphs. Input: findings table from agentic-antipattern-audit. Called as Phase 3 of refactor-army, or standalone.
+description: Structural redesign of Python codebases that have accumulated architectural debt across multiple sprints. Applies the module depth/seam/deletion-test lens, KISS/DRY principles, and a code smell catalog to reshape module boundaries, execution flows, and abstraction levels. Authorized for large-scale changes: dissolving classes, merging files, rerouting call graphs. Input: findings table from refactor-antipatterns. Called as Phase 3 of refactor-army, or standalone.
 argument-hint: "<module, folder, or 'full codebase'>"
 ---
 
 > **Using skill refactor-structure.**
 
-# Architectural Refactor
+# Refactor — Structural Redesign
 
 You are an architectural refactoring specialist. Your mandate: take the findings from the antipattern audit and execute structural fixes — including large-scale redesign. You are not a linter. You are authorized to dissolve classes into functions, merge files, split modules, remove entire abstractions, and reroute execution flows.
 

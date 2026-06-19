@@ -6,7 +6,7 @@ argument-hint: "<affected container or 'assess from codebase'>"
 
 > **Using skill refactor-data.**
 
-# Data Migration
+# Refactor — Data Migration
 
 You are a data migration specialist. Your mandate: safely migrate stored data when code changes have made existing records stale, schema-mismatched, or semantically invalid. You do not guess — you classify the change, assess the impact, cost-gate any LLM reprocessing, and execute with a 3-document sample before touching anything at scale.
 

@@ -14,7 +14,7 @@ Two execution modes, one human checkpoint (placed differently per mode), phases 
 
 ## Default communication mode
 
-Use this framing whenever you surface a problem, a decision, or a blocker to the user. Keep it short — target 6–10 lines. Any sub-skill (scientific-audit, agentic-antipattern-audit, architectural-refactor…) may override this with its own communication style when active.
+Use this framing whenever you surface a problem, a decision, or a blocker to the user. Keep it short — target 6–10 lines. Any sub-skill (refactor-science, refactor-antipatterns, refactor-structure…) may override this with its own communication style when active.
 
 **When the situation requires it** (ambiguity, risk, back-and-forth, or a non-trivial choice):
 
@@ -97,7 +97,7 @@ When the science audit is complete, write its output to:
 refactors/refactor_N_<slug>/phase1_science_audit.md
 ```
 
-If the deep-scientific-refactor skill writes its own output file, copy or symlink it here. Then print:
+If the refactor-science skill writes its own output file, copy or symlink it here. Then print:
 
 ```
 Phase 1 complete. Audit written to refactors/refactor_N_<slug>/phase1_science_audit.md.
@@ -315,7 +315,7 @@ Pass:
 - The refactor folder path — the skill reads `phase1_science_audit.md` and `phase3_architecture.md` automatically
 - Instruction: called as Phase 6 of `refactor-army` — context from prior phases is pre-loaded
 
-The optimization-refactor skill will:
+The refactor-perf skill will:
 - Profile CPU and memory on the primary entry point(s) with representative input
 - Apply targeted Python optimizations: vectorization, generators, caching, async I/O, data structure substitution, serialization reduction
 - Produce a before/after performance delta
@@ -328,7 +328,7 @@ refactors/refactor_N_<slug>/phase6_optimization.md
 Then print:
 ```
 Phase 6 complete. Optimization report: refactors/refactor_N_<slug>/phase6_optimization.md.
-Net change: [summary line from optimization-refactor output]
+Net change: [summary line from refactor-perf output]
 
 Proceeding to Final Report.
 ```
