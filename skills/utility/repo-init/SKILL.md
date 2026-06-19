@@ -1,6 +1,6 @@
 ---
 name: repo-init
-description: Bootstraps a new project repository — proposes and creates the folder structure, virtual environment (conda by default), .gitignore, .env.example, CLAUDE.md, pyproject.toml, and docs/sprints/ layout. Stack-aware (Python/Azure pipeline, FastAPI, TypeScript). Probes what already exists and only creates what is missing. Use at the start of a new project before the first sprint.
+description: Bootstraps a new project repository — proposes and creates the folder structure, virtual environment (conda by default), .gitignore, .env.example, CLAUDE.md, pyproject.toml, and sprints/ layout. Stack-aware (Python/Azure pipeline, FastAPI, TypeScript). Probes what already exists and only creates what is missing. Use at the start of a new project before the first sprint.
 argument-hint: '"project name and one-line description"'
 ---
 
@@ -37,7 +37,7 @@ Before creating anything, check:
 - Does .gitignore already exist?
 - Does CLAUDE.md already exist?
 - Does src/ or any standard folder already exist?
-- Does docs/sprints/ already exist?
+- Does sprints/ already exist?
 ```
 
 For each item that already exists: **do not overwrite it**. Report what was found and skip creation. Only create what is missing.
@@ -82,7 +82,7 @@ For `python-script`, simplify:
 ├── notebooks/                  # gitignore checkpoints
 ├── data/
 ├── tests/
-├── docs/sprints/
+├── sprints/
 ```
 
 For `typescript-node`, adapt accordingly (see reference below).
@@ -109,6 +109,8 @@ dependencies:
     - -r requirements.txt
 ```
 
+Also create an empty `requirements.txt` next to it — the `- -r requirements.txt` line above reads pip dependencies from it, so without the file `conda env create` fails. Seed it with a single comment line (`# pip dependencies`).
+
 Instructions for user (print after creating):
 ```
 conda env create -f environment.yml
@@ -120,7 +122,7 @@ conda activate <project-name>
 ```toml
 [build-system]
 requires = ["setuptools>=68"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "<project-name>"
@@ -223,7 +225,7 @@ Copy `.env.example` → `.env` and fill in values.
 All Azure credentials go in `.env` — never commit it.
 
 ## Sprint system
-Sprint files live in `docs/sprints/`.
+Sprint files live in `sprints/`.
 Run `/sprint-army "description"` to start a new sprint.
 ```
 
