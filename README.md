@@ -133,14 +133,13 @@ npx skills update   # install / update all external skills
 skills/
   sprint/         ← sprint army: entry + executor + preflight + agents + reporter/premortem
   refactor/       ← refactor army: entry + science/antipattern/structure/data/perf
-  agile/          ← backlog-management
-  ai-tools/       ← prompt-master, openrouter, mcp-builder
-  research/       ← deep-research, find-skills, fact-checker, decision-toolkit
-  content/        ← audio-transcriber, humanizer, frontend-slides
-  utility/        ← repo-init, agent-browser, api-documentation, file-organizer, claude-code-commands, seloger-scraper
-  INDEX.md        ← full skill catalog (the registry)
-.agents/skills/   ← external skills (gitignored — install with npx skills update)
+  utility/        ← repo-init (project bootstrapper — direct support)
+  agile/          ← backlog-management (direct support)
+  INDEX.md        ← the registry
+.agents/skills/   ← external deps (gitignored — install with npx skills update): azure-* + brainstorming
 sprints/          ← sprint artifacts from /sprint-army
 refactors/        ← refactor artifacts from /refactor-army
 .claude/commands/ ← Claude Code slash command definitions
 ```
+
+General-purpose skills (humanizer, deep-research, prompt-master, …) deliberately do **not** live here — they're commodity skills pulled from their own repos on demand with `npx skills add`. This repo is the two armies and nothing else.
