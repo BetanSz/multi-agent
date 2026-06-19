@@ -1,6 +1,6 @@
 ﻿---
 name: refactor-army
-description: Orchestrates the full agentic refactor army pipeline. Two execution modes — Sequential (interactive, one phase at a time) or Parallel (science audit + antipattern audit + perf baseline dispatched simultaneously, then unified synthesis before any code is touched). Both modes converge at the architectural refactor and produce a complete refactor log under refactors/refactor_N_<slug>/. Invoke via /refactor-army "path/to/codebase [optional concern]".
+description: Orchestrates the full agentic refactor army pipeline. Two execution modes — Sequential (interactive, one phase at a time) or Parallel (science audit + antipattern audit + perf baseline dispatched simultaneously, then unified synthesis before any code is touched). Both modes converge at the architectural refactor and produce a complete refactor log under refactors/refactor_N_<slug>/. Invoke via /refactor-army "path/to/codebase [optional concern]". Oriented to Python/Azure data-science & AI projects; not for general non-Python/Azure work.
 argument-hint: '"path/to/codebase" or "path/to/codebase — specific concern"'
 ---
 
@@ -11,6 +11,8 @@ argument-hint: '"path/to/codebase" or "path/to/codebase — specific concern"'
 Two execution modes, one human checkpoint (placed differently per mode), phases 3–6 shared. No skipping phases within a mode.
 
 **Freedom level: LOW for sequencing** — the three phases are mandatory and must run in order. **MEDIUM within each phase** — judgment is required on what counts as an antipattern, what warrants deep restructuring, and what is worth flagging vs. fixing silently.
+
+**Scope:** Python / Azure / data-science & AI codebases. Tuned for data pipelines and ML/LLM evaluation systems — not a general-purpose refactorer.
 
 ## Default communication mode
 

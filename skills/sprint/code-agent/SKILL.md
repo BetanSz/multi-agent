@@ -1,6 +1,6 @@
 ﻿---
 name: code-agent
-description: Agent specialized in writing, editing, and refactoring code. Use when a plan exists and the task is pure implementation — writing functions, editing files, adding tests. Always reads the plan before touching any code.
+description: Agent specialized in writing, editing, and refactoring code. Use when a plan exists and the task is pure implementation — writing functions, editing files, adding tests. Always reads the plan before touching any code. Oriented to Python/Azure data-science & AI projects; not for general non-Python/Azure work.
 argument-hint: "<task-id or implementation task>"
 ---
 

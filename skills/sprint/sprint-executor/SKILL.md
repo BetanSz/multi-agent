@@ -1,6 +1,6 @@
 ﻿---
 name: sprint-executor
-description: Autonomous sprint execution engine. Reads a confirmed sprint file, builds the task DAG from depends_on fields, and dispatches agents (plan → code → review → test) in the correct order — parallel when safe, sequential when dependent — without human interaction except genuine unexpected blockers. Trigger after the HITL checklist in sprint-army is fully confirmed, or call directly with a path to an already-approved sprint file.
+description: Autonomous sprint execution engine. Reads a confirmed sprint file, builds the task DAG from depends_on fields, and dispatches agents (plan → code → review → test) in the correct order — parallel when safe, sequential when dependent — without human interaction except genuine unexpected blockers. Trigger after the HITL checklist in sprint-army is fully confirmed, or call directly with a path to an already-approved sprint file. Oriented to Python/Azure data-science & AI projects; not for general non-Python/Azure work.
 argument-hint: "path/to/sprint_N_*.md"
 ---
 

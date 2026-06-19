@@ -1,6 +1,6 @@
 ﻿---
 name: review-agent
-description: Agent specialized in code review — correctness, security, performance, and maintainability. Use after code-agent completes. Reads the diff and the original plan and gives a structured verdict with specific, actionable feedback. Supports three modes: Review (default), Fix (non-architectural issues), and Architectural fix (structural changes with test-gate).
+description: Agent specialized in code review — correctness, security, performance, and maintainability. Use after code-agent completes. Reads the diff and the original plan and gives a structured verdict with specific, actionable feedback. Supports three modes: Review (default), Fix (non-architectural issues), and Architectural fix (structural changes with test-gate). Oriented to Python/Azure data-science & AI projects; not for general non-Python/Azure work.
 argument-hint: "<task-id or PR url>"
 ---
 

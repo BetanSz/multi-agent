@@ -1,6 +1,6 @@
 ﻿---
 name: test-gen-agent
-description: Writes failing TDD tests from the plan-agent spec, BEFORE code-agent runs. Triggered only on L3 quality sprints. Tests are written against the designed interface contract, not the implementation — code-agent then writes code to make them pass. Produces two layers — standard TDD tests (happy path, edge case, error case) and agentic failure pattern tests (AT-1 silent failure visibility, AT-2 idempotency, AT-3 interface contract, AT-4 prompt regression snapshots, AT-5 threshold boundaries, AT-6 end-to-end smoke). All external calls must be mocked — no real LLM or DB calls in tests.
+description: Writes failing TDD tests from the plan-agent spec, BEFORE code-agent runs. Triggered only on L3 quality sprints. Tests are written against the designed interface contract, not the implementation — code-agent then writes code to make them pass. Produces two layers — standard TDD tests (happy path, edge case, error case) and agentic failure pattern tests (AT-1 silent failure visibility, AT-2 idempotency, AT-3 interface contract, AT-4 prompt regression snapshots, AT-5 threshold boundaries, AT-6 end-to-end smoke). All external calls must be mocked — no real LLM or DB calls in tests. Oriented to Python/Azure data-science & AI projects; not for general non-Python/Azure work.
 argument-hint: "<task-id>"
 ---
 

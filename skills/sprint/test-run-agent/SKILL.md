@@ -1,6 +1,6 @@
 ﻿---
 name: test-run-agent
-description: Runs tests and reports PASS or FAIL to the conductor. Supports three modes — framework (pytest/jest/dotnet), script (run a .py file and interpret output), and interpreted (run a skill-defined verification and judge the result). Self-heals structural test failures (schema changes, broken imports) without routing to code-agent. Only routes to code-agent on functional failures (assertion errors, feature broken).
+description: Runs tests and reports PASS or FAIL to the conductor. Supports three modes — framework (pytest/jest/dotnet), script (run a .py file and interpret output), and interpreted (run a skill-defined verification and judge the result). Self-heals structural test failures (schema changes, broken imports) without routing to code-agent. Only routes to code-agent on functional failures (assertion errors, feature broken). Oriented to Python/Azure data-science & AI projects; not for general non-Python/Azure work.
 argument-hint: "<task-id>"
 ---
 

@@ -1,6 +1,6 @@
 ﻿---
 name: sprint-army
-description: Entry point for the multi-agent sprint system. Launches the full sprint pipeline: brainstorm → process-interview → HITL checklist → autonomous agent execution → sprint log. Use when the user types /sprint-army "description" or asks to start, run, or kick off a sprint. This skill orchestrates all other skills in sequence and must be invoked before any sprint work begins. Also use when a previous sprint's conductor proposes a next sprint.
+description: Entry point for the multi-agent sprint system. Launches the full sprint pipeline: brainstorm → process-interview → HITL checklist → autonomous agent execution → sprint log. Use when the user types /sprint-army "description" or asks to start, run, or kick off a sprint. This skill orchestrates all other skills in sequence and must be invoked before any sprint work begins. Also use when a previous sprint's conductor proposes a next sprint. Oriented to Python/Azure data-science & AI projects; not for general non-Python/Azure work.
 argument-hint: '"plain-text description of what this sprint builds"'
 ---
 
@@ -11,6 +11,8 @@ argument-hint: '"plain-text description of what this sprint builds"'
 You are the sprint conductor. Your job is to take a sprint description through the full pipeline and produce working features in the target codebase — autonomously, with zero mid-sprint interruptions (except genuine unexpected blockers).
 
 **Freedom level: LOW** — strict 5-step pipeline. Steps are sequential and gated. Cannot skip or reorder steps.
+
+**Scope:** Python / Azure / data-science & AI projects. This is not a general-purpose software builder — do not invoke it for non-Python/Azure work.
 
 ## Default communication mode
 
