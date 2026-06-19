@@ -94,17 +94,14 @@ One identifier per skill, used **verbatim** in all four slots: folder name = fro
 
 ## External skills — `.agents/skills/` (resolved from `skills-lock.json`)
 
-Not committed. Install/refresh with `npx skills update`. Sources of truth: the lock file + upstream repos. Skills here are **read-only** — never edited (to customize one, "adopt" it: move it into `skills/` and drop it from the lock). Cross-references point at `.agents/skills/<name>/` directly — no bridge symlinks.
+Not committed. Install/refresh with `npx skills update`. Skills here are **read-only** — never edited (to customize one, "adopt" it: move it into `skills/` and drop it from the lock). Cross-references point at `.agents/skills/<name>/` directly — no bridge symlinks.
 
-| Skill | Source repo |
-|-------|-------------|
-| architecture-decision-records | wshobson/agents |
-| architecture-patterns | wshobson/agents |
-| azure-ai · azure-deploy · azure-diagnostics · azure-prepare · azure-storage · azure-validate | microsoft/azure-skills |
-| brainstorming · finishing-a-development-branch · receiving-code-review · requesting-code-review · systematic-debugging · verification-before-completion | obra/superpowers |
-| diagnose · grill-me · grill-with-docs · improve-codebase-architecture · tdd · to-issues · to-prd | mattpocock/skills |
-| performance | addyosmani/web-quality-skills |
-| webapp-testing | anthropics/skills |
+**Pruned to only what the armies actually use** (was 24; the rest were unused or duplicates of source clones you already have). Add more anytime with `npx skills add <owner/repo>`.
+
+| Skill | Source repo | Used by |
+|-------|-------------|---------|
+| azure-ai · azure-deploy · azure-diagnostics · azure-prepare · azure-storage · azure-validate | microsoft/azure-skills | `sprint-executor` (Azure tasks) |
+| brainstorming | obra/superpowers | `sprint-brainstorm` (visual companion) |
 
 ---
 
